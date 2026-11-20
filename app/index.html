@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d2b3a">
+<title>Story Studio</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="icons/icon-192.png" alt=""><span>Story Studio</span></div>
+  <span id="conn" class="pill off">Not connected</span>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-tab="create" class="on">New video</button>
+  <button data-tab="queue">Queue</button>
+  <button data-tab="ideas">Ideas</button>
+  <button data-tab="review">Review</button>
+  <button data-tab="stats">Dashboard</button>
+  <button data-tab="money">Income</button>
+  <button data-tab="settings">Settings</button>
+</nav>
+
+<main>
+  <!-- NEW VIDEO -->
+  <section id="tab-create" class="tab on">
+    <h1>Plan a new video</h1>
+    <p class="hint">Fill this in and tap <b>Start making it</b>. The cloud makes the video while you do other things.</p>
+    <form id="jobForm" class="card">
+      <label>Format</label>
+      <div class="seg" id="formatSeg">
+        <button type="button" data-v="short" class="on">Short (vertical, up to 60s)</button>
+        <button type="button" data-v="long">Long video (wide)</button>
+      </div>
+
+      <label for="length">Length</label>
+      <select id="length"></select>
+
+      <label for="topic">Topic <span class="req">required</span></label>
+      <input id="topic" required placeholder="e.g. The night the Library of Alexandria burned">
+
+      <label for="theme">Theme or angle</label>
+      <input id="theme" placeholder="e.g. mystery, forgotten hero, what if, turning point">
+
+      <label for="tone">Tone</label>
+      <select id="tone">
+        <option>Curious and warm</option>
+        <option>Dramatic and suspenseful</option>
+        <option>Light and funny</option>
+        <option>Calm and reflective</option>
+        <option>Epic and inspiring</option>
+      </select>
+
+      <label for="audience">Target audience</label>
+      <select id="audience">
+        <option>General global audience</option>
+        <option>Students (13 to 18)</option>
+        <option>History fans who know the basics</option>
+        <option>Curious adults new to history</option>
+      </select>
+
+      <label for="voice">Narrator voice</label>
+      <select id="voice">
+        <option value="en-US-male">Male, American</option>
+        <option value="en-GB-male">Male, British</option>
+        <option value="en-IN-male">Male, Indian English</option>
+      </select>
+
+      <label for="notes">Extra notes</label>
+      <textarea id="notes" rows="3" placeholder="Anything else: facts to include, things to avoid, a question to end on..."></textarea>
+
+      <button class="primary" type="submit" id="submitBtn">Start making it</button>
+      <p id="formMsg" class="msg"></p>
+    </form>
+  </section>
+
+  <!-- QUEUE -->
+  <section id="tab-queue" class="tab">
+    <div class="row"><h1>Your queue</h1><button id="refreshQueue" class="ghost">Refresh</button></div>
+    <p class="hint">Every video you asked for, with where it is in the process.</p>
+    <div id="dailyBar" class="card daily"></div>
+    <div id="queueList"></div>
+  </section>
+
+  <section id="tab-ideas" class="tab"><h1>Topic ideas</h1><div class="card soon">Coming in Stage 2: trending and evergreen topic ideas, ranked, with one tap to use them.</div></section>
+  <section id="tab-review" class="tab"><h1>Review</h1><div class="card soon">Coming in Stage 5: watch each finished video and tap Approve, Edit, Regenerate, or Reject.</div></section>
+  <section id="tab-stats" class="tab"><h1>Dashboard</h1><div class="card soon">Coming in Stage 7: views, watch time, subscribers, and your progress toward the Partner Program.</div></section>
+  <section id="tab-money" class="tab"><h1>Income</h1><div class="card soon">Coming in Stage 8: your affiliate links and a media-kit page for sponsors.</div></section>
+
+  <!-- SETTINGS -->
+  <section id="tab-settings" class="tab">
+    <h1>Settings</h1>
+    <div class="card">
+      <h2>Connect to your GitHub project</h2>
+      <p class="hint">Your access key is saved only on this tablet. It can only touch your one video project, and you can cancel it on GitHub at any time.</p>
+      <label for="ghUser">GitHub username</label>
+      <input id="ghUser" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="your-username">
+      <label for="ghRepo">Project name</label>
+      <input id="ghRepo" autocomplete="off" autocapitalize="off" spellcheck="false" value="story-studio">
+      <label for="ghToken">Access key (starts with github_pat_)</label>
+      <input id="ghToken" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_...">
+      <button class="primary" id="saveConn">Save and test connection</button>
+      <p id="connMsg" class="msg"></p>
+    </div>
+    <div class="card">
+      <h2>Daily target</h2>
+      <label for="tLong">Long videos per day</label>
+      <input id="tLong" type="number" min="0" max="4" value="2">
+      <label for="tShort">Shorts per day</label>
+      <input id="tShort" type="number" min="0" max="8" value="4">
+      <button id="saveTargets">Save targets</button>
+    </div>
+    <div class="card">
+      <h2>Try it without connecting</h2>
+      <p class="hint">Demo mode saves videos on this tablet only, so you can try the screens before setup is finished.</p>
+      <button id="demoBtn">Turn on demo mode</button>
+      <button id="forgetBtn" class="danger">Forget my access key</button>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>
