@@ -1,7 +1,7 @@
 {
   "id": "20261120-140104-p3x5",
   "created": "2026-11-20T08:31:04.241Z",
-  "status": "rendering",
+  "status": "video_ready",
   "format": "short",
   "length": 45,
   "lengthUnit": "seconds",
@@ -11,6 +11,9 @@
   "audience": "General global audience",
   "voice": "en-US-male",
   "notes": "",
-  "updated": "2026-11-20T09:41:55+00:00",
-  "flags": 0
+  "updated": "2026-11-20T09:54:55+00:00",
+  "flags": 0,
+  "video": "https://github.com/rishabh123joshi321-stack/story-studio/releases/download/video-20261120-140104-p3x5/video.mp4",
+  "video_seconds": 76.4,
+  "render_minutes": 13.0
 }
