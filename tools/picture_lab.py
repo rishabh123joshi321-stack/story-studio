@@ -46,11 +46,22 @@ if os.environ.get("CF_ACCOUNT_ID") and os.environ.get("CF_API_TOKEN"):  # once C
     tests = json.loads(os.environ.get("LAB_TESTS") or "[]") or [dict(t, cf=True) for t in tests if t["name"].endswith("stylefirst") or t["name"] == "tara_now"]
 
 
+def _shape(v):
+    """Describe a secret without revealing it: length and kind of characters."""
+    v = v or ""
+    kinds = "hex" if v.strip() and all(c in "0123456789abcdefABCDEF" for c in v.strip()) else "mixed"
+    return f"length {len(v)} ({len(v.strip())} without spaces), {kinds}, starts/ends with space: {v != v.strip()}"
+
+
+print("CF_ACCOUNT_ID:", _shape(os.environ.get("CF_ACCOUNT_ID")))
+print("CF_API_TOKEN:", _shape(os.environ.get("CF_API_TOKEN")))
+
+
 def cloudflare(prompt, seed):
     import base64
-    url = f"https://api.cloudflare.com/client/v4/accounts/{os.environ['CF_ACCOUNT_ID']}/ai/run/@cf/black-forest-labs/flux-1-schnell"
+    url = f"https://api.cloudflare.com/client/v4/accounts/{os.environ['CF_ACCOUNT_ID'].strip()}/ai/run/@cf/black-forest-labs/flux-1-schnell"
     req = urllib.request.Request(url, data=json.dumps({"prompt": prompt, "steps": 6, "seed": seed}).encode(),
-                                 headers={"Authorization": f"Bearer {os.environ['CF_API_TOKEN']}", "Content-Type": "application/json"})
+                                 headers={"Authorization": f"Bearer {os.environ['CF_API_TOKEN'].strip()}", "Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=180) as r:
             return 200, base64.b64decode(json.loads(r.read())["result"]["image"]), {}
