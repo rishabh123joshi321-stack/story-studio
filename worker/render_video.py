@@ -13,6 +13,7 @@ import json
 import os
 import pathlib
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -101,7 +102,17 @@ def image_gemini(prompt, w, h, seed, dest):
 
 
 PROVIDERS = [("pollinations", image_pollinations), ("gemini", image_gemini)]
+GAP = {"pollinations": 47}  # free tier: one picture every 45 seconds
 _dead = set()
+_last = {}
+
+
+def _wait_turn(name, extra=0):
+    gap = max(GAP.get(name, 0), extra)
+    wait = _last.get(name, 0) + gap - time.time()
+    if wait > 0:
+        time.sleep(wait)
+    _last[name] = time.time()
 
 
 def illustrate(visual, w, h, seed, dest):
@@ -109,17 +120,20 @@ def illustrate(visual, w, h, seed, dest):
     for name, fn in PROVIDERS:
         if name in _dead:
             continue
-        for attempt in range(3):
+        extra = 0
+        for attempt in range(4):
+            _wait_turn(name, extra)
             try:
                 fn(prompt, w, h, seed + attempt, dest)
                 return name
             except urllib.error.HTTPError as e:
-                detail = e.read()[:200]
-                log(f"  {name} image HTTP {e.code} {detail!r}")
-                if e.code in (401, 403, 404) or (e.code == 429 and b"limit: 0" in detail):
-                    _dead.add(name)
+                detail = e.read()[:300]
+                log(f"  {name} image HTTP {e.code} {detail[:160]!r}")
+                if e.code in (401, 403, 404) or (name == "gemini" and e.code == 429):
+                    _dead.add(name)  # no free quota for this service: stop asking
                     break
-                time.sleep(15 * (attempt + 1))
+                m = re.search(rb"[Rr]etry after (\d+)", detail)
+                extra = (int(m.group(1)) + 2) if m else 20 * (attempt + 1)
             except Exception as e:
                 log(f"  {name} image error: {e}")
                 time.sleep(8 * (attempt + 1))
@@ -161,7 +175,7 @@ def ass_time(t):
 
 
 def captions(scenes, starts, durs, w, h, vertical, dest):
-    size = 86 if vertical else 66
+    size = 96 if vertical else 68
     margin = int(h * 0.27) if vertical else 70
     per = 3 if vertical else 7
     lines = [
@@ -194,7 +208,7 @@ def captions(scenes, starts, durs, w, h, vertical, dest):
 def render(job, script, out_dir):
     vertical = job["format"] == "short"
     W, H = (1080, 1920) if vertical else (1920, 1080)
-    gw, gh = (768, 1344) if vertical else (1344, 768)  # generation size; upscaled later
+    gw, gh = (768, 1456) if vertical else (1344, 832)  # generation size, a bit taller; bottom strip is cut later
     scenes = [s for s in script.get("scenes", []) if str(s.get("narration", "")).strip()]
     if not scenes:
         raise WorkerError("The script has no scenes to turn into a video.")
@@ -227,7 +241,6 @@ def render(job, script, out_dir):
             log(f"  scene {i + 1}: {src}")
         else:
             log(f"  scene {i + 1}: no picture")
-        time.sleep(3)  # be gentle with free services
     if len(got) < max(1, int(len(scenes) * 0.6)):
         raise WorkerError(f"Only {len(got)} of {len(scenes)} pictures could be made (the free image service may be busy). "
                           "It will try again within the hour.", transient=True)
@@ -268,7 +281,7 @@ def render(job, script, out_dir):
         z, x, y = MOTIONS.get(motion) or list(MOTIONS.values())[i % len(MOTIONS)]
         inputs += ["-i", str(img)]
         filters.append(
-            f"[{i}:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},"
+            f"[{i}:v]crop=iw:trunc(ih*0.92/2)*2:0:0,scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},"
             f"zoompan=z='{z.format(n=n)}':x='{x.format(n=n)}':y='{y.format(n=n)}':d={n}:s={W}x{H}:fps={FPS},"
             f"setsar=1,format=yuv420p,trim=end_frame={n}[c{i}]")
     last = "c0"

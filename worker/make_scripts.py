@@ -42,7 +42,7 @@ Answer only with JSON in the exact shape requested."""
 def target(job):
     secs = job["length"] * (60 if job.get("lengthUnit") == "minutes" else 1)
     words = int(secs * WORDS_PER_SECOND)
-    scene_secs = 4.5 if job["format"] == "short" else 11
+    scene_secs = 5 if job["format"] == "short" else 14
     return secs, words, max(5, round(secs / scene_secs))
 
 
