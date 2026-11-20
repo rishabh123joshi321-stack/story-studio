@@ -1,0 +1,160 @@
+{
+  "created": "2026-11-20T08:57:52+00:00",
+  "focus": "",
+  "ideas": [
+    {
+      "topic": "Grand Theft Auto franchise history",
+      "title": "How a Bug Turned Into a Billion-Dollar Crime",
+      "angle": "We explore how a programming glitch in a cancelled race game spawned the most controversial and successful franchise in video game history.",
+      "kind": "trending",
+      "format": "long",
+      "score": 96,
+      "signal": "519,632 Wikipedia reads yesterday for Grand Theft Auto VI",
+      "publish_by": ""
+    },
+    {
+      "topic": "D.B. Cooper hijacking",
+      "title": "The Man Who Vanished Into the Sky With $200,000",
+      "angle": "Revisiting the audacious 1971 hijacking where an unassuming passenger parachuted into the dark Pacific Northwest wilderness and vanished forever.",
+      "kind": "anniversary",
+      "format": "long",
+      "score": 94,
+      "signal": "Anniversary on Nov 24, 1971",
+      "publish_by": "2026-11-24"
+    },
+    {
+      "topic": "Ansel Adams photography",
+      "title": "The Photographer Who Saved America's Wild Places",
+      "angle": "The inspiring life of Ansel Adams, whose stark black-and-white prints of Yosemite helped forge the American environmental movement.",
+      "kind": "trending",
+      "format": "long",
+      "score": 92,
+      "signal": "74,358 Wikipedia reads yesterday for Ansel Adams",
+      "publish_by": ""
+    },
+    {
+      "topic": "Discovery of Pulsars Jocelyn Bell Burnell",
+      "title": "The Strange 'Little Green Men' Signals From Space",
+      "angle": "How a graduate student's sharp eyes spotted tiny anomalies in radio telescope data, leading to the groundbreaking discovery of pulsars.",
+      "kind": "anniversary",
+      "format": "long",
+      "score": 90,
+      "signal": "Anniversary on Nov 28, 1967",
+      "publish_by": "2026-11-28"
+    },
+    {
+      "topic": "Microsoft Windows 1.0 release",
+      "title": "When Microsoft First Bet on Windows",
+      "angle": "Looking back at the clunky, tile-based 1985 release of Windows 1.0 that was mocked by critics but quietly launched a computing revolution.",
+      "kind": "anniversary",
+      "format": "short",
+      "score": 89,
+      "signal": "Anniversary on Nov 20, 1985",
+      "publish_by": "2026-11-20"
+    },
+    {
+      "topic": "Alcatraz Native American occupation",
+      "title": "The 19-Month Native Occupation of Alcatraz",
+      "angle": "The untold story of the Indigenous activists who claimed the abandoned island prison in 1969 to demand land rights and justice.",
+      "kind": "anniversary",
+      "format": "long",
+      "score": 88,
+      "signal": "Anniversary on Nov 20, 1969",
+      "publish_by": "2026-11-20"
+    },
+    {
+      "topic": "Release of Toy Story 1995",
+      "title": "The Risky CGI Gamble That Built Pixar",
+      "angle": "How an unproven technology and a struggling studio risked everything to make the world's first fully computer-animated feature film.",
+      "kind": "anniversary",
+      "format": "long",
+      "score": 87,
+      "signal": "Anniversary on Nov 22, 1995",
+      "publish_by": "2026-11-22"
+    },
+    {
+      "topic": "Elizabeth Holmes Theranos rise and fall",
+      "title": "The Rise and Fall of Silicon Valley's Biggest Bluff",
+      "angle": "The psychological and corporate mechanisms that allowed a charismatic college dropout to convince the world she had invented miraculous blood-testing tech.",
+      "kind": "trending",
+      "format": "long",
+      "score": 86,
+      "signal": "58,677 Wikipedia reads yesterday for Elizabeth Holmes",
+      "publish_by": ""
+    },
+    {
+      "topic": "The Voynich Manuscript",
+      "title": "The Unreadable 600-Year-Old Manuscript No One Can Decode",
+      "angle": "A deep dive into the bizarre, illustrated medieval codex written in an unknown alphabet that continues to baffle the world's top cryptographers.",
+      "kind": "evergreen",
+      "format": "long",
+      "score": 85,
+      "signal": "Searched continuously by history and mystery enthusiasts globally",
+      "publish_by": ""
+    },
+    {
+      "topic": "History of the Rosetta Stone",
+      "title": "The Accidental Discovery That Decoded Ancient Egypt",
+      "angle": "How a French soldier unearthing a dusty slab of rock in a fortress wall unlocked thousands of years of silent hieroglyphics.",
+      "kind": "evergreen",
+      "format": "long",
+      "score": 84,
+      "signal": "Perennial high-interest historical mystery topic",
+      "publish_by": ""
+    },
+    {
+      "topic": "Antikythera mechanism history",
+      "title": "The 2,000-Year-Old Greek Computer Found in a Shipwreck",
+      "angle": "The astonishing true story of the ancient bronze gear system that baffled archaeologists and rewrote our understanding of ancient technology.",
+      "kind": "evergreen",
+      "format": "long",
+      "score": 83,
+      "signal": "High search volume and evergreen curiosity across science channels",
+      "publish_by": ""
+    },
+    {
+      "topic": "The Dancing Plague of 1518",
+      "title": "The Town That Literally Danced Itself to Death",
+      "angle": "Investigating the strange summer in Alsace where hundreds of citizens were gripped by an unstoppable urge to dance for days on end.",
+      "kind": "evergreen",
+      "format": "short",
+      "score": 82,
+      "signal": "Extremely high shareability and evergreen historical intrigue",
+      "publish_by": ""
+    },
+    {
+      "topic": "History of Pompeii preservation",
+      "title": "The Last Hours of Pompeii's Forgotten Streets",
+      "angle": "A vivid, minute-by-minute reconstruction of the catastrophic Vesuvius eruption that preserved an entire Roman city in volcanic ash.",
+      "kind": "evergreen",
+      "format": "long",
+      "score": 81,
+      "signal": "Consistently high global search and watch time performance",
+      "publish_by": ""
+    },
+    {
+      "topic": "Brink's-Mat robbery 1983",
+      "title": "The Accidental Heist That Stole London's Gold",
+      "angle": "How six petty thieves broke into a routine warehouse looking for cash and walked out with three tons of pure gold bullion.",
+      "kind": "anniversary",
+      "format": "long",
+      "score": 80,
+      "signal": "Anniversary on Nov 26, 1983",
+      "publish_by": "2026-11-26"
+    },
+    {
+      "topic": "Jensen Huang and NVIDIA history",
+      "title": "The Restaurant Pitch That Built a Trillion-Dollar Chip Empire",
+      "angle": "The improbable journey of Jensen Huang, who co-founded NVIDIA at a Denny's booth and quietly powered the modern AI revolution.",
+      "kind": "trending",
+      "format": "long",
+      "score": 79,
+      "signal": "109,002 Wikipedia reads yesterday for Jensen Huang",
+      "publish_by": ""
+    }
+  ],
+  "signals": {
+    "trending_count": 40,
+    "anniversary_count": 80
+  }
+}
