@@ -1,140 +1,58 @@
 {
   "job_id": "20261120-140104-p3x5",
-  "created": "2026-11-20T12:29:01+00:00",
+  "created": "2026-11-20T16:41:10+00:00",
   "format": "short",
-  "working_title": "Why London Burned Down in 1666",
-  "hook": "Imagine waking up at midnight to the smell of toast, only to find your entire city is about to turn into a giant marshmallow.",
-  "structure": "Day-in-the-life immersion: put the viewer in the place and time with sensory detail, then explain the event through that lens.",
-  "style": "animated-v2",
-  "cast": [
-    {
-      "id": "thomas_farriner",
-      "kind": "person",
-      "look": "A 17th-century baker in his 40s, plump build, flour-dusted face, wearing a simple linen shirt, leather apron in ochre, and a white baker's cap.",
-      "poses": {
-        "panicked": "staring wide-eyed at leaping flames, arms thrown up in shock",
-        "baking": "kneading dough at a wooden counter, smiling tiredly"
-      }
-    },
-    {
-      "id": "tara",
-      "kind": "person",
-      "look": "A cheerful young time-traveller with messy dark hair in a ponytail, wearing a modern teal hoodie and canvas trousers.",
-      "poses": {
-        "talk": "standing with hands on hips, smiling and explaining",
-        "shock": "gasping with hands pressed against her cheeks",
-        "point": "pointing off-camera to the left with a knowing grin"
-      }
-    },
-    {
-      "id": "wooden_tenement",
-      "kind": "object",
-      "look": "A multi-storey 17th-century timber-framed house with jutting upper floors ('jetties') nearly touching across the narrow cobblestone alley.",
-      "poses": {
-        "default": "standing tall with timber beams and small glass-paned windows"
-      }
-    }
-  ],
+  "working_title": "How One Mayor's Hesitation Burnt Down London in 1666",
+  "hook": "What if a mayor’s late-night hesitation burnt down an entire city?",
+  "structure": "Follow one person (real, documented) through the event as the viewer's guide, then zoom out to the bigger picture.",
+  "style": "stills",
+  "cast": [],
   "places": [
     {
-      "id": "pudding_lane_night",
-      "look": "An empty narrow medieval alleyway at midnight, dark, cobblestone ground, timber houses looming close on either side, hand-painted in deep brick red and ochre palette with visible paper grain."
+      "id": "c0_p0",
+      "look": "Richly detailed hand-painted illustration framed for a vertical 9:16 screen in the style of a high-end animated feature film still frame. A night scene in a narrow, cobbled medieval London street with overhanging timber buildings. In the middle ground stands sir_thomas_bloodworth, a middle-aged, portly 17th-century magistrate with heavy jowls, wearing a plush red velvet mayoral robe with brown fur trim, white lace neck collar, and a gold chain of office over a silk nightgown. He looks bewildered and uncertain as orange fire light glows down the dark street behind him, reflecting on cobblestones. No modern landmarks, no text.",
+      "full": true
     },
     {
-      "id": "river_thames_bank",
-      "look": "The empty riverbank of the Thames at dawn, grey water reflecting soft rim light, small wooden wharves and tar-paper shacks lining the shore, moody depth haze."
+      "id": "c0_p1",
+      "look": "Richly detailed hand-painted illustration framed for a vertical 9:16 screen. A dramatic medium view inside the ground floor kitchen of bakery_tenement, a narrow 17th-century three-storey timber-framed London building with overhanging upper wooden jetties, diamond leaded windows, and a dark tile roof. Bright yellow and orange flames leap out from a glowing brick flour oven, igniting nearby wooden flour barrels and timber posts. Glowing embers fill the ambient dark kitchen interior with intense warmth. No text, period-accurate 17th-century tools.",
+      "full": true
     },
     {
-      "id": "london_skyline_smoke",
-      "look": "A wide view of the city skyline from across the river, grey timber roofs under a vast sky filled with thick billows of pinkish-white smoke and golden fire glow."
+      "id": "c0_p2",
+      "look": "Richly detailed hand-painted illustration framed for a vertical 9:16 screen. Outside on a crowded, smoke-filled alley, desperate parish firefighters hold up a fire_hook, a long sturdy wooden pole equipped with a heavy forged iron hook at the top, used for gripping wooden beams, aiming it toward a wooden house. In the foreground, sir_thomas_bloodworth, a middle-aged, portly 17th-century magistrate with heavy jowls, wearing a plush red velvet mayoral robe with brown fur trim, white lace neck collar, and a gold chain of office over a silk nightgown, frantically shakes his head and waves his hand in refusal. No text.",
+      "full": true
     },
     {
-      "id": "st_pauls_ruin",
-      "look": "An empty grand stone cathedral courtyard in London, medieval arches and pillars under a smoky twilight sky, gentle depth haze."
+      "id": "c0_p3",
+      "look": "Richly detailed hand-painted illustration framed for a vertical 9:16 screen. A dramatic low-angle shot looking up at the medieval gothic lead roof and central tower of Old St Paul's Cathedral engulfed in a massive wind-driven firestorm. Thick black smoke plumes into the night sky as fiery embers rain down on surrounding timber roofs. Cinematic orange light illuminates the historic stone walls. No text, strictly period-accurate 1666 architecture.",
+      "full": true
+    },
+    {
+      "id": "c0_p4",
+      "look": "Richly detailed hand-painted illustration framed for a vertical 9:16 screen. On a wide street, king_charles_ii, a tall 30s monarch with long dark curly periwig, thin moustache, wearing an elegant dark blue embroidered coat, broad white collar, high leather boots, and a silk shoulder sash, decisively points his arm forward. Behind him, soldiers carry wooden gunpowder barrels into a wooden house, while a controlled blast in the middle ground sends up a huge dust cloud and rubble gap, blocking the advancing smoke and fire. No text.",
+      "full": true
+    },
+    {
+      "id": "c0_p5",
+      "look": "Richly detailed hand-painted illustration framed for a vertical 9:16 screen. A sweeping vertical tilt up the 202-foot fluted Doric stone Monument crowned with a brilliant gilded urn of fire, shining bright against a clear blue daytime sky. Around its base are period-accurate late 17th-century rebuilt brick houses and clean paved streets. Cinematic golden sunlight warms the stone surfaces. No modern landmarks, no text.",
+      "full": true
     }
   ],
-  "use_guide": true,
+  "use_guide": false,
   "chapters": [],
   "scenes": [
     {
-      "narration": "Imagine waking up at midnight to the smell of toast, only to find your entire city is about to turn into a giant marshmallow.",
+      "narration": "What if a mayor’s late-night hesitation burnt down an entire city?",
       "chapter": 0,
       "shots": [
         {
           "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "thomas_farriner",
-              "pose": "panicked",
-              "then_pose": "baking",
-              "action": "tremble",
-              "position": "center"
-            }
-          ],
+          "place": "c0_p0",
+          "characters": [],
           "camera": "push_in",
-          "effect": "fire",
-          "time_label": "London, 1666",
-          "fact": "",
-          "bubble": "Fire!",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "wooden_tenement",
-              "pose": "default",
-              "then_pose": "",
-              "action": "stand",
-              "position": "right"
-            }
-          ],
-          "camera": "shake",
           "effect": "smoke",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "london_skyline_smoke",
-          "characters": [
-            {
-              "id": "tara",
-              "pose": "shock",
-              "then_pose": "talk",
-              "action": "talk",
-              "position": "left"
-            }
-          ],
-          "camera": "pull_out",
-          "effect": "glow",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "river_thames_bank",
-          "characters": [
-            {
-              "id": "thomas_farriner",
-              "pose": "panicked",
-              "then_pose": "",
-              "action": "run_across",
-              "position": "center"
-            }
-          ],
-          "camera": "pan_left",
-          "effect": "embers",
-          "time_label": "",
+          "time_label": "London, September 1666",
           "fact": "",
           "bubble": "",
           "note": "",
@@ -143,195 +61,33 @@
       ]
     },
     {
-      "narration": "In September 1666, a tiny spark in Thomas Farriner's bakery on Pudding Lane ignited a four-day firestorm.",
+      "narration": "Just after midnight on September 2, 1666, a spark ignited inside Thomas Farriner’s bakery on Pudding Lane.",
       "chapter": 0,
       "shots": [
         {
           "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "thomas_farriner",
-              "pose": "baking",
-              "then_pose": "panicked",
-              "action": "strike",
-              "position": "center"
-            }
-          ],
-          "camera": "static",
-          "effect": "fire",
-          "time_label": "",
-          "fact": "The fire started in Pudding Lane on September 2, 1666.",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "wooden_tenement",
-              "pose": "default",
-              "then_pose": "",
-              "action": "stand",
-              "position": "right"
-            }
-          ],
-          "camera": "pan_right",
-          "effect": "embers",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "london_skyline_smoke",
-          "characters": [
-            {
-              "id": "tara",
-              "pose": "point",
-              "then_pose": "shock",
-              "action": "point",
-              "position": "left"
-            }
-          ],
-          "camera": "push_in",
-          "effect": "smoke",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        }
-      ]
-    },
-    {
-      "narration": "Medieval London was a wooden maze with narrow streets and jutting upper floors that practically shook hands across alleys.",
-      "chapter": 0,
-      "shots": [
-        {
-          "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "wooden_tenement",
-              "pose": "default",
-              "then_pose": "",
-              "action": "stand",
-              "position": "left"
-            }
-          ],
+          "place": "c0_p1",
+          "characters": [],
           "camera": "tilt_up",
-          "effect": "smoke",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "wooden_tenement",
-              "pose": "default",
-              "then_pose": "",
-              "action": "stand",
-              "position": "right"
-            }
-          ],
-          "camera": "pan_left",
-          "effect": "none",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "guide",
-          "place": "st_pauls_ruin",
-          "characters": [
-            {
-              "id": "guide",
-              "pose": "talk",
-              "then_pose": "think",
-              "action": "talk",
-              "position": "center"
-            }
-          ],
-          "camera": "static",
-          "effect": "none",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "Streets were very narrow!",
-          "title": ""
-        }
-      ]
-    },
-    {
-      "narration": "When flames leaped from house to house, the Lord Mayor hesitated to order demolitions, letting the fire spiral out of control.",
-      "chapter": 0,
-      "shots": [
-        {
-          "kind": "guide",
-          "place": "river_thames_bank",
-          "characters": [
-            {
-              "id": "guide",
-              "pose": "shrug",
-              "then_pose": "talk",
-              "action": "talk",
-              "position": "center"
-            }
-          ],
-          "camera": "static",
-          "effect": "none",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "Mayor delayed orders!",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "london_skyline_smoke",
-          "characters": [
-            {
-              "id": "wooden_tenement",
-              "pose": "default",
-              "then_pose": "",
-              "action": "fall",
-              "position": "center"
-            }
-          ],
-          "camera": "crash_zoom",
           "effect": "fire",
           "time_label": "",
           "fact": "",
           "bubble": "",
           "note": "",
           "title": ""
-        },
+        }
+      ]
+    },
+    {
+      "narration": "Summoned from bed, Lord Mayor Sir Thomas Bloodworth panicked and refused to demolish rented wooden homes for firebreaks.",
+      "chapter": 0,
+      "shots": [
         {
           "kind": "story",
-          "place": "pudding_lane_night",
-          "characters": [
-            {
-              "id": "thomas_farriner",
-              "pose": "panicked",
-              "then_pose": "",
-              "action": "run_across",
-              "position": "right"
-            }
-          ],
+          "place": "c0_p2",
+          "characters": [],
           "camera": "pan_right",
-          "effect": "smoke",
+          "effect": "embers",
           "time_label": "",
           "fact": "",
           "bubble": "",
@@ -341,63 +97,33 @@
       ]
     },
     {
-      "narration": "Desperate citizens fled to the Thames as the city burned, but brave garrison troops finally saved what remained using gunpowder firebreaks.",
+      "narration": "Fanned by strong winds, flames consumed thousands of timber buildings, even reducing grand Old St Paul’s Cathedral to ashes.",
       "chapter": 0,
       "shots": [
         {
           "kind": "story",
-          "place": "london_skyline_smoke",
-          "characters": [
-            {
-              "id": "tara",
-              "pose": "shock",
-              "then_pose": "point",
-              "action": "point",
-              "position": "left"
-            }
-          ],
+          "place": "c0_p3",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "fire",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ]
+    },
+    {
+      "narration": "Taking control, King Charles II used gunpowder to blow up entire streets, creating wide firebreaks that halted the inferno.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p4",
+          "characters": [],
           "camera": "pull_out",
-          "effect": "explosion",
-          "time_label": "",
-          "fact": "Gunpowder firebreaks and a dropping wind finally halted the flames.",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "river_thames_bank",
-          "characters": [
-            {
-              "id": "tara",
-              "pose": "talk",
-              "then_pose": "shock",
-              "action": "walk_in_left",
-              "position": "center"
-            }
-          ],
-          "camera": "static",
-          "effect": "water",
-          "time_label": "",
-          "fact": "",
-          "bubble": "",
-          "note": "",
-          "title": ""
-        },
-        {
-          "kind": "story",
-          "place": "st_pauls_ruin",
-          "characters": [
-            {
-              "id": "wooden_tenement",
-              "pose": "default",
-              "then_pose": "",
-              "action": "fall",
-              "position": "right"
-            }
-          ],
-          "camera": "shake",
-          "effect": "smoke",
+          "effect": "dust",
           "time_label": "",
           "fact": "",
           "bubble": "",
@@ -407,83 +133,75 @@
       ]
     },
     {
-      "narration": "Hit subscribe if you love uncovering history's wildest days with us!",
+      "narration": "Today, a towering 202-foot stone Monument stands near the reconstructed bakery site. Subscribe for more fiery bites of history!",
       "chapter": 0,
       "shots": [
         {
-          "kind": "guide",
-          "place": "st_pauls_ruin",
-          "characters": [
-            {
-              "id": "guide",
-              "pose": "wave",
-              "then_pose": "talk",
-              "action": "bow",
-              "position": "center"
-            }
-          ],
-          "camera": "static",
+          "kind": "story",
+          "place": "c0_p5",
+          "characters": [],
+          "camera": "tilt_up",
           "effect": "sparkles",
-          "time_label": "",
+          "time_label": "London, 1677",
           "fact": "",
           "bubble": "",
-          "note": "Subscribe!",
+          "note": "",
           "title": ""
         }
       ]
     }
   ],
-  "call_to_action": "Hit subscribe if you love uncovering history's wildest days with us!",
-  "why_it_matters": "Understanding the Great Fire shows how a devastating disaster reshaped London's resilience and modern urban planning.",
+  "call_to_action": "Subscribe for more fiery bites of history!",
+  "why_it_matters": "It explains how a single leader's indecision turned a small bakery fire into one of history's most famous urban disasters, reshaping modern London.",
   "uses_realistic_altered_content": false,
-  "word_count": 113,
-  "estimated_seconds": 45,
+  "word_count": 103,
+  "estimated_seconds": 41,
   "fact_check": {
     "claims": [
       {
         "scene": 1,
-        "claim": "City turning into a giant marshmallow",
+        "claim": "A mayor's late-night hesitation contributed to the destruction of the city.",
         "verdict": "supported",
-        "source": "general knowledge",
-        "note": "Metaphorical opening hook."
+        "source": "Great Fire of London",
+        "note": null
       },
       {
         "scene": 2,
-        "claim": "In September 1666, a tiny spark in Thomas Farriner's bakery on Pudding Lane ignited a four-day firestorm.",
+        "claim": "The fire started just after midnight on September 2, 1666, in Thomas Farriner's bakery on Pudding Lane.",
         "verdict": "supported",
         "source": "Great Fire of London",
-        "note": "The fire started shortly after midnight on Sunday 2 September and lasted until Wednesday 5 September 1666 (four days)."
+        "note": null
       },
       {
         "scene": 3,
-        "claim": "Medieval London was a wooden maze with narrow streets and jutting upper floors that practically shook hands across alleys.",
+        "claim": "Lord Mayor Sir Thomas Bloodworth panicked and refused to demolish rented wooden homes for firebreaks.",
         "verdict": "supported",
         "source": "Great Fire of London",
-        "note": "Reference describes narrow, winding alleys and multi-storey timbered houses with jetties nearly meeting across narrow alleys."
+        "note": null
       },
       {
         "scene": 4,
-        "claim": "When flames leaped from house to house, the Lord Mayor hesitated to order demolitions, letting the fire spiral out of control.",
+        "claim": "Strong winds fanned the flames, consuming thousands of timber buildings and destroying Old St Paul's Cathedral.",
         "verdict": "supported",
         "source": "Great Fire of London",
-        "note": "The Lord Mayor, Sir Thomas Bloodworth, hesitated in giving the demolition orders, allowing the fire to grow into a firestorm."
+        "note": null
       },
       {
         "scene": 5,
-        "claim": "Desperate citizens fled to the Thames as the city burned, but brave garrison troops finally saved what remained using gunpowder firebreaks.",
-        "verdict": "supported",
+        "claim": "King Charles II personally used gunpowder to blow up streets and halt the inferno.",
+        "verdict": "wrong",
         "source": "Great Fire of London",
-        "note": "Citizens fled to the river/Thames, and the Tower of London garrison used gunpowder to create effective firebreaks, aided by a dropping wind."
+        "note": "While Charles II took over command and pushed for actions, it was the garrison of the Tower of London that used gunpowder to create effective firebreaks, and the halting of the fire was also heavily aided by the wind dying down."
       },
       {
         "scene": 6,
-        "claim": "Hit subscribe if you love uncovering history's wildest days with us!",
+        "claim": "A 202-foot stone Monument stands near the bakery site today.",
         "verdict": "supported",
-        "source": "general knowledge",
-        "note": "Standard call to action."
+        "source": "Monument to the Great Fire of London",
+        "note": null
       }
     ],
-    "summary": "Every factual claim in the narration and on-screen text regarding the Great Fire of London is fully supported by the reference material."
+    "summary": "The narration is accurate overall, with only scene 5 oversimplifying the gunpowder intervention by crediting King Charles II directly rather than the Tower of London garrison and the dropping wind."
   },
   "sources": [
     {
