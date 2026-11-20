@@ -27,6 +27,7 @@ import soundfile as sf
 
 from common import HOUSE_STYLE, ROOT, UA, WorkerError, read_json, save, stale, sync, write_json
 from music import SR, make_music
+from overlays import ensure_host, host_background, host_pose, story_overlay
 
 CACHE = pathlib.Path(os.environ.get("SS_CACHE", pathlib.Path.home() / ".cache" / "storystudio"))
 WORK = pathlib.Path(os.environ.get("SS_WORK", "/tmp/ss-render"))
@@ -47,6 +48,11 @@ MOTIONS = {
     "pan right": ("1.10", "(iw-iw/zoom)*on/{n}", "ih/2-(ih/zoom/2)"),
     "drift up": ("1.10", "iw/2-(iw/zoom/2)", "(ih-ih/zoom)*(1-on/{n})"),
     "drift down": ("1.10", "iw/2-(iw/zoom/2)", "(ih-ih/zoom)*on/{n}"),
+}
+CLOSE_UPS = {  # tighter shots, used when a scene reuses the previous place
+    "close left": ("1.45+0.06*on/{n}", "iw*0.04", "ih/2-(ih/zoom/2)"),
+    "close right": ("1.45+0.06*on/{n}", "iw-iw/zoom-iw*0.04", "ih/2-(ih/zoom/2)"),
+    "close centre": ("1.55-0.08*on/{n}", "iw/2-(iw/zoom/2)", "ih*0.35-(ih/zoom/2)"),
 }
 FONT_URL = "https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf"  # SIL Open Font License
 
@@ -115,8 +121,8 @@ def _wait_turn(name, extra=0):
     _last[name] = time.time()
 
 
-def illustrate(visual, w, h, seed, dest):
-    prompt = f"{visual}. Style: {HOUSE_STYLE}."
+def illustrate(visual, w, h, seed, dest, raw_prompt=False):
+    prompt = visual if raw_prompt else f"{visual}. Style: {HOUSE_STYLE}."
     for name, fn in PROVIDERS:
         if name in _dead:
             continue
@@ -175,6 +181,7 @@ def ass_time(t):
 
 
 def captions(scenes, starts, durs, w, h, vertical, dest):
+    host_margin = int(h * 0.55) if vertical else 0
     size = 96 if vertical else 78
     margin = int(h * 0.27) if vertical else 70
     per = 3 if vertical else 7
@@ -199,7 +206,8 @@ def captions(scenes, starts, durs, w, h, vertical, dest):
             text = " ".join(c).replace("{", "(").replace("}", ")")
             if vertical:
                 text = text.upper()
-            lines.append(f"Dialogue: 0,{ass_time(t)},{ass_time(t + d)},Cap,,0,0,0,,{text}")
+            mv = host_margin if (sc.get("kind") == "host" and host_margin) else 0
+            lines.append(f"Dialogue: 0,{ass_time(t)},{ass_time(t + d)},Cap,,0,0,{mv},,{text}")
             t += d
     pathlib.Path(dest).write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -230,24 +238,38 @@ def render(job, script, out_dir):
     total = len(voice) / SR
     starts = np.concatenate([[0], np.cumsum(durs)[:-1]]).tolist()
 
-    # 2. pictures
+    # 2. pictures: only story scenes in a new place need a new picture
     log("Pictures...")
-    got = {}
+    host_ok = False
+    if any(sc.get("kind") == "host" for sc in scenes):
+        if ensure_host(illustrate, log):
+            save(["assets"], "Draw the guide character's poses")
+        host_ok = host_pose("talk") is not None
+    plan = []  # for each scene: ("host", None) or ("story", picture index)
+    pictures = {}
+    last_pic = None
     for i, sc in enumerate(scenes):
+        if sc.get("kind") == "host" and host_ok:
+            plan.append(("host", None))
+            continue
+        if sc.get("same_place_as_previous") and last_pic is not None:
+            plan.append(("story", last_pic))
+            continue
         dest = out_dir / f"img{i:03d}.png"
-        src = illustrate(sc.get("visual") or sc["narration"], gw, gh, seed0 + i * 7, dest)
+        visual = sc.get("visual") or sc["narration"]
+        src = illustrate(visual, gw, gh, seed0 + i * 7, dest)
+        log(f"  scene {i + 1}: {src or 'no picture'}")
         if src:
-            got[i] = dest
-            log(f"  scene {i + 1}: {src}")
-        else:
-            log(f"  scene {i + 1}: no picture")
-    if len(got) < max(1, int(len(scenes) * 0.6)):
-        raise WorkerError(f"Only {len(got)} of {len(scenes)} pictures could be made (the free image service may be busy). "
+            pictures[i] = dest
+            last_pic = i
+        plan.append(("story", i if src else None))
+    needed = sum(1 for k, v in plan if k == "story")
+    if needed and len(pictures) < max(1, int(len([1 for i, (k, v) in enumerate(plan) if k == "story" and v == i]) * 0.6)):
+        raise WorkerError(f"Only {len(pictures)} pictures could be made (the free image service may be busy). "
                           "It will try again within the hour.", transient=True)
-    images = []
-    for i in range(len(scenes)):  # reuse the nearest picture for any gap
-        j = min(got, key=lambda k: abs(k - i))
-        images.append(got[j])
+    for i, (k, v) in enumerate(plan):  # fill any gap with the nearest picture
+        if k == "story" and v is None:
+            plan[i] = ("story", min(pictures, key=lambda j: abs(j - i)))
 
     # 3. music
     log("Music...")
@@ -270,38 +292,65 @@ def render(job, script, out_dir):
             log(f"Font download failed ({e}); captions use the default font.")
     captions(scenes, starts, durs, W, H, vertical, out_dir / "captions.ass")
 
-    # 5. video: each picture with gentle motion, crossfaded, captions burned in
+    # 5. video: one clip per scene (hard cuts, like a cartoon), then captions, voice and music on top
     log("Assembling video...")
-    inputs, filters = [], []
     sw, sh = int(W * 1.5), int(H * 1.5)
-    for i, (img, d) in enumerate(zip(images, durs)):
-        clip = d + (XFADE if i < len(scenes) - 1 else 0)
-        n = max(2, int(round(clip * FPS)))
-        motion = str(scenes[i].get("motion", "")).strip().lower()
-        z, x, y = MOTIONS.get(motion) or list(MOTIONS.values())[i % len(MOTIONS)]
-        inputs += ["-i", str(img)]
-        filters.append(
-            f"[{i}:v]crop=iw:trunc(ih*0.92/2)*2:0:0,scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},"
-            f"zoompan=z='{z.format(n=n)}':x='{x.format(n=n)}':y='{y.format(n=n)}':d={n}:s={W}x{H}:fps={FPS},"
-            f"setsar=1,format=yuv420p,trim=end_frame={n}[c{i}]")
-    last = "c0"
-    for i in range(1, len(scenes)):
-        offset = sum(durs[:i])
-        filters.append(f"[{last}][c{i}]xfade=transition=fade:duration={XFADE}:offset={offset:.3f}[x{i}]")
-        last = f"x{i}"
+    edges = [round(x * FPS) for x in np.cumsum([0] + durs)]
+    clips, prev_motion, host_side = [], "", 0
+    for i, sc in enumerate(scenes):
+        n = max(2, edges[i + 1] - edges[i])
+        dur = n / FPS
+        clip = out_dir / f"clip{i:03d}.mp4"
+        enc = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an",
+               "-frames:v", str(n), str(clip)]
+        kind, pic = plan[i]
+        if kind == "host":
+            left = host_side % 2 == 0
+            host_side += 1
+            bg = host_background(W, H, sc.get("host_text"), sc.get("date_label"), CACHE, out_dir / f"bg{i:03d}.png", host_left=left)
+            pose = host_pose(str(sc.get("host_pose", "talk")).strip().lower()) or host_pose("talk")
+            hh = int(H * (0.5 if vertical else 0.8))
+            if vertical:
+                bx, by, direction = f"(W-w)/2", f"H-h-{int(H * 0.04)}", 1
+            else:
+                bx, by, direction = (f"{int(W * 0.1)}" if left else f"W-w-{int(W * 0.1)}"), f"H-h-{int(H * 0.06)}", (-1 if left else 1)
+            x = f"{bx}+if(lt(t,0.25),(0.25-t)*{direction}*W*1.6,0)"
+            y = f"{by}-{int(H * 0.012)}*abs(sin(2*PI*t*1.15))"
+            run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error",
+                 "-loop", "1", "-framerate", str(FPS), "-i", str(bg), "-loop", "1", "-framerate", str(FPS), "-i", str(pose),
+                 "-filter_complex", f"[1:v]scale=-1:{hh}[h];[0:v][h]overlay=x='{x}':y='{y}':format=auto,format=yuv420p", *enc])
+        else:
+            img = pictures[pic]
+            motion = str(sc.get("motion", "")).strip().lower()
+            if sc.get("same_place_as_previous"):
+                options = [m for m in CLOSE_UPS if m != prev_motion]
+                motion = options[i % len(options)]
+                z, x, y = CLOSE_UPS[motion]
+            else:
+                z, x, y = MOTIONS.get(motion) or list(MOTIONS.values())[i % len(MOTIONS)]
+            prev_motion = motion
+            layer = story_overlay(W, H, sc.get("date_label"), sc.get("bubble"), "left" if i % 2 else "right", CACHE, out_dir / f"ov{i:03d}.png")
+            base = (f"[0:v]crop=iw:trunc(ih*0.92/2)*2:0:0,scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},"
+                    f"zoompan=z='{z.format(n=n)}':x='{x.format(n=n)}':y='{y.format(n=n)}':d={n}:s={W}x{H}:fps={FPS},setsar=1")
+            if layer:
+                graph = base + f"[p];[p][1:v]overlay=0:0:enable='gte(t,0.3)':format=auto,format=yuv420p"
+                run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(img),
+                     "-loop", "1", "-framerate", str(FPS), "-i", str(layer), "-filter_complex", graph, *enc])
+            else:
+                run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(img),
+                     "-filter_complex", base + ",format=yuv420p", *enc])
+        clips.append(clip)
+    (out_dir / "clips.txt").write_text("".join(f"file '{c.resolve()}'\n" for c in clips))
     subs = str(out_dir / "captions.ass").replace(":", r"\:")
-    filters.append(f"[{last}]subtitles='{subs}':fontsdir='{fonts}'[vout]")
-    a_voice, a_music = len(images), len(images) + 1
-    filters.append(f"[{a_music}:a]aloop=loop=-1:size=2e9,atrim=0:{total:.2f},lowpass=f=2200,volume=0.22[m]")
-    filters.append(f"[{a_voice}:a]asplit=2[v1][vv]")
-    filters.append(f"[m][v1]sidechaincompress=threshold=0.03:ratio=6:attack=30:release=600[md]")
-    filters.append(f"[vv][md]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
-    graph = out_dir / "graph.txt"
-    graph.write_text(";\n".join(filters))
+    graph = (f"[0:v]subtitles='{subs}':fontsdir='{fonts}'[vout];"
+             f"[2:a]aloop=loop=-1:size=2e9,atrim=0:{total:.2f},lowpass=f=2400,volume=0.22[m];"
+             f"[1:a]asplit=2[v1][vv];"
+             f"[m][v1]sidechaincompress=threshold=0.03:ratio=6:attack=30:release=600[md];"
+             f"[vv][md]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
     out = out_dir / "video.mp4"
-    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", *inputs,
+    run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(out_dir / "clips.txt"),
          "-i", str(out_dir / "voice.wav"), "-i", str(music_path),
-         "-filter_complex", graph.read_text(), "-map", "[vout]", "-map", "[aout]",
+         "-filter_complex", graph, "-map", "[vout]", "-map", "[aout]",
          "-c:v", "libx264", "-preset", os.environ.get("X264_PRESET", "veryfast"), "-crf", "21", "-pix_fmt", "yuv420p",
          "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-t", f"{total:.2f}",
          "-movflags", "+faststart", str(out)])
