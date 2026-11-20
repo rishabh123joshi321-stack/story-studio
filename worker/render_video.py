@@ -175,7 +175,7 @@ def ass_time(t):
 
 
 def captions(scenes, starts, durs, w, h, vertical, dest):
-    size = 96 if vertical else 68
+    size = 96 if vertical else 78
     margin = int(h * 0.27) if vertical else 70
     per = 3 if vertical else 7
     lines = [
