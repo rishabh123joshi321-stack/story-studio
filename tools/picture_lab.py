@@ -57,10 +57,10 @@ print("CF_ACCOUNT_ID:", _shape(os.environ.get("CF_ACCOUNT_ID")))
 print("CF_API_TOKEN:", _shape(os.environ.get("CF_API_TOKEN")))
 
 
-def cloudflare(prompt, seed):
+def cloudflare(prompt, seed, extra=None):
     import base64
     url = f"https://api.cloudflare.com/client/v4/accounts/{os.environ['CF_ACCOUNT_ID'].strip()}/ai/run/@cf/black-forest-labs/flux-1-schnell"
-    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt, "steps": 6, "seed": seed}).encode(),
+    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt, "steps": 4, **(extra or {})}).encode(),
                                  headers={"Authorization": f"Bearer {os.environ['CF_API_TOKEN'].strip()}", "Content-Type": "application/json"})
     try:
         with urllib.request.urlopen(req, timeout=180) as r:
@@ -72,7 +72,7 @@ def cloudflare(prompt, seed):
 made = []
 for i, t in enumerate(tests):
     if t.get("cf"):
-        code, body, _ = cloudflare(t["prompt"], 4242)
+        code, body, _ = cloudflare(t["prompt"], 4242, t.get("extra"))
         print(t["name"], "cloudflare", code, len(body), body[:300] if code != 200 else "")
         if code == 200:
             p = OUT / f"{t['name']}_cf.jpg"

@@ -77,7 +77,7 @@ def image_cloudflare(prompt, w, h, seed, dest):
     if not (acct and token):
         raise RuntimeError("not set up")
     url = f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/@cf/black-forest-labs/flux-1-schnell"
-    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt[:2000], "steps": 4, "seed": seed % 2147483647}).encode(),
+    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt[:2000], "steps": 4}).encode(),  # this model takes no seed
                                  headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": UA})
     with urllib.request.urlopen(req, timeout=180) as r:
         res = json.loads(r.read())
