@@ -349,7 +349,8 @@ Scene fields:
   (repeat each person's full look from the cast list every time, plus their expression and what they are doing),
   the objects the narration mentions, the time of day, the lighting and mood, and the framing (wide establishing shot,
   medium shot or dramatic close-up; vary them). Every picture must be different: never repeat a picture or setting
-  for a different moment. No text or signs with words. Never a living person.
+  for a different moment. No text or signs with words. Never a living person. Name only buildings and landmarks
+  that existed at that date (for example, no Big Ben in 1666) and say "period-accurate" for skylines.
 - "camera": one of push_in, pull_out, pan_left, pan_right, tilt_up (the slow camera move over the picture).
 - "effect": a gentle moving effect if it fits the moment (fire, embers, smoke, rain, snow, dust, fog, leaves, birds,
   sparkles, lightning, water), else "none".
