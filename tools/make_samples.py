@@ -55,10 +55,25 @@ def draw(name, prompt, w, h):
     raise RuntimeError(f"could not draw {name}: {last}")
 
 
-made = {}
+# keep pictures from earlier runs (the free demo allows only a few pictures per run)
+subprocess.run(["gh", "release", "download", "samples", "-p", "*.png", "-D", str(OUT), "--clobber"], capture_output=True)
+made = {n: OUT / f"{n}.png" for n in PICS if (OUT / f"{n}.png").exists()}
 for name, prompt in PICS.items():
-    tall = not name.startswith("lane")
-    made[name] = draw(name, prompt, 768 if tall else 768, 1152 if tall else 1344)
+    if name in made:
+        continue
+    try:
+        made[name] = draw(name, prompt, 768, 1152 if not name.startswith("lane") else 1344)
+    except Exception as e:
+        print(f"{name}: skipped this run ({str(e)[:120]})", flush=True)
+        break  # the demo's quota is used up for this run
+missing = [n for n in PICS if n not in made]
+if missing:
+    files = [str(p) for p in made.values()]
+    subprocess.run(["gh", "release", "delete", "samples", "--yes", "--cleanup-tag"], capture_output=True)
+    subprocess.run(["gh", "release", "create", "samples", *files, "--title", "Samples (in progress)", "--notes",
+                    "Still missing: " + ", ".join(missing), "--prerelease", "--latest=false"], check=True)
+    print("STILL MISSING:", missing)
+    sys.exit(0)
 cut = {}
 for name in made:
     if name.startswith("lane"):
@@ -113,7 +128,8 @@ for t in thumbs:
     sheet.paste(t, (x, 10))
     x += t.width + 10
 sheet.save(OUT / "sample_sheet.jpg", quality=90)
-files = [str(OUT / "sample_clip.mp4"), str(OUT / "sample_sheet.jpg")] + [str(p) for p in made.values()]
+files = [str(OUT / "sample_clip.mp4"), str(OUT / "sample_sheet.jpg")] + [str(p) for p in made.values()] + \
+    [str(p) for p in cut.values()]
 subprocess.run(["gh", "release", "delete", "samples", "--yes", "--cleanup-tag"], capture_output=True)
 subprocess.run(["gh", "release", "create", "samples", *files, "--title", "Samples", "--notes",
                 "Sample characters, backgrounds and a short clip (FLUX.1 schnell). Not a real video.",
