@@ -1,0 +1,29 @@
+name: Channel stats
+# Reads your channel's numbers for the Dashboard once a day (7 AM India time). Read-only.
+on:
+  schedule:
+    - cron: '30 1 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['worker/stats.py', '.github/workflows/stats.yml']
+permissions:
+  contents: write
+concurrency: { group: stats, cancel-in-progress: false }
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Read stats
+        run: |
+          git config user.name "story-studio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python worker/stats.py
