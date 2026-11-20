@@ -54,3 +54,7 @@ button:disabled { opacity: .6; }
 a { color: var(--accent); }
 .job .meta.flagnote { color: var(--warn); } .job .meta.okline { color: var(--ok); }
 .player { width: 100%; border-radius: 12px; background: #000; display: block; } .player.tall { max-height: 70vh; width: auto; max-width: 100%; margin: 0 auto; aspect-ratio: 9 / 16; }
+.thumb { width: 100%; border-radius: 12px; display: block; aspect-ratio: 16 / 9; object-fit: cover; background: var(--line); }
+.ytitle { font-size: 19px; font-weight: 700; margin: 0; }
+.desc { white-space: pre-wrap; font-size: 15px; background: var(--bg); border-radius: 10px; padding: 12px; max-height: 340px; overflow-y: auto; }
+.tags .kind { margin: 0 6px 6px 0; text-transform: none; letter-spacing: 0; }

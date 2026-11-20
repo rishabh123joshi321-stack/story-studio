@@ -305,7 +305,7 @@ def render(job, script, out_dir):
          "-c:v", "libx264", "-preset", os.environ.get("X264_PRESET", "veryfast"), "-crf", "21", "-pix_fmt", "yuv420p",
          "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-t", f"{total:.2f}",
          "-movflags", "+faststart", str(out)])
-    return out, total
+    return out, total, [round(x, 2) for x in starts]
 
 
 def publish(job, video):
@@ -346,9 +346,9 @@ def process(path):
     out_dir.mkdir(parents=True, exist_ok=True)
     started = time.time()
     try:
-        video, secs = render(job, script, out_dir)
+        video, secs, starts = render(job, script, out_dir)
         url = publish(job, video)
-        job.update(status="video_ready", video=url, video_seconds=round(secs, 1),
+        job.update(status="video_ready", video=url, video_seconds=round(secs, 1), scene_starts=starts,
                    render_minutes=round((time.time() - started) / 60, 1))
         job.pop("render_attempts", None)
         log(f"Done in {job['render_minutes']} min: {url}")

@@ -143,7 +143,8 @@ async function loadQueue() {
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
     const tap = mode() === 'github' && !['requested', 'failed'].includes(j.status);
     let extra = '';
-    if (j.status === 'video_ready') extra = `<div class="meta okline">Video made${j.video_seconds ? ` (${Math.floor(j.video_seconds / 60)}:${String(Math.round(j.video_seconds % 60)).padStart(2, '0')})` : ''}. Tap to watch.</div>`;
+    if (j.status === 'ready') extra = `<div class="meta okline">${j.title ? esc(j.title) + '. ' : ''}Video, title and description are ready. Tap to see.</div>`;
+    else if (j.status === 'video_ready') extra = `<div class="meta okline">Video made${j.video_seconds ? ` (${Math.floor(j.video_seconds / 60)}:${String(Math.round(j.video_seconds % 60)).padStart(2, '0')})` : ''}. Tap to watch.</div>`;
     else if (j.status === 'rendering') extra = '<div class="meta">Pictures, voice and music are being made. Short videos take about 10 minutes, long ones up to an hour.</div>';
     else if (j.status === 'script_ready' && j.error) extra = `<div class="meta">Video retrying soon: ${esc(j.error)}</div>`;
     else if (j.status === 'script_ready') extra = j.flags ? `<div class="meta flagnote">${j.flags} fact${j.flags > 1 ? 's' : ''} to check. Tap to read.</div>` : '<div class="meta okline">All facts checked. Tap to read.</div>';
@@ -161,8 +162,8 @@ $('queueList').addEventListener('click', async (e) => {
     try {
       const f = await gh.getFile(`jobs/${retry.dataset.id}.json`);
       if (!f) throw new Error('not found');
-      const job = { ...f.data, status: f.data.failed_step === 'video' ? 'script_ready' : 'requested' };
-      ['error', 'attempts', 'render_attempts', 'failed_step'].forEach((k) => delete job[k]);
+      const job = { ...f.data, status: { video: 'script_ready', package: 'video_ready' }[f.data.failed_step] || 'requested' };
+      ['error', 'attempts', 'render_attempts', 'package_attempts', 'failed_step'].forEach((k) => delete job[k]);
       await gh.putFile(`jobs/${job.id}.json`, job, `Try again: ${job.topic.slice(0, 60)}`, f.sha);
       toast('Sent again. Check back in a few minutes.'); loadQueue();
     } catch (err) { toast('Could not send: ' + err.message); retry.disabled = false; retry.textContent = 'Try again'; }
@@ -182,6 +183,8 @@ async function openScript(job) {
   try { f = await gh.getFile(`scripts/${job.id}.json`); } catch (err) { v.innerHTML = `<div class="card empty">Could not load (${esc(err.message)}).</div>`; return; }
   if (!f) { v.innerHTML = '<div class="card empty">The script is not saved yet. Try again in a few minutes.</div>'; return; }
   const s = f.data;
+  let pkg = null;
+  try { const p = await gh.getFile(`packages/${job.id}.json`); pkg = p && p.data; } catch { /* packaging not ready yet */ }
   const claims = (s.fact_check && s.fact_check.claims) || [];
   const flagged = claims.filter((c) => c.verdict !== 'supported');
   const mins = Math.floor((s.estimated_seconds || 0) / 60), secs = (s.estimated_seconds || 0) % 60;
@@ -189,6 +192,13 @@ async function openScript(job) {
     <h1>${esc(s.working_title || job.topic)}</h1>
     <p class="hint">${job.format === 'short' ? 'Short' : 'Long video'} · ${s.word_count || '?'} words · about ${mins ? mins + ' min ' : ''}${secs} sec · ${(s.scenes || []).length} scenes</p>
     ${job.video ? `<div class="card"><h2>Your video</h2><video class="player ${job.format === 'short' ? 'tall' : ''}" src="${esc(job.video)}" controls playsinline preload="metadata"></video><p class="hint" style="margin-top:8px">Won't play? <a href="${esc(job.video)}" target="_blank" rel="noopener">Open the video file</a>.</p></div>` : ''}
+    ${pkg ? `<div class="card"><h2>YouTube details</h2>
+      ${pkg.thumbnail ? `<img class="thumb" src="${esc(pkg.thumbnail)}" alt="Thumbnail">` : `<p class="hint">${esc(pkg.thumbnail_note || '')}</p>`}
+      <label>Title</label><p class="ytitle">${esc(pkg.title)}</p>
+      ${(pkg.title_options || []).filter((t) => t !== pkg.title).length ? `<p class="hint">Other options: ${pkg.title_options.filter((t) => t !== pkg.title).map(esc).join(' · ')}</p>` : ''}
+      <label>Description</label><div class="desc">${esc(pkg.description)}</div>
+      <label>Tags</label><div class="tags">${(pkg.tags || []).map((t) => `<span class="kind">${esc(t)}</span>`).join('')}</div>
+    </div>` : ''}
     <div class="card"><h2>Opening hook</h2><p class="hookline">${esc(s.hook)}</p>${s.why_it_matters ? `<p class="hint" style="margin-top:10px">Why it matters: ${esc(s.why_it_matters)}</p>` : ''}</div>
     <div class="card"><h2>Fact check</h2>
       ${flagged.length ? `<p class="flagnote">${flagged.length} thing${flagged.length > 1 ? 's' : ''} for you to check before this becomes a video:</p>` : `<p class="okline">All ${claims.length} facts were backed by the sources.</p>`}
@@ -199,7 +209,7 @@ async function openScript(job) {
       ${(s.scenes || []).map((sc, i) => `<div class="scene"><p><span class="n">${i + 1}</span>${esc(sc.narration)}</p><div class="meta">Picture: ${esc(sc.visual)}${sc.motion ? ` (${esc(sc.motion)})` : ''}</div></div>`).join('')}
     </div>
     ${(s.sources || []).length ? `<div class="card"><h2>Sources</h2>${s.sources.map((x) => `<p><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></p>`).join('')}</div>` : ''}
-    <p class="hint">Titles, thumbnails and the Approve button come in the next stages. Nothing is uploaded to YouTube until you approve it.</p>`;
+    <p class="hint">The Approve, Edit, Regenerate and Reject buttons come in the next stage. Nothing is uploaded to YouTube until you approve it.</p>`;
 }
 $('backToQueue').addEventListener('click', () => showTab('queue'));
 
