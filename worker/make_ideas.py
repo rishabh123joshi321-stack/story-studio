@@ -36,7 +36,7 @@ def anniversaries(start, days=10):
         except Exception:
             continue
         for e in data.get("selected", [])[:8]:
-            out.append({"date": f"{d:%b} {d.day}", "year": e.get("year"), "event": e.get("text", "")[:200]})
+            out.append({"date": f"{d:%b} {d.day}", "iso": d.isoformat(), "year": e.get("year"), "event": e.get("text", "")[:200]})
     return out
 
 
@@ -68,7 +68,7 @@ def main():
     hot = trending((now - datetime.timedelta(days=1)).date())
     upcoming = anniversaries(now.date())
     hot_txt = "\n".join(f"- {a['title']} ({a['views']:,} reads yesterday) {a['about']}" for a in hot) or "(unavailable today)"
-    ann_txt = "\n".join(f"- {a['date']}, {a['year']}: {a['event']}" for a in upcoming) or "(unavailable today)"
+    ann_txt = "\n".join(f"- {a['date']} ({a['iso']}), {a['year']}: {a['event']}" for a in upcoming) or "(unavailable today)"
 
     prompt = f"""You plan topics for an original animated-history storytelling YouTube channel with a global,
 English-speaking audience. Any subject is welcome (history, science, culture, places, inventions, people),
@@ -86,7 +86,7 @@ Topics already made or planned (do not repeat these):
 {chr(10).join('- ' + t for t in used) or '(none yet)'}
 
 Give 15 ideas: about 5 "trending" (a true story behind or connected to something people are reading now),
-about 5 "anniversary" (publish close to the date), and about 5 "evergreen" (always searched).
+about 6 "anniversary" (spread over the coming dates, to publish on the exact day; round-number anniversaries like 100 or 250 years first), and about 5 "evergreen" (always searched).
 Never exploit a current tragedy, a living private person, or breaking news; for trending items find the
 historical story behind the interest. No clickbait. Rank by how likely a global audience is to click and keep watching.
 
@@ -99,7 +99,8 @@ Return JSON:
     "format": "short | long",
     "score": 0-100,
     "signal": "the evidence, e.g. '412,000 Wikipedia reads yesterday' or 'Anniversary on Nov 24' or 'Searched every year'",
-    "publish_by": "date to publish by for anniversaries, else empty"}}
+    "publish_by": "for anniversaries: the anniversary date as YYYY-MM-DD (from the list above), else empty",
+    "years_ago": "for anniversaries: how many years ago it happened (a whole number), else 0"}}
 ]}}"""
     data = gemini_json(prompt, "You are a careful, creative content strategist. Answer only with JSON.", temperature=0.9)
     ideas = data.get("ideas", []) if isinstance(data, dict) else data if isinstance(data, list) else []
