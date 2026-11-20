@@ -102,7 +102,8 @@ Return JSON:
     "publish_by": "date to publish by for anniversaries, else empty"}}
 ]}}"""
     data = gemini_json(prompt, "You are a careful, creative content strategist. Answer only with JSON.", temperature=0.9)
-    ideas = data.get("ideas", []) if isinstance(data, dict) else []
+    ideas = data.get("ideas", []) if isinstance(data, dict) else data if isinstance(data, list) else []
+    ideas = [i for i in ideas if isinstance(i, dict) and (i.get("topic") or i.get("title"))]
     if not ideas:
         raise WorkerError("No ideas came back from the AI.", transient=True)
     for i in ideas:
