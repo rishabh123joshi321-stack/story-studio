@@ -140,7 +140,7 @@ $('jobForm').addEventListener('submit', async (e) => {
     format, length: Number($('length').value), lengthUnit: format === 'short' ? 'seconds' : 'minutes',
     topic: $('topic').value.trim(), theme: $('theme').value.trim(), tone: $('tone').value,
     audience: $('audience').value, voice: $('voice').value, notes: $('notes').value.trim(),
-    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']),
+    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
   store.set('lastVoice', job.voice); store.set('lastTone', job.tone); store.set('lastAudience', job.audience);
@@ -248,7 +248,7 @@ $('wkSave').addEventListener('click', async () => {
       const job = { id: newId(), created: new Date().toISOString(), status: 'requested', plan_date: inp.dataset.day,
         format: fmt, length: fmt === 'long' ? Number(wkLen) : 58, lengthUnit: fmt === 'short' ? 'seconds' : 'minutes',
         topic: inp.value.trim(), theme: inp.dataset.angle || '', tone: $('tone').value, audience: $('audience').value, voice: $('voice').value,
-        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']) };
+        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true) };
       if (mode() === 'github') await gh.saveJob(job); else demo.save(job);
       n++; await new Promise((r) => setTimeout(r, 1100));
     }
@@ -844,6 +844,9 @@ $('subLangs').addEventListener('click', (e) => {
   store.set('subLangs', on); paintSubLangs(); toast(on.length ? 'Saved. New videos get these subtitles.' : 'No extra languages. Only English subtitles.');
 });
 paintSubLangs();
+function paintIntro() { $('introBtn').textContent = store.get('intro', true) ? 'Intro and end screen: ON (tap to turn off)' : 'Intro and end screen: OFF (tap to turn on)'; }
+$('introBtn').addEventListener('click', () => { store.set('intro', !store.get('intro', true)); paintIntro(); toast('Saved for new long videos.'); });
+paintIntro();
 
 // ---------- caption font ----------
 const CAPTION_FONTS = [
