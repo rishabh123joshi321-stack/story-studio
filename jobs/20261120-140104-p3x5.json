@@ -1,7 +1,7 @@
 {
   "id": "20261120-140104-p3x5",
   "created": "2026-11-20T08:31:04.241Z",
-  "status": "uploading",
+  "status": "uploaded",
   "format": "short",
   "length": 45,
   "lengthUnit": "seconds",
@@ -11,7 +11,7 @@
   "audience": "General global audience",
   "voice": "en-US-male",
   "notes": "",
-  "updated": "2026-11-20T18:29:24+00:00",
+  "updated": "2026-11-20T18:29:28+00:00",
   "revision": 4,
   "flags": 1,
   "style": "stills",
@@ -27,5 +27,10 @@
   ],
   "render_minutes": 1.7,
   "title": "Great Fire of London: How One Mayor's Hesitation Burned a City",
-  "approved": "2026-11-20T16:50:00.697Z"
+  "approved": "2026-11-20T16:50:00.697Z",
+  "youtube_id": "XQTt8jN6Ijk",
+  "youtube_url": "https://youtu.be/XQTt8jN6Ijk",
+  "youtube_studio": "https://studio.youtube.com/video/XQTt8jN6Ijk/edit",
+  "uploaded": "2026-11-20T18:29:28+00:00",
+  "privacy": "private"
 }
