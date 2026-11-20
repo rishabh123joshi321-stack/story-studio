@@ -89,6 +89,7 @@ function showTab(name) {
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
   if (name === 'money') loadMoney();
+  if (name === 'settings') loadPron();
 }
 function chapterAt(s, i) {
   const c = (s.chapters || []).find((x) => x.scene === i + 1);
@@ -140,7 +141,7 @@ $('jobForm').addEventListener('submit', async (e) => {
     format, length: Number($('length').value), lengthUnit: format === 'short' ? 'seconds' : 'minutes',
     topic: $('topic').value.trim(), theme: $('theme').value.trim(), tone: $('tone').value,
     audience: $('audience').value, voice: $('voice').value, notes: $('notes').value.trim(),
-    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true),
+    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
   store.set('lastVoice', job.voice); store.set('lastTone', job.tone); store.set('lastAudience', job.audience);
@@ -248,7 +249,7 @@ $('wkSave').addEventListener('click', async () => {
       const job = { id: newId(), created: new Date().toISOString(), status: 'requested', plan_date: inp.dataset.day,
         format: fmt, length: fmt === 'long' ? Number(wkLen) : 58, lengthUnit: fmt === 'short' ? 'seconds' : 'minutes',
         topic: inp.value.trim(), theme: inp.dataset.angle || '', tone: $('tone').value, audience: $('audience').value, voice: $('voice').value,
-        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true) };
+        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true) };
       if (mode() === 'github') await gh.saveJob(job); else demo.save(job);
       n++; await new Promise((r) => setTimeout(r, 1100));
     }
@@ -847,6 +848,32 @@ paintSubLangs();
 function paintIntro() { $('introBtn').textContent = store.get('intro', true) ? 'Intro and end screen: ON (tap to turn off)' : 'Intro and end screen: OFF (tap to turn on)'; }
 $('introBtn').addEventListener('click', () => { store.set('intro', !store.get('intro', true)); paintIntro(); toast('Saved for new long videos.'); });
 paintIntro();
+function paintQV() { $('qvBtn').textContent = store.get('quoteVoice', true) ? 'Second voice for quotes: ON (tap to turn off)' : 'Second voice for quotes: OFF (tap to turn on)'; }
+$('qvBtn').addEventListener('click', () => { store.set('quoteVoice', !store.get('quoteVoice', true)); paintQV(); toast('Saved for new videos.'); });
+paintQV();
+// ---------- pronunciation list ----------
+const pron = { words: [], sha: null };
+function paintPron() {
+  $('pronList').innerHTML = pron.words.length ? pron.words.map((w, i) => `<div class="affrow"><div><b>${esc(w.word)}</b><div class="meta">said like: ${esc(w.say)}</div></div><button class="danger prdel" data-i="${i}">Remove</button></div>`).join('') : '<p class="hint">No words yet.</p>';
+}
+async function loadPron() {
+  if (mode() !== 'github') return;
+  try { const f = await gh.getFile('config/pronounce.json'); pron.words = (f && f.data.words) || []; pron.sha = f && f.sha; paintPron(); } catch { /* offline */ }
+}
+async function savePron(msg) {
+  const r = await gh.putFile('config/pronounce.json', { words: pron.words }, 'Update pronunciation list', pron.sha); pron.sha = r.content.sha; paintPron(); toast(msg);
+}
+$('prAdd').addEventListener('click', async () => {
+  const word = $('prWord').value.trim(), say = $('prSay').value.trim();
+  if (!word || !say) { toast('Fill in both boxes.'); return; }
+  pron.words = pron.words.filter((w) => w.word.toLowerCase() !== word.toLowerCase()).concat([{ word, say }]);
+  try { await savePron('Saved. New videos will say it this way.'); $('prWord').value = ''; $('prSay').value = ''; } catch (err) { toast('Could not save: ' + err.message); }
+});
+$('pronList').addEventListener('click', async (e) => {
+  const b = e.target.closest('.prdel'); if (!b) return;
+  pron.words.splice(Number(b.dataset.i), 1);
+  try { await savePron('Removed.'); } catch (err) { toast('Could not save: ' + err.message); }
+});
 
 // ---------- caption font ----------
 const CAPTION_FONTS = [
