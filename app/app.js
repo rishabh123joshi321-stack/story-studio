@@ -59,9 +59,12 @@ const gh = {
   async listJobs() {
     let files;
     try { files = await this.call('/contents/jobs'); } catch (e) { if (e.status === 404) return []; throw e; }
-    const wanted = files.filter((f) => f.name.endsWith('.json')).sort((a, b) => b.name.localeCompare(a.name)).slice(0, 40);
-    const jobs = await Promise.all(wanted.map((f) => this.call(`/contents/jobs/${encodeURIComponent(f.name)}`, { accept: 'application/vnd.github.raw+json' }).then((t) => JSON.parse(t)).catch(() => null)));
-    return jobs.filter(Boolean);
+    const all = files.filter((f) => f.name.endsWith('.json')).sort((a, b) => b.name.localeCompare(a.name));
+    this.names = all.map((f) => f.name);
+    const cache = this._jc || (this._jc = {});  // only files that changed are downloaded again
+    const jobs = await Promise.all(all.slice(0, 40).map((f) => (cache[f.name] && cache[f.name].sha === f.sha ? Promise.resolve(cache[f.name].job)
+      : this.call(`/contents/jobs/${encodeURIComponent(f.name)}`, { accept: 'application/vnd.github.raw+json' }).then((t) => { const job = JSON.parse(t); cache[f.name] = { sha: f.sha, job }; return job; }).catch(() => null))));
+    return jobs.filter(Boolean).map((j) => ({ ...j }));
   },
 };
 
@@ -84,12 +87,13 @@ function showTab(name) {
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name || (name === 'script' && b.dataset.tab === 'queue') || (name === 'reviewone' && b.dataset.tab === 'review')));
   document.querySelectorAll('.tab').forEach((s) => s.classList.toggle('on', s.id === 'tab-' + name));
   if (!['script', 'reviewone'].includes(name)) store.set('tab', name);
+  if (name === 'home') loadHome();
   if (name === 'queue') loadQueue();
   if (name === 'ideas') loadIdeas();
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
-  if (name === 'create') loadSeries();
-  if (name === 'money') loadMoney();
+  if (name === 'create') { loadSeries(); updatePreview(); }
+  if (name === 'money') { loadMoney(); loadGoals(); }
   if (name === 'settings') loadPron();
 }
 function chapterAt(s, i) {
@@ -295,25 +299,28 @@ $('wkSave').addEventListener('click', async () => {
 });
 
 // ---------- queue ----------
-async function loadQueue() {
+async function loadQueue(quiet) {
   const list = $('queueList');
   if (mode() === 'none') { list.innerHTML = '<div class="card empty">Connect in Settings to see your queue.</div>'; $('dailyBar').innerHTML = ''; return; }
-  list.innerHTML = '<div class="card empty">Loading...</div>';
+  if (quiet !== true) list.innerHTML = '<div class="card empty">Loading...</div>';
   let jobs;
   try { jobs = mode() === 'github' ? await gh.listJobs() : demo.list(); }
   catch (err) { list.innerHTML = `<div class="card empty">Could not load your queue (${esc(err.message)}).</div>`; return; }
-  const today = jobs.filter((j) => isToday(j.created));
+  const today = jobs.filter((j) => dayOf(j) === isoDay(new Date()) && !j.parent_id && j.status !== 'rejected');
   const tL = store.get('tLong', 3), tS = store.get('tShort', 3);
   $('dailyBar').innerHTML = `<div><b>${today.filter((j) => j.format === 'long').length} / ${tL}</b>long videos planned today</div><div><b>${today.filter((j) => j.format === 'short').length} / ${tS}</b>Shorts planned today</div>`;
   if (!jobs.length) { list.innerHTML = '<div class="card empty">Nothing yet. Plan your first video in the New video tab.</div>'; return; }
   queueJobs = jobs;
   paintReviewCount(jobs);
-  paintToday(jobs);
+  celebrate(jobs);
+  $('qLive').textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   const f = store.get('qFilter', 'all');
   const groups = { work: ['requested', 'scripting', 'script_ready', 'rendering', 'video_ready', 'approved', 'uploading'], ready: ['ready', 'post_yourself'], done: ['uploaded', 'posted', 'rejected'], failed: ['failed'] };
   const shown = f === 'all' ? jobs : jobs.filter((j) => (groups[f] || []).includes(j.status));
   $('qFilters').innerHTML = [['all', 'All'], ['work', 'In progress'], ['ready', 'Needs you'], ['done', 'Done'], ['failed', 'Problems']]
     .map(([k, t]) => { const n = k === 'all' ? jobs.length : jobs.filter((j) => groups[k].includes(j.status)).length; return `<button type="button" class="cchip${k === f ? ' on' : ''}" data-f="${k}">${t} <span class="cnt">${n}</span></button>`; }).join('');
+  if (store.get('qView', 'list') === 'board') { $('qFilters').style.display = 'none'; list.innerHTML = boardHTML(jobs); return; }
+  $('qFilters').style.display = '';
   if (!shown.length) { list.innerHTML = '<div class="card empty">Nothing here.</div>'; return; }
   setTimeout(() => list.querySelectorAll('.thlink').forEach(async (a) => {  // show the picked thumbnail as a download link
     try { if (!pkgCache[a.dataset.id]) { const f = await gh.getFile(`packages/${a.dataset.id}.json`); pkgCache[a.dataset.id] = f && f.data; }
@@ -499,23 +506,27 @@ async function loadIdeas() {
     const d = new Date(i.publish_by + 'T12:00');
     return `<button type="button" class="ann" data-n="${ideaCache.indexOf(i)}"><span class="ad">${d.toLocaleDateString([], { day: 'numeric' })}</span><span class="am">${d.toLocaleDateString([], { month: 'short', weekday: 'short' })}</span><span class="at">${esc(i.topic || i.title)}</span>${Number(i.years_ago) > 0 ? `<span class="ay">${esc(i.years_ago)} years</span>` : ''}</button>`;
   }).join('')}</div></div>` : '';
-  list.innerHTML = `<p class="hint">Made ${when}${f.data.focus ? ` · about "${esc(f.data.focus)}"` : ''}</p>` + strip + ideaCache.map((i, n) => `
+  list.innerHTML = `<p class="hint">Made ${when}${f.data.focus ? ` · about "${esc(f.data.focus)}"` : ''}</p>` + strip + '<div id="ideaCards">' + ideaCache.map((i, n) => `
     <div class="card idea"><span class="score">${i.score}</span>
       <span class="kind">${esc(i.kind)}</span><span class="kind">${i.format === 'long' ? 'Long' : 'Short'}</span>
       <h3>${esc(i.title || i.topic)}</h3>
       <p>${esc(i.angle)}</p>
       <div class="meta">${esc(i.signal)}${i.publish_by ? ` · publish by ${esc(i.publish_by)}` : ''}</div>
       <button class="use" data-n="${n}">Use this</button>
-    </div>`).join('');
+    </div>`).join('') + '</div>';
+  paintIdeaMode();
 }
 $('ideasList').addEventListener('click', (e) => {
   const b = e.target.closest('button.use, button.ann'); if (!b) return;
-  const i = ideaCache[Number(b.dataset.n)]; if (!i) return;
+  const i = ideaCache[Number(b.dataset.n)]; if (i) useIdea(i);
+});
+function useIdea(i) {
+  $('modeSeg').querySelector('[data-v="one"]').click();
   const fmt = i.format === 'long' ? 'long' : 'short';
   document.querySelector(`#formatSeg button[data-v="${fmt}"]`).click();
   $('topic').value = i.topic || i.title || ''; $('theme').value = i.angle || '';
   showTab('create'); window.scrollTo(0, 0); toast('Idea added. Check the details, then tap Start making it.');
-});
+}
 $('refreshIdeas').addEventListener('click', loadIdeas);
 $('askIdeas').addEventListener('click', async () => {
   const msg = $('ideasMsg'); msg.className = 'msg';
@@ -633,6 +644,7 @@ async function openReview(id) {
   $('rvReject').addEventListener('click', () => { $('rvRejectBox').hidden = !$('rvRejectBox').hidden; $('rvRegenBox').hidden = true; });
   $('rvRegenGo').addEventListener('click', () => reviewAct('regen'));
   $('rvRejectGo').addEventListener('click', () => reviewAct('reject'));
+  reviewExtras();
 }
 
 function editedPackage() {
@@ -670,6 +682,7 @@ async function reviewAct(kind) {
       const auto = store.get('ytAuto', false);
       Object.assign(job, { status: auto ? 'approved' : 'post_yourself', approved: new Date().toISOString() });
       await gh.putFile(`jobs/${job.id}.json`, job, `Approved: ${job.title.slice(0, 60)}`, rv.jobSha);
+      confetti();
       toast(auto ? 'Approved! It goes to YouTube as Private in a few minutes.' : 'Approved! Open the Queue to post it on YouTube.');
     } else if (kind === 'regen') {
       const what = document.querySelector('input[name="regen"]:checked').value;
@@ -989,7 +1002,7 @@ $('ytMsg').addEventListener('click', async (e) => {
 });
 
 // ---------- start ----------
-(function init() {
+window.addEventListener('DOMContentLoaded', function init() {  // after play.js has loaded
   const c = gh.conf();
   $('ghUser').value = c.user; $('ghRepo').value = c.repo;
   if (c.token) $('ghToken').placeholder = 'Saved on this tablet';
@@ -999,7 +1012,7 @@ $('ytMsg').addEventListener('click', async (e) => {
   ['voice', 'tone', 'audience'].forEach((k) => { const v = store.get('last' + k[0].toUpperCase() + k.slice(1)); if (v) $(k).value = v; });
   fillLengths(); ['tone', 'audience', 'voice'].forEach(chipify); paintPresets(); paintConn();
   $('ytClientId').value = store.get('ytClientId', ''); if (store.get('ytSecret', '')) $('ytSecret').placeholder = 'Saved on this tablet';
-  showTab(mode() === 'none' ? 'settings' : store.get('tab', 'create'));
+  showTab(mode() === 'none' ? 'settings' : store.get('homeV', 0) ? store.get('tab', 'home') : 'home'); store.set('homeV', 1);
   ytFinish();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-})();
+});
