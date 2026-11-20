@@ -10,5 +10,8 @@
   "tone": "Curious and warm",
   "audience": "General global audience",
   "voice": "en-US-male",
-  "notes": ""
+  "notes": "",
+  "attempts": 1,
+  "error": "The AI service did not answer (gemini-2.0-flash: HTTP 404 {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available. Please update your code to). It will try again within the hour.",
+  "updated": "2026-11-20T08:40:35+00:00"
 }
