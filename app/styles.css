@@ -39,3 +39,17 @@ button:disabled { opacity: .6; }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 12px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: 90vw; }
 .toast.show { opacity: 1; }
 .empty { text-align: center; color: var(--muted); padding: 30px 10px; }
+.job.tap { cursor: pointer; } .job.tap:active { background: var(--line); }
+.status.scripted { background: #2d6a8a; color: #fff; }
+.idea h3 { margin: 0 0 4px; font-size: 17px; } .idea p { margin: 6px 0; }
+.idea .meta, .scene .meta { color: var(--muted); font-size: 14px; }
+.score { float: right; font-weight: 800; font-size: 20px; color: var(--accent); margin-left: 12px; }
+.kind { display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 2px 8px; border-radius: 99px; background: var(--line); margin-right: 6px; }
+.scene { border-top: 1px solid var(--line); padding: 12px 0; } .scene:first-of-type { border-top: none; }
+.scene .n { font-weight: 800; color: var(--accent); margin-right: 6px; }
+.fact { padding: 10px 12px; border-radius: 10px; margin: 8px 0; border-left: 5px solid var(--warn); background: var(--bg); }
+.fact.wrong { border-left-color: var(--bad); } .fact b { display: block; }
+.flagnote { color: var(--warn); font-weight: 700; } .okline { color: var(--ok); font-weight: 700; }
+.hookline { font-size: 19px; font-weight: 700; margin: 6px 0 0; }
+a { color: var(--accent); }
+.job .meta.flagnote { color: var(--warn); } .job .meta.okline { color: var(--ok); }
