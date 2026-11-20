@@ -1,0 +1,26 @@
+{
+  "updated": "2026-11-20T19:41:14+00:00",
+  "channel": {
+    "title": "Bars & Brains",
+    "subscribers": 1,
+    "subscribers_hidden": false,
+    "views": 0,
+    "videos": 1
+  },
+  "recent": [
+    {
+      "id": "8NbPIczL1FI",
+      "title": "The trial short",
+      "published": "2026-11-20T18:38:07Z",
+      "privacy": "public",
+      "seconds": 53,
+      "short": true,
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "thumb": "https://i.ytimg.com/vi/8NbPIczL1FI/mqdefault.jpg"
+    }
+  ],
+  "analytics": false,
+  "analytics_note": "Watch time is locked: turn on the YouTube Analytics API in Google Cloud and sign in again in Settings > Connect YouTube (see the steps in chat)."
+}
