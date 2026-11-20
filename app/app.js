@@ -391,6 +391,16 @@ $('queueList').addEventListener('click', async (e) => {
   else if (job && job.status !== 'failed') openScript(job);
 });
 
+// Script score (from the fact-check pass): hook, pacing, clarity out of 10, plus a tip and a stronger opening.
+function scoreCard(s, withUse) {
+  const sc = s.fact_check && s.fact_check.score; if (!sc) return '';
+  const avg = Math.round(((sc.hook + sc.pacing + sc.clarity) / 3) * 10) / 10;
+  const bar = (n, v) => `<div class="meter"><div class="mrow"><span>${n}</span><b>${v} / 10</b></div><div class="mbar"><i style="width:${v * 10}%"></i></div></div>`;
+  return `<div class="card"><h2>Script score <span class="scorebig">${avg}</span></h2>${bar('Hook', sc.hook)}${bar('Pacing', sc.pacing)}${bar('Clarity', sc.clarity)}
+    ${sc.tip ? `<p class="hint" style="margin-top:10px">Tip: ${esc(sc.tip)}</p>` : ''}
+    ${sc.better_hook ? `<p class="hint">Stronger opening idea:</p><p class="hookline">“${esc(sc.better_hook)}”</p>${withUse ? '<button type="button" id="useHook">Rewrite with this opening</button>' : ''}` : ''}</div>`;
+}
+
 // ---------- script view ----------
 async function openScript(job) {
   showTab('script');
@@ -416,6 +426,7 @@ async function openScript(job) {
       <label>Description</label><div class="desc">${esc(pkg.description)}</div>
       <label>Tags</label><div class="tags">${(pkg.tags || []).map((t) => `<span class="kind">${esc(t)}</span>`).join('')}</div>
     </div>` : ''}
+    ${scoreCard(s, false)}
     <div class="card"><h2>Opening hook</h2><p class="hookline">${esc(s.hook)}</p>${s.why_it_matters ? `<p class="hint" style="margin-top:10px">Why it matters: ${esc(s.why_it_matters)}</p>` : ''}</div>
     <div class="card"><h2>Fact check</h2>
       ${flagged.length ? `<p class="flagnote">${flagged.length} thing${flagged.length > 1 ? 's' : ''} for you to check before this becomes a video:</p>` : `<p class="okline">All ${claims.length} facts were backed by the sources.</p>`}
@@ -524,6 +535,7 @@ async function openReview(id) {
     ${pkg.thumbnail ? `<div class="card"><h2>Thumbnail</h2>${(pkg.thumbnail_options || []).length > 1
       ? `<p class="hint">Tap the one you like best.</p><div class="thumbs">${pkg.thumbnail_options.map((u) => `<button type="button" class="thpick${u === pkg.thumbnail ? ' on' : ''}" data-u="${esc(u)}"><img src="${esc(u)}" alt="Thumbnail choice" loading="lazy"></button>`).join('')}</div>`
       : `<img class="thumb" src="${esc(pkg.thumbnail)}" alt="Thumbnail">`}</div>` : ''}
+    ${scoreCard(script, true)}
     ${flagged.length ? `<div class="card"><h2>Facts to check</h2>${flagged.map((c) => `<div class="fact ${c.verdict === 'wrong' ? 'wrong' : ''}"><b>Scene ${esc(c.scene)}: ${c.verdict === 'wrong' ? 'Probably wrong' : 'Not certain'}</b>${esc(c.claim)}${c.note ? `<div class="meta">${esc(c.note)}</div>` : ''}</div>`).join('')}
       <p class="hint">If something is wrong, tap <b>Regenerate</b> and choose "Rewrite the script", telling it what to fix.</p></div>` : ''}
     <div class="card"><h2>YouTube details</h2>
@@ -563,6 +575,12 @@ async function openReview(id) {
   v.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { $('rvTitle').value = b.dataset.t; count(); }));
   $('rvSave').addEventListener('click', () => reviewAct('save'));
   $('rvApprove').addEventListener('click', () => reviewAct('approve'));
+  if ($('useHook')) $('useHook').addEventListener('click', () => {
+    $('rvRegenBox').hidden = false;
+    const r = document.querySelector('input[name="regen"][value="script"]'); if (r) r.checked = true;
+    $('rvNotes').value = `Start with this opening line: "${script.fact_check.score.better_hook}"`;
+    $('rvNotes').scrollIntoView({ behavior: 'smooth', block: 'center' }); toast('Check the note, then tap the redo button below it.');
+  });
   v.querySelectorAll('.thpick').forEach((b) => b.addEventListener('click', () => { v.querySelectorAll('.thpick').forEach((x) => x.classList.toggle('on', x === b)); }));
   $('rvRegen').addEventListener('click', () => { $('rvRegenBox').hidden = !$('rvRegenBox').hidden; $('rvRejectBox').hidden = true; });
   $('rvReject').addEventListener('click', () => { $('rvRejectBox').hidden = !$('rvRejectBox').hidden; $('rvRegenBox').hidden = true; });

@@ -186,3 +186,4 @@ button.primary { background: linear-gradient(135deg, var(--accent) 0%, var(--acc
 .thpick { margin: 0; padding: 0; border: 3px solid transparent; border-radius: 14px; overflow: hidden; background: none; }
 .thpick img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 .thpick.on { border-color: var(--accent); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent); }
+.scorebig { float: right; font-size: 28px; color: var(--accent); }

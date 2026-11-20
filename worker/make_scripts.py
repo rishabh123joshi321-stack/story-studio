@@ -494,10 +494,15 @@ def fact_check(job, script, sources):
     for i, s in enumerate(script["scenes"]):
         extra = [sh[k] for sh in s.get("shots", []) for k in ("bubble", "note", "title") if sh.get(k)]
         lines.append(f"[{i + 1}] {s.get('narration', '')}" + (f" (on screen: {' | '.join(extra)})" if extra else ""))
-    claims, summaries = [], []
+    claims, summaries, score = [], [], None
     for start in range(0, len(lines), 90):
         if start:
             time.sleep(4)
+        score_ask = "" if start else (',\n  "score": {"hook": 7, "pacing": 7, "clarity": 7, "tip": "one sentence: the single biggest improvement", '
+                                      '"better_hook": "a stronger opening line (max 25 words) that grabs attention in the first 3 seconds, if the current one could be better, else empty"}'
+)
+        score_note = "" if start else ("\nAlso rate the script as a YouTube video for a curious global audience: hook (does the first line make people stay?), "
+                                       "pacing and clarity, each 1 to 10, in \"score\".")
         prompt = f"""You are a strict history fact-checker. Check every factual claim in this narration and its
 on-screen text (names, dates, numbers, places, causes, quotes) against the reference material and well-established history.
 
@@ -513,19 +518,29 @@ Return JSON:
     {{"scene": 1, "claim": "the claim, short", "verdict": "supported | uncertain | wrong",
       "source": "which source supports it, or 'general knowledge'", "note": "for uncertain or wrong: what is true or what to change"}}
   ],
-  "summary": "one plain-English sentence for the channel owner"
+  "summary": "one plain-English sentence for the channel owner"{score_ask}
 }}
-Use "uncertain" when the sources do not clearly back the claim or historians disagree."""
+Use "uncertain" when the sources do not clearly back the claim or historians disagree.{score_note}"""
         result = gemini_json(prompt, "You check facts carefully and answer only with JSON.", temperature=0.1)
         if isinstance(result, dict):
             claims += [c for c in result.get("claims", []) if isinstance(c, dict)]
             if result.get("summary"):
                 summaries.append(str(result["summary"]))
+            if not start and isinstance(result.get("score"), dict):
+                score = result["score"]
     for c in claims:
         c["verdict"] = str(c.get("verdict", "uncertain")).lower()
         if c["verdict"] not in ("supported", "uncertain", "wrong"):
             c["verdict"] = "uncertain"
-    return {"claims": claims, "summary": " ".join(summaries[:3])}
+    out = {"claims": claims, "summary": " ".join(summaries[:3])}
+    if score:
+        try:
+            out["score"] = {k: max(1, min(10, int(score.get(k, 0)))) for k in ("hook", "pacing", "clarity")}
+            out["score"]["tip"] = str(score.get("tip", ""))[:300]
+            out["score"]["better_hook"] = str(score.get("better_hook", ""))[:200]
+        except (TypeError, ValueError):
+            pass
+    return out
 
 
 def process(job_path):
