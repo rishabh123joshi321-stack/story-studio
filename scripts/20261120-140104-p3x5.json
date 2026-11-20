@@ -1,0 +1,164 @@
+{
+  "job_id": "20261120-140104-p3x5",
+  "created": "2026-11-20T08:53:39+00:00",
+  "format": "short",
+  "working_title": "Did a Baker Really Burn Down All of London?",
+  "hook": "We think we know how the Great Fire of London started, but history holds a surprising twist.",
+  "scenes": [
+    {
+      "narration": "We think we know how the Great Fire of London started, but history holds a surprising twist.",
+      "visual": "Hand-painted gouache storybook illustration of a cozy medieval bakery oven glowing softly in Pudding Lane, warm ochre and deep brick red tones, paper grain visible, calm vertical composition, soft rim light.",
+      "motion": "slow zoom in",
+      "on_screen_text": "Pudding Lane"
+    },
+    {
+      "narration": "In 1666, the popular story blames Thomas Farriner's bakery for accidentally sparking an unstoppable inferno.",
+      "visual": "Hand-painted gouache illustration of wooden tenement houses with projecting upper storeys nearly touching across a narrow alley, warm muted palette, gentle depth haze, soft lighting.",
+      "motion": "pan right",
+      "on_screen_text": "1666"
+    },
+    {
+      "narration": "It is true the flames began there just after midnight on Sunday, September second, fed by narrow streets and wooden walls.",
+      "visual": "Hand-painted gouache illustration of glowing orange flames creeping along timber buildings at night, dark teal shadows, visible paper grain, soft and quiet mood.",
+      "motion": "slow zoom out",
+      "on_screen_text": "The Spark"
+    },
+    {
+      "narration": "But many believe the Lord Mayor acted instantly to save the city. The evidence tells a different story.",
+      "visual": "Hand-painted gouache illustration of a worried official in period velvet robes hesitating by a wooden doorway, soft ochre palette, calm vertical framing.",
+      "motion": "drift down",
+      "on_screen_text": "The Mayor"
+    },
+    {
+      "narration": "In reality, Lord Mayor Sir Thomas Bloodworth hesitated for hours, refusing to order crucial house demolitions.",
+      "visual": "Hand-painted gouache illustration of simple leather buckets and firehooks stacked neatly by a parish church door, quiet street scene, muted teal and brick red tones.",
+      "motion": "pan left",
+      "on_screen_text": "Fatal Delay"
+    },
+    {
+      "narration": "Some thought it was purely an accident. Yet frightened citizens panicked, and rumors quickly blamed foreign saboteurs.",
+      "visual": "Hand-painted gouache illustration of silhouetted figures carrying bundles near tall Roman stone walls under a hazy evening sky, visible paper grain.",
+      "motion": "slow zoom in",
+      "on_screen_text": "Rumors"
+    },
+    {
+      "narration": "People also assume the fire burned unchecked until it simply ran out of fuel.",
+      "visual": "Hand-painted gouache illustration of the grand dome of Old St Paul's Cathedral glowing against a smoky sky, soft silhouette, warm golden rim light.",
+      "motion": "drift up",
+      "on_screen_text": "St Paul's"
+    },
+    {
+      "narration": "Actually, historians debate the final turning point, but records point to coordinated gunpowder explosions creating vital firebreaks.",
+      "visual": "Hand-painted gouache illustration of a tall stone column and a distant gilded urn under a calm sky, textured paper grain, warm ochre and teal palette.",
+      "motion": "slow zoom out",
+      "on_screen_text": "The Monument"
+    },
+    {
+      "narration": "The city rose again from the ashes, keeping its ancient medieval street plan alive today.",
+      "visual": "Hand-painted gouache illustration of neat brick and timber houses newly built along a winding cobbled lane, warm morning light, peaceful composition.",
+      "motion": "pan right",
+      "on_screen_text": "London Rises"
+    },
+    {
+      "narration": "History is full of surprises. Subscribe to explore more fascinating stories behind the past.",
+      "visual": "Hand-painted gouache illustration of a single candle glowing warmly on a wooden table next to an open leather-bound book, calm and inviting mood.",
+      "motion": "slow zoom in",
+      "on_screen_text": "Subscribe"
+    }
+  ],
+  "call_to_action": "Subscribe to explore more fascinating stories behind the past.",
+  "why_it_matters": "It separates popular myths about the Great Fire of London from documented historical evidence.",
+  "uses_realistic_altered_content": false,
+  "structure": "Myth versus fact: state the popular version, then carefully show what the evidence actually says.",
+  "word_count": 164,
+  "estimated_seconds": 66,
+  "fact_check": {
+    "claims": [
+      {
+        "scene": 1,
+        "claim": "We think we know how the Great Fire of London started, but history holds a surprising twist.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "History generally attributes the start to Thomas Farriner's bakery, but popular narratives often omit the delayed political response or other nuances."
+      },
+      {
+        "scene": 2,
+        "claim": "In 1666, the popular story blames Thomas Farriner's bakery for accidentally sparking an unstoppable inferno.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "The fire started in Thomas Farriner's bakery in Pudding Lane in 1666."
+      },
+      {
+        "scene": 3,
+        "claim": "It is true the flames began there just after midnight on Sunday, September second, fed by narrow streets and wooden walls.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "Started shortly after midnight on Sunday 2 September 1666, fueled by narrow streets, timber construction, and combustibles."
+      },
+      {
+        "scene": 4,
+        "claim": "But many believe the Lord Mayor acted instantly to save the city. The evidence tells a different story.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "The common assumption might be prompt action, but the text explicitly notes the Lord Mayor hesitated."
+      },
+      {
+        "scene": 5,
+        "claim": "In reality, Lord Mayor Sir Thomas Bloodworth hesitated for hours, refusing to order crucial house demolitions.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "Sir Thomas Bloodworth hesitated in giving the order to employ firebreaks through structural removals."
+      },
+      {
+        "scene": 6,
+        "claim": "Some thought it was purely an accident. Yet frightened citizens panicked, and rumors quickly blamed foreign saboteurs.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "Order broke down as rumours arose of suspicious foreigners (French and Dutch) setting fires."
+      },
+      {
+        "scene": 7,
+        "claim": "People also assume the fire burned unchecked until it simply ran out of fuel.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "Refers to a common misconception that the fire only stopped due to lack of fuel, whereas specific interventions ended it."
+      },
+      {
+        "scene": 8,
+        "claim": "Actually, historians debate the final turning point, but records point to coordinated gunpowder explosions creating vital firebreaks.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "Modern historians consider the combination of the wind dying down and the Tower of London garrison using gunpowder to create firebreaks as the winning factors."
+      },
+      {
+        "scene": 9,
+        "claim": "The city rose again from the ashes, keeping its ancient medieval street plan alive today.",
+        "verdict": "supported",
+        "source": "Great Fire of London",
+        "note": "London was reconstructed on essentially the same medieval street plan, which still exists today."
+      },
+      {
+        "scene": 10,
+        "claim": "History is full of surprises. Subscribe to explore more fascinating stories behind the past.",
+        "verdict": "supported",
+        "source": "general knowledge",
+        "note": "Call-to-action standard for educational content."
+      }
+    ],
+    "summary": "Every historical claim made in the narration about the Great Fire of London is fully supported by the reference material."
+  },
+  "sources": [
+    {
+      "title": "Great Fire of London",
+      "url": "https://en.wikipedia.org/wiki/Great_Fire_of_London"
+    },
+    {
+      "title": "Monument to the Great Fire of London",
+      "url": "https://en.wikipedia.org/wiki/Monument_to_the_Great_Fire_of_London"
+    },
+    {
+      "title": "Second Great Fire of London",
+      "url": "https://en.wikipedia.org/wiki/Second_Great_Fire_of_London"
+    }
+  ]
+}

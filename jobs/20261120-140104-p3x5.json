@@ -1,7 +1,7 @@
 {
   "id": "20261120-140104-p3x5",
   "created": "2026-11-20T08:31:04.241Z",
-  "status": "requested",
+  "status": "script_ready",
   "format": "short",
   "length": 45,
   "lengthUnit": "seconds",
@@ -11,7 +11,6 @@
   "audience": "General global audience",
   "voice": "en-US-male",
   "notes": "",
-  "attempts": 1,
-  "error": "The AI service did not answer (gemini-2.0-flash: HTTP 404 {\n  \"error\": {\n    \"code\": 404,\n    \"message\": \"This model models/gemini-2.0-flash is no longer available. Please update your code to). It will try again within the hour.",
-  "updated": "2026-11-20T08:40:35+00:00"
+  "updated": "2026-11-20T08:53:39+00:00",
+  "flags": 0
 }
