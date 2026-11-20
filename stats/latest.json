@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20T20:25:22+00:00",
+  "updated": "2026-11-20T20:36:03+00:00",
   "channel": {
     "title": "Ember & Ink",
     "subscribers": 1,
@@ -21,6 +21,7 @@
       "thumb": "https://i.ytimg.com/vi/8NbPIczL1FI/mqdefault.jpg",
       "tone": null,
       "theme": null,
+      "hook_style": null,
       "avg_pct": null,
       "rate": 0.0,
       "slot": "Night (9 PM-5 AM)",
