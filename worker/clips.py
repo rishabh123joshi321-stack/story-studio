@@ -87,7 +87,8 @@ def make_clip(src, start, dur, overlay, dest):
 def process(path):
     sync()
     job = read_json(path)
-    if not job or job.get("format") != "long" or job.get("clip_made") or job.get("parent_id"):
+    extra = bool(job and job.get("extra_clip_wanted") and job.get("clip_made"))
+    if not job or job.get("format") != "long" or (job.get("clip_made") and not extra) or job.get("parent_id"):
         return False
     if job.get("status") not in ("ready", "approved", "post_yourself", "uploading", "uploaded", "posted"):
         return False
@@ -106,26 +107,42 @@ def process(path):
         return False
     lead = float(job.get("intro_seconds") or 0)  # skip the branded intro
     rel = [x - lead for x in starts]
-    n, dur = pick_segment(rel, job["video_seconds"] - lead - (10.0 if lead else 0))
+    first = 0
+    if extra:  # a later chapter of a hit video: start at chapter 2, 3, 4... in turn
+        marks = [c["scene"] - 1 for c in script.get("chapters", []) if c.get("scene", 1) > 1]
+        k = job.get("extra_clips", 0)
+        if k >= len(marks):
+            job.pop("extra_clip_wanted", None)
+            write_json(path, job)
+            save(["jobs"], "No more chapters to clip")
+            return False
+        first = marks[k]
+    sub_starts = [x - rel[first] for x in rel[first:]]
+    n, dur = pick_segment(sub_starts, job["video_seconds"] - lead - (10.0 if lead else 0) - rel[first])
+    clip_start = lead + rel[first]
     title = pkg.get("title") or job.get("title") or job["topic"]
     text_layer(title, job.get("captionFont", "Anton"), folder / "text.png")
     out = folder / "video.mp4"
-    make_clip(src, lead, dur, folder / "text.png", out)
-    cid = f"{job['id']}-s1"
+    make_clip(src, clip_start, dur, folder / "text.png", out)
+    cid = f"{job['id']}-s{job.get('extra_clips', 0) + 2 if extra else 1}"
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     clip = {k: job.get(k) for k in ("tone", "audience", "voice", "captionFont", "theme")}
     clip.update(id=cid, parent_id=job["id"], created=now, updated=now, format="short", length=round(dur), lengthUnit="seconds",
                 topic=f"{job['topic']} (Short)", notes="Cut from the long video.", status="video_ready",
-                video_seconds=dur, scene_starts=[round(s, 2) for s in rel[:n]])
+                video_seconds=dur, scene_starts=[round(s, 2) for s in sub_starts[:n]])
     clip["video"] = publish(clip, out)
     sub = dict(script)
-    sub["scenes"] = script["scenes"][:n]
+    sub["scenes"] = script["scenes"][first:first + n]
     sub.pop("chapters", None)
     sub["working_title"] = title
     sub["clip_of"] = job["id"]
     write_json(ROOT / "scripts" / f"{cid}.json", sub)
     write_json(ROOT / "jobs" / f"{cid}.json", clip)
-    job["clip_made"] = cid
+    if extra:
+        job["extra_clips"] = job.get("extra_clips", 0) + 1
+        job.pop("extra_clip_wanted", None)
+    else:
+        job["clip_made"] = cid
     write_json(path, job)
     save(["jobs", "scripts"], f"Short cut from: {job['topic'][:60]}")
     subprocess.run(["rm", "-rf", str(folder)])

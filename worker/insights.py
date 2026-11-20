@@ -30,7 +30,7 @@ def mean_by(rows, key, val):
     return {k: (statistics.mean(v), len(v)) for k, v in groups.items()}
 
 
-def build(stats, jobs, packages, per_video):
+def build(stats, jobs, packages, per_video, hooks=None):
     now = datetime.datetime.now(datetime.timezone.utc)
     vids = [v for v in stats.get("recent", []) if v.get("privacy") == "public"]
     by_title = {str(p.get("title", "")).strip().lower(): jid for jid, p in packages.items()}
@@ -38,6 +38,7 @@ def build(stats, jobs, packages, per_video):
     for v in vids:
         job = by_yt.get(v["id"]) or jobs.get(by_title.get(v["title"].strip().lower(), ""), {})
         v["tone"], v["theme"] = job.get("tone"), job.get("theme")
+        v["hook_style"] = (hooks or {}).get(job.get("id"))
         pv = per_video.get(v["id"], {})
         v["avg_pct"] = pv.get("averageViewPercentage")
         v["rate"] = early_rate(v, now)
@@ -59,6 +60,12 @@ def build(stats, jobs, packages, per_video):
     if len(tones) >= 2:
         best = max(tones, key=lambda k: tones[k][0])
         out["tips"].append(f'Videos in the "{best}" tone do best so far. Try a preset with that tone for your next few videos.')
+    names = {"question": "a question", "shock": "a shocking fact", "scene": "a vivid scene", "stakes": "what was at stake", "quiz": "a quiz challenge"}
+    hk = {k: v for k, v in mean_by([v for v in vids if v.get("avg_pct")], lambda r: r.get("hook_style"), lambda r: r["avg_pct"]).items() if v[1] >= 2}
+    if len(hk) >= 2:
+        best = max(hk, key=lambda k: hk[k][0])
+        out["hooks"] = {k: {"avg_pct": round(v[0], 1), "videos": v[1]} for k, v in hk.items()}
+        out["tips"].append(f"Hook tester: videos that open with {names.get(best, best)} keep viewers watching longest ({hk[best][0]:.0f}% on average).")
     pcts = [v["avg_pct"] for v in vids if v.get("avg_pct")]
     if len(pcts) >= 3:
         avg = statistics.mean(pcts)
@@ -109,3 +116,21 @@ def weekly(stats, history, jobs):
         ratio = card["views"] / max(1, grade_base)
         card["grade"] = "A" if ratio >= 1.5 else "B" if ratio >= 1.05 else "C" if ratio >= 0.8 else "D"
     return card
+
+
+def want_extra_clip(stats, jobs, packages):
+    """Feature 24: every Sunday, ask for one more Short from the best-performing long video."""
+    from common import ROOT, write_json
+    if datetime.datetime.now(IST).weekday() != 6:
+        return None
+    by_title = {str(p.get("title", "")).strip().lower(): jid for jid, p in packages.items()}
+    longs = [v for v in stats.get("recent", []) if not v.get("short") and v.get("privacy") == "public"]
+    for v in sorted(longs, key=lambda v: v["views"], reverse=True):
+        jid = next((j["id"] for j in jobs.values() if j.get("youtube_id") == v["id"]), None) or by_title.get(v["title"].strip().lower())
+        job = jobs.get(jid or "")
+        if not job or job.get("extra_clips", 0) >= 3 or job.get("extra_clip_wanted"):
+            continue
+        job["extra_clip_wanted"] = True
+        write_json(ROOT / "jobs" / f"{jid}.json", job)
+        return jid
+    return None
