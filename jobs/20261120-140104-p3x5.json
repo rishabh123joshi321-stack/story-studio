@@ -1,7 +1,7 @@
 {
   "id": "20261120-140104-p3x5",
   "created": "2026-11-20T08:31:04.241Z",
-  "status": "requested",
+  "status": "script_ready",
   "format": "short",
   "length": 45,
   "lengthUnit": "seconds",
@@ -11,5 +11,6 @@
   "audience": "General global audience",
   "voice": "en-US-male",
   "notes": "",
-  "updated": "2026-11-20T09:54:55+00:00"
+  "updated": "2026-11-20T10:10:38+00:00",
+  "flags": 0
 }
