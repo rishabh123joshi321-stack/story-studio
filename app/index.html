@@ -137,6 +137,17 @@
       <button class="primary" id="saveConn">Save and test connection</button>
       <p id="connMsg" class="msg"></p>
     </div>
+    <div class="card" id="ytCard">
+      <h2>Connect YouTube</h2>
+      <p class="hint">Do this once, after the Google setup steps. Videos you approve then upload to your channel as Private, and you make them Public in YouTube Studio.</p>
+      <p class="hint">Redirect address to give Google: <b id="ytRedirect"></b></p>
+      <label for="ytClientId">Client ID (ends with .apps.googleusercontent.com)</label>
+      <input id="ytClientId" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="1234-abc.apps.googleusercontent.com">
+      <label for="ytSecret">Client secret (starts with GOCSPX-)</label>
+      <input id="ytSecret" type="password" autocomplete="off" spellcheck="false" placeholder="GOCSPX-...">
+      <button class="primary" id="ytConnect">Sign in with Google</button>
+      <p id="ytMsg" class="msg"></p>
+    </div>
     <div class="card">
       <h2>Daily target</h2>
       <label for="tLong">Long videos per day</label>
