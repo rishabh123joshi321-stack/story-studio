@@ -99,6 +99,23 @@ Return the same JSON shape.
         if isinstance(trimmed, dict) and trimmed.get("scenes"):
             trimmed["structure"] = structure
             script = trimmed
+    elif count < words * 0.85:  # too short for the chosen length: one expanding pass
+        time.sleep(4)
+        longer = gemini_json(
+            f"""This narration has {count} words but must be between {int(words * 0.9)} and {words} words.
+Expand it by adding more scenes and richer storytelling: context, causes, vivid but accurate detail, and consequences.
+Use ONLY facts from the reference material below or very widely documented history. Never invent quotes, numbers or names.
+Keep the hook as the first line and the subscribe line at the end. Return the same JSON shape, with every scene
+having narration, visual and motion.
+
+Reference material:
+{refs}
+
+Script:
+{json.dumps(script, ensure_ascii=False)}""", SYSTEM, temperature=0.6)
+        if isinstance(longer, dict) and len(longer.get("scenes", [])) >= len(script["scenes"]):
+            longer["structure"] = structure
+            script = longer
     return script
 
 
