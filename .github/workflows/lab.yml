@@ -1,0 +1,22 @@
+name: Picture lab
+# Tries picture styles on the free picture service. Only started by hand; never changes videos.
+on:
+  workflow_dispatch:
+    inputs:
+      tests:
+        description: 'Optional JSON list of tests'
+        required: false
+permissions:
+  contents: write
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LAB_TESTS: ${{ inputs.tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: python tools/picture_lab.py
