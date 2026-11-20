@@ -125,6 +125,7 @@ $('jobForm').addEventListener('submit', async (e) => {
     format, length: Number($('length').value), lengthUnit: format === 'short' ? 'seconds' : 'minutes',
     topic: $('topic').value.trim(), theme: $('theme').value.trim(), tone: $('tone').value,
     audience: $('audience').value, voice: $('voice').value, notes: $('notes').value.trim(),
+    captionFont: store.get('captionFont', 'Anton'),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
   store.set('lastVoice', job.voice); store.set('lastTone', job.tone); store.set('lastAudience', job.audience);
@@ -435,6 +436,25 @@ $('saveConn').addEventListener('click', async () => {
   }
   paintConn();
 });
+// ---------- caption font ----------
+const CAPTION_FONTS = [
+  ['Anton', "'Anton'", 'Tall and bold (current)'], ['Bebas Neue', "'Bebas Neue'", 'Clean and modern'],
+  ['Poppins', "'Poppins'", 'Round and friendly'], ['Lilita One', "'Lilita One'", 'Soft and playful'],
+  ['Bangers', "'Bangers'", 'Comic book'], ['Luckiest Guy', "'Luckiest Guy'", 'Big cartoon letters'],
+  ['Patrick Hand', "'Patrick Hand'", 'Handwritten'],
+];
+function paintFonts() {
+  const cur = store.get('captionFont', 'Anton');
+  $('fontList').innerHTML = CAPTION_FONTS.map(([name, css, note]) => `<label class="fontpick${name === cur ? ' on' : ''}">
+    <input type="radio" name="capfont" value="${esc(name)}"${name === cur ? ' checked' : ''}>
+    <span class="fontsample" style="font-family:${css},sans-serif;${name === 'Poppins' ? 'font-weight:700;' : ''}">${name === 'Patrick Hand' ? 'The fire spread fast' : 'THE FIRE SPREAD FAST'}</span>
+    <span class="meta">${esc(name)} · ${esc(note)}</span></label>`).join('');
+}
+$('fontList').addEventListener('change', (e) => {
+  if (e.target.name !== 'capfont') return;
+  store.set('captionFont', e.target.value); paintFonts(); toast('Caption font saved. New videos will use it.');
+});
+paintFonts();
 $('saveTargets').addEventListener('click', () => { store.set('tLong', Number($('tLong').value) || 0); store.set('tShort', Number($('tShort').value) || 0); toast('Targets saved'); });
 $('demoBtn').addEventListener('click', () => { const on = !demo.on(); store.set('demo', on); $('demoBtn').textContent = on ? 'Turn off demo mode' : 'Turn on demo mode'; paintConn(); toast(on ? 'Demo mode on' : 'Demo mode off'); });
 $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken').placeholder = 'github_pat_...'; paintConn(); toast('Access key removed from this tablet'); });
