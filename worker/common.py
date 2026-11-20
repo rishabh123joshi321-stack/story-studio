@@ -26,7 +26,8 @@ HOUSE_STYLE = (
     "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, "
     "cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, "
     "volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, "
-    "historically accurate clothing and architecture, no text, no letters, no logos, no watermarks"
+    "strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, "
+    "no text, no letters, no logos, no watermarks"
 )
 
 # Characters and objects are drawn separately on white, then cut out and animated over empty backgrounds.
