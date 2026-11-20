@@ -444,7 +444,24 @@ def stills_to_shots(parts, chapters, short):
     return scenes, places
 
 
+def series_note(job):
+    """Continuity for a video that belongs to a series (named in the app)."""
+    name = str(job.get("series") or "").strip()
+    if not name:
+        return ""
+    earlier = []
+    for p in sorted((ROOT / "jobs").glob("*.json")):
+        j = read_json(p, {}) or {}
+        if j.get("series") == name and j.get("id") != job.get("id") and j.get("part", 0) < job.get("part", 99):
+            earlier.append(f"part {j.get('part', '?')}: {j.get('topic')}")
+    return (f" This video is part {job.get('part', 1)} of the series \"{name}\"."
+            + (f" Earlier parts: {'; '.join(earlier[-6:])}. Briefly connect to them in one line, without repeating them." if earlier else "")
+            + " End with one line teasing that the series continues.")
+
+
 def write_script(job, sources):
+    if job.get("series"):
+        job = dict(job, notes=(job.get("notes") or "") + series_note(job))
     secs, words = target(job)
     short = job["format"] == "short"
     structure = random.choice(STRUCTURES)

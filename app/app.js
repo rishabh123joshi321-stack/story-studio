@@ -88,6 +88,7 @@ function showTab(name) {
   if (name === 'ideas') loadIdeas();
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
+  if (name === 'create') loadSeries();
   if (name === 'money') loadMoney();
   if (name === 'settings') loadPron();
 }
@@ -144,11 +145,14 @@ $('jobForm').addEventListener('submit', async (e) => {
     captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
+  const series = $('series').value.trim();
+  if (series) { job.series = series; job.part = (seriesParts[series] || 0) + 1; }
   store.set('lastVoice', job.voice); store.set('lastTone', job.tone); store.set('lastAudience', job.audience);
   const btn = $('submitBtn'); btn.disabled = true; btn.textContent = 'Sending...';
   try {
     if (mode() === 'github') await gh.saveJob(job); else demo.save(job);
     $('topic').value = ''; $('theme').value = ''; $('notes').value = '';
+    if (job.series) { seriesParts[job.series] = job.part; paintSeriesHint(); }
     msg.className = 'msg ok'; msg.textContent = 'Sent! You can follow it in the Queue tab.';
     toast('Video request sent');
   } catch (err) {
@@ -156,6 +160,22 @@ $('jobForm').addEventListener('submit', async (e) => {
     msg.textContent = err.status === 401 || err.status === 403 ? 'Your access key was refused. Check it in Settings.' : 'Could not send. Check your internet and try again. (' + err.message + ')';
   } finally { btn.disabled = false; btn.textContent = 'Start making it'; }
 });
+
+// ---------- series ----------
+let seriesParts = {};
+async function loadSeries() {
+  if (mode() !== 'github') return;
+  try {
+    const jobs = await gh.listJobs(); seriesParts = {};
+    jobs.forEach((j) => { if (j.series) seriesParts[j.series] = Math.max(seriesParts[j.series] || 0, j.part || 1); });
+    $('seriesList').innerHTML = Object.keys(seriesParts).map((n) => `<option value="${esc(n)}">`).join(''); paintSeriesHint();
+  } catch { /* offline */ }
+}
+function paintSeriesHint() {
+  const n = $('series').value.trim();
+  $('seriesHint').textContent = n ? `This will be part ${(seriesParts[n] || 0) + 1} of "${n}". It gets its own playlist on YouTube.` : '';
+}
+$('series').addEventListener('input', paintSeriesHint);
 
 // ---------- presets (tone presets) ----------
 const DEFAULT_PRESETS = [
@@ -317,7 +337,7 @@ async function loadQueue() {
     else if (j.error) extra = `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>`;
     if (['post_yourself', 'uploaded'].includes(j.status) && mode() === 'github') extra += postHelper(j);
     if (j.status === 'failed' && mode() === 'github') extra += `<button class="retry" data-id="${esc(j.id)}">Try again</button>`;
-    return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div class="jmain">${stepper(j.status)}<h3>${esc(j.topic)}</h3><div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
+    return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div class="jmain">${stepper(j.status)}<h3>${esc(j.topic)}</h3><div class="meta">${j.series ? `<span class="kind">${esc(j.series)} · Part ${esc(j.part || 1)}</span>` : ''}${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
   }).join('');
 }
 let queueJobs = [];

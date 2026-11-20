@@ -129,6 +129,8 @@ Return JSON:
     if short and "#Shorts" not in hashtags:
         hashtags.append("#Shorts")
     parts = [str(pkg.get("description", "")).strip()]
+    if job.get("series"):
+        parts[0] = f"Part {job.get('part', 1)} of the \"{job['series']}\" series.\n\n" + parts[0]
     links = affiliate_links(job, title_guess=str(pkg.get("title", "")), text=parts[0])
     if links:
         parts.append("Recommended\n" + "\n".join(f"- {l['name']}: {l['url']}" for l in links) + "\n" + AFFILIATE_NOTE)
