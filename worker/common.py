@@ -5,6 +5,7 @@ Standard library only, so the GitHub Actions job needs nothing installed.
 import json
 import os
 import pathlib
+import subprocess
 import sys
 import time
 import urllib.error
@@ -48,6 +49,46 @@ def write_json(path, data):
     path = pathlib.Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def on_github():
+    return bool(os.environ.get("GITHUB_REPOSITORY"))
+
+
+def sync():
+    """Get the latest project files, so a stale copy never redoes or overwrites newer work."""
+    if on_github():
+        subprocess.run(["git", "pull", "-q", "--rebase", "origin", "main"], cwd=ROOT)
+
+
+def save(paths, message):
+    """Commit the given folders and push straight away, so other jobs see the new state."""
+    if not on_github():
+        return
+    for p in paths:
+        if (ROOT / p).exists():
+            subprocess.run(["git", "add", p], cwd=ROOT, check=True)
+    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0:
+        return
+    subprocess.run(["git", "commit", "-q", "-m", message], cwd=ROOT, check=True)
+    for i in range(5):
+        if subprocess.run(["git", "pull", "-q", "--rebase", "-X", "theirs", "origin", "main"], cwd=ROOT).returncode == 0 and \
+                subprocess.run(["git", "push", "-q", "origin", "HEAD:main"], cwd=ROOT).returncode == 0:
+            return
+        subprocess.run(["git", "rebase", "--abort"], cwd=ROOT, capture_output=True)
+        time.sleep(5 * (i + 1))
+    raise RuntimeError("could not save to GitHub")
+
+
+def stale(job, minutes):
+    """True if a job has been 'in progress' far too long (its run probably crashed)."""
+    import datetime
+    t = job.get("updated") or job.get("created")
+    try:
+        when = datetime.datetime.fromisoformat(str(t).replace("Z", "+00:00"))
+    except ValueError:
+        return True
+    return datetime.datetime.now(datetime.timezone.utc) - when > datetime.timedelta(minutes=minutes)
 
 
 def http_json(url, data=None, headers=None, timeout=90):

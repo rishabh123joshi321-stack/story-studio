@@ -10,7 +10,7 @@ import random
 import sys
 import time
 
-from common import HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, write_json
+from common import HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
 
 WORDS_PER_SECOND = 2.5  # about 150 words a minute, a relaxed narration pace
 MAX_JOBS_PER_RUN = int(os.environ.get("MAX_JOBS_PER_RUN", "6"))
@@ -133,10 +133,17 @@ Use "uncertain" when the sources do not clearly back the claim or historians dis
 
 
 def process(job_path):
+    sync()
     job = read_json(job_path)
+    if job and job.get("status") == "scripting" and stale(job, 90):
+        job["status"] = "requested"
     if not job or job.get("status") != "requested":
         return False
     print(f"Writing script for {job['id']}: {job['topic']}")
+    job["status"] = "scripting"  # claim it, so no other run writes it too
+    job["updated"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    write_json(job_path, job)
+    save(["jobs"], f"Writing script: {job['topic'][:60]}")
     try:
         sources = research(job["topic"], job.get("theme", ""))
         script = write_script(job, sources)
@@ -168,8 +175,11 @@ def process(job_path):
         else:
             job["status"] = "failed"
             job["error"] = msg + " Tap Try again in the Queue."
+    if job["status"] == "scripting":
+        job["status"] = "requested"  # temporary problem: back in line for the next run
     job["updated"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     write_json(job_path, job)
+    save(["jobs", "scripts"], f"Script {'ready' if job['status'] == 'script_ready' else 'update'}: {job['topic'][:60]}")
     return True
 
 
