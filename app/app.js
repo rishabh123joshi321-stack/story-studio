@@ -81,11 +81,12 @@ function paintConn() {
 
 // ---------- tabs ----------
 function showTab(name) {
-  document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name || (name === 'script' && b.dataset.tab === 'queue')));
+  document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name || (name === 'script' && b.dataset.tab === 'queue') || (name === 'reviewone' && b.dataset.tab === 'review')));
   document.querySelectorAll('.tab').forEach((s) => s.classList.toggle('on', s.id === 'tab-' + name));
-  if (name !== 'script') store.set('tab', name);
+  if (!['script', 'reviewone'].includes(name)) store.set('tab', name);
   if (name === 'queue') loadQueue();
   if (name === 'ideas') loadIdeas();
+  if (name === 'review') loadReview();
 }
 $('tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-tab]'); if (b) showTab(b.dataset.tab); });
 
@@ -138,6 +139,7 @@ async function loadQueue() {
   $('dailyBar').innerHTML = `<div><b>${today.filter((j) => j.format === 'long').length} / ${tL}</b>long videos planned today</div><div><b>${today.filter((j) => j.format === 'short').length} / ${tS}</b>Shorts planned today</div>`;
   if (!jobs.length) { list.innerHTML = '<div class="card empty">Nothing yet. Plan your first video in the New video tab.</div>'; return; }
   queueJobs = jobs;
+  paintReviewCount(jobs);
   list.innerHTML = jobs.map((j) => {
     const cls = ['ready', 'video_ready'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering'].includes(j.status) ? 'working' : '';
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
@@ -171,7 +173,8 @@ $('queueList').addEventListener('click', async (e) => {
   }
   const card = e.target.closest('.job.tap'); if (!card) return;
   const job = queueJobs.find((j) => j.id === card.dataset.id);
-  if (job && job.status !== 'failed') openScript(job);
+  if (job && job.status === 'ready') openReview(job.id);
+  else if (job && job.status !== 'failed') openScript(job);
 });
 
 // ---------- script view ----------
@@ -254,6 +257,151 @@ $('askIdeas').addEventListener('click', async () => {
   finally { btn.disabled = false; btn.textContent = 'Get fresh ideas'; }
 });
 $('refreshQueue').addEventListener('click', loadQueue);
+
+// ---------- review ----------
+function paintReviewCount(jobs) {
+  const n = jobs.filter((j) => j.status === 'ready').length;
+  document.querySelector('.tabs button[data-tab="review"]').textContent = n ? `Review (${n})` : 'Review';
+}
+function fmtLen(sec) { sec = Math.round(sec || 0); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`; }
+
+async function loadReview() {
+  const list = $('reviewList');
+  if (mode() !== 'github') { list.innerHTML = '<div class="card empty">Connect your GitHub project in Settings first.</div>'; return; }
+  list.innerHTML = '<div class="card empty">Loading...</div>';
+  let jobs;
+  try { jobs = await gh.listJobs(); } catch (err) { list.innerHTML = `<div class="card empty">Could not load (${esc(err.message)}).</div>`; return; }
+  queueJobs = jobs; paintReviewCount(jobs);
+  const ready = jobs.filter((j) => j.status === 'ready');
+  const waiting = jobs.filter((j) => ['requested', 'scripting', 'script_ready', 'rendering', 'video_ready'].includes(j.status)).length;
+  list.innerHTML = (ready.length ? ready.map((j) => `
+    <div class="card job tap" data-id="${esc(j.id)}"><div><h3>${esc(j.title || j.topic)}</h3>
+      <div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${fmtLen(j.video_seconds)} · ${esc(j.topic)}</div>
+      ${j.flags ? `<div class="meta flagnote">${j.flags} fact${j.flags > 1 ? 's' : ''} to check</div>` : '<div class="meta okline">Facts checked</div>'}
+    </div><span class="status ready">Review</span></div>`).join('')
+    : '<div class="card empty">Nothing to review right now.</div>')
+    + (waiting ? `<p class="hint">${waiting} more video${waiting > 1 ? 's are' : ' is'} being made. See the Queue tab.</p>` : '');
+}
+$('reviewList').addEventListener('click', (e) => {
+  const card = e.target.closest('.job.tap'); if (!card) return;
+  const job = queueJobs.find((j) => j.id === card.dataset.id); if (job) openReview(job.id);
+});
+$('refreshReview').addEventListener('click', loadReview);
+$('backToReview').addEventListener('click', () => showTab('review'));
+
+let rv = null; // the video being reviewed: { job, jobSha, pkg, pkgSha, script }
+async function openReview(id) {
+  showTab('reviewone');
+  const v = $('reviewView');
+  v.innerHTML = '<div class="card empty">Loading...</div>';
+  try {
+    const [jf, pf, sf] = await Promise.all([gh.getFile(`jobs/${id}.json`), gh.getFile(`packages/${id}.json`), gh.getFile(`scripts/${id}.json`)]);
+    if (!jf || !pf) throw new Error('this video is not ready yet');
+    rv = { job: jf.data, jobSha: jf.sha, pkg: pf.data, pkgSha: pf.sha, script: sf ? sf.data : {} };
+  } catch (err) { v.innerHTML = `<div class="card empty">Could not load (${esc(err.message)}).</div>`; return; }
+  const { job, pkg, script } = rv;
+  const flagged = ((script.fact_check && script.fact_check.claims) || []).filter((c) => c.verdict !== 'supported');
+  const others = (pkg.title_options || []).filter((t) => t !== pkg.title);
+  v.innerHTML = `
+    <h1>${esc(pkg.title)}</h1>
+    <p class="hint">${job.format === 'short' ? 'Short' : 'Long video'} · ${fmtLen(job.video_seconds)} · ${esc(job.topic)}</p>
+    <div class="card"><video class="player ${job.format === 'short' ? 'tall' : ''}" src="${esc(job.video)}" controls playsinline preload="metadata"></video>
+      <p class="hint" style="margin-top:8px">Won't play? <a href="${esc(job.video)}" target="_blank" rel="noopener">Open the video file</a>.</p></div>
+    ${pkg.thumbnail ? `<div class="card"><h2>Thumbnail</h2><img class="thumb" src="${esc(pkg.thumbnail)}" alt="Thumbnail"></div>` : ''}
+    ${flagged.length ? `<div class="card"><h2>Facts to check</h2>${flagged.map((c) => `<div class="fact ${c.verdict === 'wrong' ? 'wrong' : ''}"><b>Scene ${esc(c.scene)}: ${c.verdict === 'wrong' ? 'Probably wrong' : 'Not certain'}</b>${esc(c.claim)}${c.note ? `<div class="meta">${esc(c.note)}</div>` : ''}</div>`).join('')}
+      <p class="hint">If something is wrong, tap <b>Regenerate</b> and choose "Rewrite the script", telling it what to fix.</p></div>` : ''}
+    <div class="card"><h2>YouTube details</h2>
+      <label for="rvTitle">Title <span class="req" id="rvTitleCount"></span></label>
+      <input id="rvTitle" maxlength="100" value="${esc(pkg.title)}">
+      ${others.length ? `<div class="tags" style="margin-top:8px">${others.map((t) => `<button type="button" class="chip" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div><p class="hint">Tap another title to use it.</p>` : ''}
+      <label for="rvDesc">Description</label>
+      <textarea id="rvDesc" rows="10">${esc(pkg.description)}</textarea>
+      <label for="rvTags">Tags (separate with commas)</label>
+      <textarea id="rvTags" rows="3">${esc((pkg.tags || []).join(', '))}</textarea>
+      <button id="rvSave">Save changes</button>
+    </div>
+    <div class="card">
+      ${flagged.length ? `<label class="check"><input type="checkbox" id="rvChecked"> I have checked the ${flagged.length} flagged fact${flagged.length > 1 ? 's' : ''}</label>` : ''}
+      <button class="primary" id="rvApprove">Approve</button>
+      <div class="row" style="margin-top:4px"><button id="rvRegen" style="flex:1">Regenerate</button><button id="rvReject" class="danger" style="flex:1">Reject</button></div>
+      <div id="rvRegenBox" class="sub" hidden>
+        <h2>What should be redone?</h2>
+        <label class="check"><input type="radio" name="regen" value="pictures" checked> New pictures (same script and voice)</label>
+        <label class="check"><input type="radio" name="regen" value="package"> New title, description and thumbnail</label>
+        <label class="check"><input type="radio" name="regen" value="script"> Rewrite the script and make a new video</label>
+        <label for="rvNotes">What should change? (optional, used for a rewrite)</label>
+        <textarea id="rvNotes" rows="3" placeholder="e.g. fix the date in scene 4, add more about the aftermath, make the start more dramatic"></textarea>
+        <button class="primary" id="rvRegenGo">Redo it</button>
+      </div>
+      <div id="rvRejectBox" class="sub" hidden>
+        <label for="rvReason">Why? (optional, helps future ideas)</label>
+        <input id="rvReason" placeholder="e.g. topic not interesting, too similar to another video">
+        <button class="primary danger-bg" id="rvRejectGo">Reject this video</button>
+      </div>
+      <p id="rvMsg" class="msg"></p>
+    </div>`;
+  const count = () => { $('rvTitleCount').textContent = `${$('rvTitle').value.length}/100`; };
+  $('rvTitle').addEventListener('input', count); count();
+  v.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { $('rvTitle').value = b.dataset.t; count(); }));
+  $('rvSave').addEventListener('click', () => reviewAct('save'));
+  $('rvApprove').addEventListener('click', () => reviewAct('approve'));
+  $('rvRegen').addEventListener('click', () => { $('rvRegenBox').hidden = !$('rvRegenBox').hidden; $('rvRejectBox').hidden = true; });
+  $('rvReject').addEventListener('click', () => { $('rvRejectBox').hidden = !$('rvRejectBox').hidden; $('rvRegenBox').hidden = true; });
+  $('rvRegenGo').addEventListener('click', () => reviewAct('regen'));
+  $('rvRejectGo').addEventListener('click', () => reviewAct('reject'));
+}
+
+function editedPackage() {
+  const title = $('rvTitle').value.trim();
+  const tags = $('rvTags').value.split(',').map((t) => t.trim()).filter(Boolean);
+  return { ...rv.pkg, title, description: $('rvDesc').value.trim(), tags, edited: new Date().toISOString() };
+}
+function packageChanged(p) {
+  return p.title !== rv.pkg.title || p.description !== rv.pkg.description || p.tags.join(',') !== (rv.pkg.tags || []).join(',');
+}
+
+async function reviewAct(kind) {
+  const msg = $('rvMsg'); msg.className = 'msg'; msg.textContent = '';
+  const fail = (t) => { msg.className = 'msg bad'; msg.textContent = t; };
+  const buttons = document.querySelectorAll('#reviewView button'); buttons.forEach((b) => { b.disabled = true; });
+  try {
+    const job = { ...rv.job };
+    if (kind === 'save' || kind === 'approve') {
+      const p = editedPackage();
+      if (!p.title) return fail('Please give the video a title.');
+      if (p.description.length > 5000) return fail('The description is too long for YouTube (5,000 characters max).');
+      if (kind === 'approve' && $('rvChecked') && !$('rvChecked').checked) return fail('Please check the flagged facts first, then tick the box.');
+      if (packageChanged(p)) {
+        const r = await gh.putFile(`packages/${job.id}.json`, p, `Edit details: ${p.title.slice(0, 60)}`, rv.pkgSha);
+        rv.pkg = p; rv.pkgSha = r.content.sha;
+        job.title = p.title;
+      }
+      if (kind === 'save') {
+        if (job.title !== rv.job.title) { const r = await gh.putFile(`jobs/${job.id}.json`, job, 'Update title', rv.jobSha); rv.job = job; rv.jobSha = r.content.sha; }
+        msg.className = 'msg ok'; msg.textContent = 'Saved.'; return;
+      }
+      Object.assign(job, { status: 'approved', approved: new Date().toISOString() });
+      await gh.putFile(`jobs/${job.id}.json`, job, `Approved: ${job.title.slice(0, 60)}`, rv.jobSha);
+      toast('Approved! It will be uploaded in the next stage.');
+    } else if (kind === 'regen') {
+      const what = document.querySelector('input[name="regen"]:checked').value;
+      const notes = $('rvNotes').value.trim();
+      job.status = { pictures: 'script_ready', package: 'video_ready', script: 'requested' }[what];
+      job.revision = (job.revision || 0) + 1;
+      if (what === 'script' && notes) job.revision_notes = notes;
+      ['error', 'attempts', 'render_attempts', 'package_attempts', 'failed_step'].forEach((k) => delete job[k]);
+      await gh.putFile(`jobs/${job.id}.json`, job, `Redo (${what}): ${(job.title || job.topic).slice(0, 60)}`, rv.jobSha);
+      toast(what === 'package' ? 'New title and thumbnail coming in a few minutes.' : 'Redoing it. Check the Queue tab.');
+    } else if (kind === 'reject') {
+      Object.assign(job, { status: 'rejected', rejected: new Date().toISOString(), rejected_reason: $('rvReason').value.trim() });
+      await gh.putFile(`jobs/${job.id}.json`, job, `Rejected: ${(job.title || job.topic).slice(0, 60)}`, rv.jobSha);
+      toast('Rejected. It will not be uploaded.');
+    }
+    showTab('review');
+  } catch (err) {
+    fail(err.status === 409 ? 'This video changed in the cloud a moment ago. Go back and open it again.' : 'Could not save: ' + err.message);
+  } finally { buttons.forEach((b) => { b.disabled = false; }); }
+}
 
 // ---------- settings ----------
 $('saveConn').addEventListener('click', async () => {

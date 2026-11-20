@@ -105,7 +105,18 @@
     <button id="backToQueue" class="ghost">&larr; Back to queue</button>
     <div id="scriptView"></div>
   </section>
-  <section id="tab-review" class="tab"><h1>Review</h1><div class="card soon">Coming in Stage 5: watch each finished video and tap Approve, Edit, Regenerate, or Reject.</div></section>
+  <!-- REVIEW -->
+  <section id="tab-review" class="tab">
+    <div class="row"><h1>Review</h1><button id="refreshReview" class="ghost">Refresh</button></div>
+    <p class="hint">Finished videos wait here for you. Nothing goes to YouTube until you tap <b>Approve</b>.</p>
+    <div id="reviewList"></div>
+  </section>
+
+  <!-- REVIEW ONE VIDEO -->
+  <section id="tab-reviewone" class="tab">
+    <button id="backToReview" class="ghost">&larr; Back to review list</button>
+    <div id="reviewView"></div>
+  </section>
   <section id="tab-stats" class="tab"><h1>Dashboard</h1><div class="card soon">Coming in Stage 7: views, watch time, subscribers, and your progress toward the Partner Program.</div></section>
   <section id="tab-money" class="tab"><h1>Income</h1><div class="card soon">Coming in Stage 8: your affiliate links and a media-kit page for sponsors.</div></section>
 
