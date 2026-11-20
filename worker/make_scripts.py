@@ -16,8 +16,8 @@ WORDS_PER_SECOND = 2.5  # about 150 words a minute, a relaxed narration pace
 MAX_JOBS_PER_RUN = int(os.environ.get("MAX_JOBS_PER_RUN", "6"))
 CHAPTER_MINUTES = 4  # long videos are written one chapter at a time
 LIMITS = {  # how many pictures the free image service has to draw per video
-    "short": {"places": 6, "cast": 4, "poses": 3},
-    "long": {"places": 36, "cast": 14, "poses": 4},
+    "short": {"places": 12, "cast": 4, "poses": 3},
+    "long": {"places": 100, "cast": 14, "poses": 3},
 }
 
 # Rotating story shapes keep videos from feeling mass-produced.
@@ -44,6 +44,8 @@ Rules you always follow:
 - End with a short, natural call to subscribe that fits the story (not pushy).
 - The video is a cut-out animated cartoon in a hand-painted storybook style ({HOUSE_STYLE}).
   Empty painted backgrounds ("places") have separately drawn characters and objects ("cast") moving on top.
+  Every background must show exactly what the narration is talking about at that moment, and a background is
+  never reused for a different moment. No "Did you know?" or fact pop-ups.
   You direct it shot by shot like a film: something moves, acts or changes in every shot, and the picture changes
   every 2 to 4 seconds. Vary places, cameras and actions so it never feels like a slideshow.
 - Never depict a living real person. No text inside pictures.
@@ -55,7 +57,8 @@ Give one shot for every 6 to 9 words of narration (each shot lasts about 3 secon
 Shot fields:
 - "kind": "story" (cast acting in a place), "guide" (the guide talks to the viewer on a plain paper background)
   or "title" (a big chapter title or question on screen; use for chapter starts and big questions only).
-- "place": a place id (story and title shots).
+- "place": a place id from this part's "places" (story and title shots). The shots of one scene normally share
+  that scene's place.
 - "characters": 0 to 3 cast members, each {"id": cast id, "pose": one of its pose names,
   "then_pose": another pose name to switch to halfway, or "", "action": one action, "position": "left | center | right"}.
 - "action" is one of: ACTIONS.
@@ -64,8 +67,6 @@ Shot fields:
 - "camera": one of CAMERAS (push_in for drama, crash_zoom for shocks, pan for journeys, shake for chaos).
 - "effect": one of EFFECTS that fits the moment (fire, smoke, rain, snow, dust, sparkles, explosion...), else "none".
 - "time_label": e.g. "London, 1666" when the story jumps in time or place, else "".
-- "fact": in about one shot in eight, a surprising related "Did you know?" fact (max 14 words, true and from the
-  reference material), else "".
 - "bubble": rarely, a short speech bubble said by someone in the shot (max 6 words, never a made-up quote of a
   real person), else "".
 - "note": guide shots only, a short handwritten note on screen (max 8 words), else "".
@@ -111,9 +112,6 @@ Return JSON:
       "look": "full visual description so the artist draws it the same every time: age, build, face, hair, clothes and colours (or shape, material and colours for objects); historically accurate",
       "poses": {{"pose_name": "body position and facial expression, e.g. 'standing, worried, hands clasped'"}}}}
   ],
-  "places": [
-    {{"id": "short_snake_case_id", "look": "the empty setting only (no people or animals): where, era, time of day, weather, key objects, mood"}}
-  ],
   "chapters": [{{"title": "short chapter title", "covers": "what this part tells, in order, with the key facts"}}],
   "use_guide": false,
   "call_to_action": "the closing subscribe line",
@@ -121,7 +119,6 @@ Return JSON:
   "uses_realistic_altered_content": false
 }}
 Rules: at most {lim['cast']} cast members with 2 to {lim['poses']} poses each (objects may have 1 pose, e.g. "default");
-{'4 to ' + str(lim['places']) if short else 'about 3 per chapter, at most ' + str(lim['places'])} places (varied settings: inside, outside, close and wide);
 exactly {chapters} chapter{'s' if chapters > 1 else ''}.
 Typical cast: the key real people (no living people), an everyday person of the time, and moving things that matter
 to the story (a ship, a horse, a cart, a crown, a cannon, a scroll...).
@@ -131,8 +128,9 @@ the viewer); do not add her to "cast".
 Set "uses_realistic_altered_content" to true only if a shot would show a realistic-looking real person or a
 realistic depiction of a real event that viewers could mistake for real footage."""
     plan = gemini_json(prompt, SYSTEM, temperature=0.8)
-    if not isinstance(plan, dict) or not plan.get("places") or not plan.get("chapters"):
+    if not isinstance(plan, dict) or not plan.get("chapters"):
         raise WorkerError("The AI returned an unusable plan. It will try again within the hour.", transient=True)
+    plan["places"] = []  # each part creates its own backgrounds, matched to its narration
     return plan
 
 
@@ -152,6 +150,10 @@ def write_chapter(job, plan, sources, index, words, previous):
     first, last = index == 0, index == total - 1
     rules = SHOT_RULES.replace("ACTIONS", ", ".join(ACTIONS)).replace("CAMERAS", ", ".join(CAMERAS)) \
         .replace("EFFECTS", ", ".join(EFFECTS))
+    budget = LIMITS["short" if short else "long"]["places"] // total
+    place_rule = (f"Give EVERY scene its own new place that shows what that scene's narration describes (up to {budget})."
+                  if short else f"Give every scene, or at most every two scenes, its own new place that shows what the "
+                  f"narration describes there (about {budget} places for this part).")
     guide = (f"Guide shots with {HOST['name']}: use only where they truly help (a tricky idea, a quick recap, a question "
              f"to the viewer), at most one shot in eight.") if plan.get("use_guide") else "Do not use guide shots."
     prompt = f"""Write {'the script' if short else f'chapter {index + 1} of {total}'} of a {'YouTube Short' if short else 'long YouTube video'} about "{job['topic']}".
@@ -165,8 +167,9 @@ Tone: {job.get('tone')}. Audience: {job.get('audience')}.
 
 Cast (use these ids and pose names only):
 {_cast_text(plan)}
-Places (use these ids only):
-{chr(10).join('- ' + p['id'] + ': ' + p['look'][:90] for p in plan['places'])}
+Backgrounds ("places"): create them for this part. {place_rule}
+Describe each as the empty setting only (no people or animals): where, era, time of day, weather, the key objects
+the narration mentions, and the mood. Each must look clearly different from the others.
 
 {rules}
 {guide}
@@ -175,9 +178,21 @@ Reference material (facts must come from here or be widely documented):
 {_refs(sources)}
 
 Return JSON:
-{{"scenes": [{{"narration": "what the narrator says", "shots": [{{"kind": "story", "place": "...", "characters": [{{"id": "...", "pose": "...", "then_pose": "", "action": "walk_in_left", "position": "left"}}], "camera": "push_in", "effect": "none", "time_label": "", "fact": "", "bubble": "", "note": "", "title": ""}}]}}]}}"""
+{{"places": [{{"id": "short_snake_case_id", "look": "..."}}],
+ "scenes": [{{"narration": "what the narrator says", "shots": [{{"kind": "story", "place": "...", "characters": [{{"id": "...", "pose": "...", "then_pose": "", "action": "walk_in_left", "position": "left"}}], "camera": "push_in", "effect": "none", "time_label": "", "bubble": "", "note": "", "title": ""}}]}}]}}"""
     out = gemini_json(prompt, SYSTEM, temperature=0.8)
     scenes = out.get("scenes") if isinstance(out, dict) else out if isinstance(out, list) else None
+    if scenes and isinstance(out, dict):  # this part's backgrounds get ids that cannot clash with other parts
+        rename = {}
+        for p in (out.get("places") or [])[:budget + 2]:
+            pid = str(p.get("id", "")).strip().lower().replace(" ", "_")
+            if pid and p.get("look"):
+                rename[pid] = f"c{index}_{pid}"
+                plan["places"].append({"id": rename[pid], "look": str(p["look"])})
+        for sc in scenes:
+            for sh in sc.get("shots") or []:
+                key = str(sh.get("place", "")).strip().lower().replace(" ", "_")
+                sh["place"] = rename.get(key, key)
     if not scenes:
         raise WorkerError("The AI returned an unusable script part. It will try again within the hour.", transient=True)
     count = sum(len(str(s.get("narration", "")).split()) for s in scenes)
@@ -187,7 +202,8 @@ Return JSON:
             f"""This script part has {count} words of narration but needs {int(words * 0.9)} to {words} words.
 {'Shorten the narration, keeping every fact, the order and the opening and closing lines.' if count > words else
  'Add scenes with richer storytelling: context, causes, vivid but accurate detail and consequences, using ONLY facts from the reference material or very widely documented history.'}
-Keep one shot per 6 to 9 words of narration, using the same fields and the same cast, pose and place ids.
+Keep one shot per 6 to 9 words of narration, using the same fields and the same cast, pose and place ids
+(place ids: {', '.join(p['id'] for p in plan['places'] if p['id'].startswith(f'c{index}_'))}).
 Return the same JSON shape: {{"scenes": [...]}}.
 
 Reference material:
@@ -198,10 +214,10 @@ Script part:
         fixed = fix.get("scenes") if isinstance(fix, dict) else None
         if fixed:
             scenes = fixed
-    return direct_more(scenes, plan, rules, guide)
+    return direct_more(scenes, plan, rules, guide, index)
 
 
-def direct_more(scenes, plan, rules, guide):
+def direct_more(scenes, plan, rules, guide, index):
     """AI models tend to give one long shot per scene. Ask once more for real 2-4 second cuts."""
     words = sum(len(str(s.get("narration", "")).split()) for s in scenes)
     shots = sum(len(s.get("shots") or []) for s in scenes)
@@ -213,13 +229,13 @@ def direct_more(scenes, plan, rules, guide):
     out = gemini_json(f"""You are the film director. This script part has {shots} shots but needs about {need}
 (one shot for every 6 to 9 words of narration, so the picture changes every 2 to 4 seconds, like a cartoon film).
 Keep every "narration" exactly as it is. Rewrite each scene's "shots" list: split it into several shots that show
-the story beat by beat. Change place, camera, action, characters or effect from one shot to the next, so something
-new moves in every shot. Use different places from the list, objects that move, reaction shots and cutaways.
+the story beat by beat. Change camera, action, characters or effect from one shot to the next, so something
+new moves in every shot: objects that move, reaction shots, people arriving and leaving. Keep each scene's place.
 
 Cast (ids and pose names):
 {_cast_text(plan)}
 Places (ids):
-{chr(10).join('- ' + p['id'] + ': ' + p['look'][:90] for p in plan['places'])}
+{chr(10).join('- ' + p['id'] + ': ' + p['look'][:90] for p in plan['places'] if p['id'].startswith(f'c{index}_'))}
 
 {rules}
 {guide}
@@ -295,7 +311,7 @@ def tidy(plan, scenes, short):
                 "camera": camera if camera in CAMERAS else "static",
                 "effect": effect if effect in EFFECTS else "none",
                 "time_label": str(sh.get("time_label") or "")[:24],
-                "fact": " ".join(str(sh.get("fact") or "").split()[:16]),
+                "fact": "",  # the owner finds fact pop-ups distracting
                 "bubble": " ".join(str(sh.get("bubble") or "").split()[:7]),
                 "note": " ".join(str(sh.get("note") or "").split()[:9]),
                 "title": " ".join(str(sh.get("title") or "").split()[:7]) if kind == "title" else "",
@@ -362,7 +378,7 @@ def fact_check(job, script, sources):
     refs = "\n\n".join(f"### {p['title']} ({p['url']})\n{p['text']}" for p in sources) or "(none)"
     lines = []
     for i, s in enumerate(script["scenes"]):
-        extra = [sh[k] for sh in s.get("shots", []) for k in ("fact", "bubble", "note", "title") if sh.get(k)]
+        extra = [sh[k] for sh in s.get("shots", []) for k in ("bubble", "note", "title") if sh.get(k)]
         lines.append(f"[{i + 1}] {s.get('narration', '')}" + (f" (on screen: {' | '.join(extra)})" if extra else ""))
     claims, summaries = [], []
     for start in range(0, len(lines), 90):

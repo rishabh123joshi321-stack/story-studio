@@ -65,3 +65,8 @@ label.check input { width: auto; transform: scale(1.3); }
 button.danger-bg { background: var(--bad); }
 
 .chapter { margin: 18px 0 6px; font-size: 1rem; color: var(--accent, #c2572b); }
+.fontpick { display: block; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin: 8px 0; cursor: pointer; }
+.fontpick.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.fontpick input { margin-right: 8px; }
+.fontsample { font-size: 26px; display: inline-block; line-height: 1.2; }
+.fontpick .meta { display: block; margin-top: 2px; }

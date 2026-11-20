@@ -77,7 +77,7 @@ def image_cloudflare(prompt, w, h, seed, dest):
     if not (acct and token):
         raise RuntimeError("not set up")
     url = f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/@cf/black-forest-labs/flux-1-schnell"
-    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt[:2000], "steps": 6, "seed": seed % 2147483647}).encode(),
+    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt[:2000], "steps": 4, "seed": seed % 2147483647}).encode(),
                                  headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": UA})
     with urllib.request.urlopen(req, timeout=180) as r:
         res = json.loads(r.read())
@@ -187,16 +187,43 @@ def ass_time(t):
     return f"{int(t // 3600)}:{int(t % 3600 // 60):02d}:{t % 60:05.2f}"
 
 
-def captions(scenes, starts, durs, w, h, vertical, dest, guide_times=()):
+CAPTION_FONTS = {  # name shown in the app: (file in github.com/google/fonts, size factor, bold, capitals)
+    "Anton": ("ofl/anton/Anton-Regular.ttf", 1.0, 0, True),
+    "Bebas Neue": ("ofl/bebasneue/BebasNeue-Regular.ttf", 1.15, 0, True),
+    "Poppins": ("ofl/poppins/Poppins-Bold.ttf", 0.85, -1, True),
+    "Lilita One": ("ofl/lilitaone/LilitaOne-Regular.ttf", 0.95, 0, True),
+    "Bangers": ("ofl/bangers/Bangers-Regular.ttf", 1.05, 0, True),
+    "Luckiest Guy": ("apache/luckiestguy/LuckiestGuy-Regular.ttf", 0.85, 0, True),
+    "Patrick Hand": ("ofl/patrickhand/PatrickHand-Regular.ttf", 1.1, 0, False),
+}
+
+
+def caption_font(name):
+    """Download the chosen caption font (all SIL Open Font License or Apache) and return its settings."""
+    name = name if name in CAPTION_FONTS else "Anton"
+    path, factor, bold, caps = CAPTION_FONTS[name]
+    dest = CACHE / "fonts" / path.rsplit("/", 1)[1]
+    if not dest.exists():
+        try:
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            download("https://github.com/google/fonts/raw/main/" + path, dest)
+        except Exception as e:
+            log(f"Caption font {name} unavailable ({e}); using Anton.")
+            return caption_font("Anton") if name != "Anton" else ("Anton", 1.0, 0, True)
+    return name, factor, bold, caps
+
+
+def captions(scenes, starts, durs, w, h, vertical, dest, guide_times=(), font_name="Anton"):
     host_margin = int(h * 0.55) if vertical else 0
-    size = 96 if vertical else 78
+    fname, factor, bold, caps = caption_font(font_name)
+    size = int((96 if vertical else 78) * factor)
     margin = int(h * 0.27) if vertical else 70
     per = 3 if vertical else 7
     lines = [
         "[Script Info]", "ScriptType: v4.00+", f"PlayResX: {w}", f"PlayResY: {h}", "WrapStyle: 0", "",
         "[V4+ Styles]",
         "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-        f"Style: Cap,Anton,{size},&H00FFFFFF,&H00FFFFFF,&H00161616,&H64000000,0,0,0,0,100,100,1,0,1,{6 if vertical else 4},2,2,60,60,{margin},1",
+        f"Style: Cap,{fname},{size},&H00FFFFFF,&H00FFFFFF,&H00161616,&H64000000,{bold},0,0,0,100,100,1,0,1,{6 if vertical else 4},2,2,60,60,{margin},1",
         "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
     for sc, start, dur in zip(scenes, starts, durs):
@@ -211,7 +238,7 @@ def captions(scenes, starts, durs, w, h, vertical, dest, guide_times=()):
         for c, wgt in zip(chunks, weights):
             d = speak_time * wgt / total
             text = " ".join(c).replace("{", "(").replace("}", ")")
-            if vertical:
+            if vertical and caps:
                 text = text.upper()
             mid = t + d / 2
             on_guide = any(a <= mid < b for a, b in guide_times)  # the guide stands where captions usually go
@@ -465,7 +492,7 @@ def render(job, script, out_dir):
                               "scale": 0.55 if cast.get(c["id"], {}).get("kind") == "object" else 1.0})
             kind = {"guide": "host", "title": "title"}.get(sh["kind"], "story")
             spec = {"kind": kind, "camera": sh.get("camera", "static"), "effect": sh.get("effect", "none"),
-                    "chars": chars, "fact": sh.get("fact", ""), "title": sh.get("title", ""),
+                    "chars": chars, "fact": "", "title": sh.get("title", ""),
                     "time_label": sh.get("time_label", ""), "bubble": sh.get("bubble", ""), "note": sh.get("note", "")}
             if kind == "host":
                 spec["host_left"] = side % 2 == 0
@@ -492,7 +519,7 @@ def render(job, script, out_dir):
     font(CACHE, "PatrickHand-Regular.ttf", 20)
     fonts_dir = CACHE / "fonts"
     fonts = {"display": str(fonts_dir / "Anton-Regular.ttf"), "hand": str(fonts_dir / "PatrickHand-Regular.ttf")}
-    captions(scenes, starts, durs, W, H, vertical, out_dir / "captions.ass", guide_times)
+    captions(scenes, starts, durs, W, H, vertical, out_dir / "captions.ass", guide_times, job.get("captionFont", "Anton"))
 
     # 5. animate every shot, several at once
     workers = max(1, (os.cpu_count() or 2))
