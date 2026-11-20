@@ -30,7 +30,7 @@ for u in ("https://image.pollinations.ai/models", "https://gen.pollinations.ai/i
     code, body, _ = get(u, 60)
     print(u, code, body[:1500].decode("utf-8", "replace"))
 
-tests = json.loads(os.environ.get("LAB_TESTS", "[]")) or [
+tests = json.loads(os.environ.get("LAB_TESTS") or "[]") or [
     {"name": "tara_now", "model": "flux", "w": 768, "h": 1216,
      "prompt": f"{HOST['look']}, standing facing the viewer, one hand gesturing, full body from head to feet, one single person, centered, isolated on a plain pure white background, no scenery, no floor, no shadow. Style: {SPRITE_STYLE}"},
     {"name": "tara_stylefirst", "model": "flux", "w": 768, "h": 1216,
@@ -39,15 +39,15 @@ tests = json.loads(os.environ.get("LAB_TESTS", "[]")) or [
      "prompt": "Gouache storybook illustration, children's picture book character art, painted brush strokes. A stout 17th-century London baker, flour-dusted apron, brown waistcoat, linen cap, round red face, panicked expression, arms raised, full body. Plain flat white background, nothing else."},
     {"name": "place_stylefirst", "model": "flux", "w": 768, "h": 1456,
      "prompt": f"Gouache storybook illustration, children's picture book background painting. A narrow 1666 London lane of timber houses at night, a small bakery with a glowing oven window, empty, no people. Style: {HOUSE_STYLE}"},
-    {"name": "baker_turbo", "model": "turbo", "w": 768, "h": 1216,
-     "prompt": "Gouache storybook illustration, children's picture book character art. A stout 17th-century London baker, flour-dusted apron, panicked, arms raised, full body. Plain flat white background."},
+    {"name": "baker_zimage_gen", "model": "zimage", "w": 768, "h": 1216, "base": "https://gen.pollinations.ai/image/",
+     "prompt": "Gouache storybook illustration, children's picture book character art, painted brush strokes. A stout 17th-century London baker, flour-dusted apron, brown waistcoat, linen cap, round red face, panicked expression, arms raised, full body. Plain flat white background, nothing else."},
 ]
 made = []
 for i, t in enumerate(tests):
     if i:
         time.sleep(50)
     q = urllib.parse.urlencode({"width": t["w"], "height": t["h"], "seed": 4242, "model": t["model"], "nologo": "true", "private": "true"})
-    url = "https://image.pollinations.ai/prompt/" + urllib.parse.quote(t["prompt"][:900]) + "?" + q
+    url = t.get("base", "https://image.pollinations.ai/prompt/") + urllib.parse.quote(t["prompt"][:900]) + "?" + q
     for attempt in range(4):
         code, body, headers = get(url)
         print(t["name"], code, len(body), {k: v for k, v in headers.items() if k.lower().startswith(("x-", "content-type"))})
