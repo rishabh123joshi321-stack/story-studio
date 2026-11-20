@@ -1,7 +1,7 @@
 {
   "id": "20261121-051615-3wma",
   "created": "2026-11-20T23:46:15.669Z",
-  "status": "requested",
+  "status": "scripting",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -17,5 +17,6 @@
     "es"
   ],
   "intro": true,
-  "quote_voice": true
+  "quote_voice": true,
+  "updated": "2026-11-20T23:46:25+00:00"
 }
