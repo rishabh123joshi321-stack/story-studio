@@ -170,6 +170,27 @@ def add_languages(token, vid, pkg, job, folder):
             "YouTube Studio > Subtitles, or sign in again in Settings > Connect YouTube to allow it.") if blocked else ""
 
 
+def add_to_playlist(token, vid, name):
+    """Put the video in a playlist named after its series (made if needed). Needs youtube.force-ssl."""
+    try:
+        with _api("https://www.googleapis.com/youtube/v3/playlists?part=snippet&mine=true&maxResults=50", token, timeout=60) as r:
+            found = [p["id"] for p in json.loads(r.read()).get("items", []) if p["snippet"]["title"] == name]
+        if found:
+            pid = found[0]
+        else:
+            body = json.dumps({"snippet": {"title": name[:150], "description": f"The {name} series, in order."},
+                               "status": {"privacyStatus": "public"}}).encode()
+            with _api("https://www.googleapis.com/youtube/v3/playlists?part=snippet,status", token, body, "POST",
+                      {"Content-Type": "application/json"}, timeout=60) as r:
+                pid = json.loads(r.read())["id"]
+        body = json.dumps({"snippet": {"playlistId": pid, "resourceId": {"kind": "youtube#video", "videoId": vid}}}).encode()
+        with _api("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet", token, body, "POST",
+                  {"Content-Type": "application/json"}, timeout=60):
+            log(f"  added to playlist {name}")
+    except urllib.error.HTTPError as e:
+        log("  playlist not updated:", e.code, e.read().decode("utf-8", "replace")[:200])
+
+
 def fetch_asset(job, name, dest):
     r = subprocess.run(["gh", "release", "download", f"video-{job['id']}", "-p", name, "-D", str(dest.parent), "--clobber"],
                        capture_output=True, text=True)
@@ -206,6 +227,8 @@ def process(path, token):
                 thumb_note = ("The thumbnail could not be added: YouTube allows custom thumbnails only after the channel "
                               "is verified with a phone number (youtube.com/verify). You can add it in YouTube Studio.")
         extras_note = add_languages(token, vid, pkg, job, folder)
+        if job.get("series"):
+            add_to_playlist(token, vid, job["series"])
         if extras_note:
             thumb_note = (thumb_note + " " + extras_note).strip()
         job.update(status="uploaded", youtube_id=vid, youtube_url=f"https://youtu.be/{vid}",
