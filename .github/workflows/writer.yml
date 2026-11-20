@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: write
 concurrency: { group: writer, cancel-in-progress: false }
 jobs:
   write:
@@ -34,7 +35,11 @@ jobs:
           if git diff --cached --quiet; then echo "Nothing new."; exit 0; fi
           git commit -m "Cloud worker: scripts and ideas"
           for i in 1 2 3 4; do
-            git pull --rebase -X theirs origin main && git push origin HEAD:main && exit 0
+            if git pull --rebase -X theirs origin main && git push origin HEAD:main; then pushed=1; break; fi
             sleep $((i * 5))
           done
-          exit 1
+          [ "$pushed" = 1 ] || exit 1
+      - name: Start the video maker if a script is ready
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          if grep -l '"status": "script_ready"' jobs/*.json >/dev/null 2>&1; then gh workflow run render.yml --ref main; fi
