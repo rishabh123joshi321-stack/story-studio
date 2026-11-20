@@ -187,3 +187,12 @@ button.primary { background: linear-gradient(135deg, var(--accent) 0%, var(--acc
 .thpick img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 .thpick.on { border-color: var(--accent); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent); }
 .scorebig { float: right; font-size: 28px; color: var(--accent); }
+
+.report .rhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; } .report .k { text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; color: var(--muted); }
+.grade { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 30px; color: #fff; }
+.grade.gA { background: var(--ok); } .grade.gB { background: #2d6a8a; } .grade.gC { background: var(--warn); } .grade.gD { background: var(--bad); }
+.tips { margin: 0; padding-left: 20px; } .tips li { margin: 6px 0; line-height: 1.5; }
+.toprow { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; flex-wrap: wrap; }
+.toprow .rank { width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line); display: grid; place-items: center; font-weight: 700; flex: none; }
+.toprow .tt { font-weight: 600; flex: 1; min-width: 160px; }
+.bigline { font-family: var(--display); font-size: 24px; margin: 0; }
