@@ -133,6 +133,43 @@ def set_thumbnail(token, video_id, path):
         return False
 
 
+def add_languages(token, vid, pkg, job, folder):
+    """Subtitles (captions.insert) and translated titles (localizations). Both need the
+    youtube.force-ssl permission; without it the files stay downloadable in the app."""
+    subs, loc = pkg.get("subtitles") or {}, pkg.get("localized") or {}
+    if not subs and not loc:
+        return ""
+    blocked = False
+    for lang, url in subs.items():
+        name = url.rsplit("/", 1)[-1]
+        f = fetch_asset(job, name, folder / name)
+        if not f:
+            continue
+        boundary = "ssboundary7MA4YWxkTrZu0gW"
+        meta = json.dumps({"snippet": {"videoId": vid, "language": lang, "name": "" if lang == "en" else "", "isDraft": False}})
+        body = (f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n{meta}\r\n"
+                f"--{boundary}\r\nContent-Type: application/octet-stream\r\n\r\n").encode() + f.read_bytes() + f"\r\n--{boundary}--".encode()
+        try:
+            with _api("https://www.googleapis.com/upload/youtube/v3/captions?part=snippet&uploadType=multipart", token, body, "POST",
+                      {"Content-Type": f"multipart/related; boundary={boundary}"}, timeout=120):
+                log(f"  subtitles added: {lang}")
+        except urllib.error.HTTPError as e:
+            log("  subtitles not added:", e.code, e.read().decode("utf-8", "replace")[:200])
+            blocked = blocked or e.code in (401, 403)
+            break
+    if loc and not blocked:
+        body = json.dumps({"id": vid, "localizations": loc}).encode()
+        try:
+            with _api("https://www.googleapis.com/youtube/v3/videos?part=localizations", token, body, "PUT",
+                      {"Content-Type": "application/json; charset=UTF-8"}, timeout=60):
+                log(f"  translated titles added: {', '.join(loc)}")
+        except urllib.error.HTTPError as e:
+            log("  translated titles not added:", e.code, e.read().decode("utf-8", "replace")[:200])
+            blocked = blocked or e.code in (401, 403)
+    return ("Subtitles in other languages were not added automatically. Download them from the Queue and add them in "
+            "YouTube Studio > Subtitles, or sign in again in Settings > Connect YouTube to allow it.") if blocked else ""
+
+
 def fetch_asset(job, name, dest):
     r = subprocess.run(["gh", "release", "download", f"video-{job['id']}", "-p", name, "-D", str(dest.parent), "--clobber"],
                        capture_output=True, text=True)
@@ -168,6 +205,9 @@ def process(path, token):
             if thumb and not set_thumbnail(token, vid, thumb):
                 thumb_note = ("The thumbnail could not be added: YouTube allows custom thumbnails only after the channel "
                               "is verified with a phone number (youtube.com/verify). You can add it in YouTube Studio.")
+        extras_note = add_languages(token, vid, pkg, job, folder)
+        if extras_note:
+            thumb_note = (thumb_note + " " + extras_note).strip()
         job.update(status="uploaded", youtube_id=vid, youtube_url=f"https://youtu.be/{vid}",
                    youtube_studio=f"https://studio.youtube.com/video/{vid}/edit", uploaded=now(), privacy="private")
         if thumb_note:

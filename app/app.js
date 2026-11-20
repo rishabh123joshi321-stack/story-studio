@@ -140,7 +140,7 @@ $('jobForm').addEventListener('submit', async (e) => {
     format, length: Number($('length').value), lengthUnit: format === 'short' ? 'seconds' : 'minutes',
     topic: $('topic').value.trim(), theme: $('theme').value.trim(), tone: $('tone').value,
     audience: $('audience').value, voice: $('voice').value, notes: $('notes').value.trim(),
-    captionFont: store.get('captionFont', 'Anton'),
+    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
   store.set('lastVoice', job.voice); store.set('lastTone', job.tone); store.set('lastAudience', job.audience);
@@ -248,7 +248,7 @@ $('wkSave').addEventListener('click', async () => {
       const job = { id: newId(), created: new Date().toISOString(), status: 'requested', plan_date: inp.dataset.day,
         format: fmt, length: fmt === 'long' ? Number(wkLen) : 58, lengthUnit: fmt === 'short' ? 'seconds' : 'minutes',
         topic: inp.value.trim(), theme: inp.dataset.angle || '', tone: $('tone').value, audience: $('audience').value, voice: $('voice').value,
-        notes: '', captionFont: store.get('captionFont', 'Anton') };
+        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']) };
       if (mode() === 'github') await gh.saveJob(job); else demo.save(job);
       n++; await new Promise((r) => setTimeout(r, 1100));
     }
@@ -282,6 +282,11 @@ async function loadQueue() {
   setTimeout(() => list.querySelectorAll('.thlink').forEach(async (a) => {  // show the picked thumbnail as a download link
     try { if (!pkgCache[a.dataset.id]) { const f = await gh.getFile(`packages/${a.dataset.id}.json`); pkgCache[a.dataset.id] = f && f.data; }
       const t = pkgCache[a.dataset.id] && pkgCache[a.dataset.id].thumbnail; if (t) { a.href = t; a.hidden = false; } } catch { /* no thumbnail */ }
+  }) || list.querySelectorAll('.sublinks').forEach(async (sp) => {  // subtitle files, one link per language
+    try { if (!pkgCache[sp.dataset.id]) { const f = await gh.getFile(`packages/${sp.dataset.id}.json`); pkgCache[sp.dataset.id] = f && f.data; }
+      const subs = (pkgCache[sp.dataset.id] && pkgCache[sp.dataset.id].subtitles) || {};
+      sp.innerHTML = Object.entries(subs).map(([l, u]) => `<a class="btnlink" href="${esc(u)}" download>Subtitles ${esc(SUB_LANGS[l] || l)}</a>`).join('');
+    } catch { /* none yet */ }
   }), 0);
   list.innerHTML = shown.map((j) => {
     const cls = ['ready', 'video_ready', 'uploaded', 'post_yourself', 'posted'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering', 'uploading', 'approved'].includes(j.status) ? 'working' : '';
@@ -342,6 +347,7 @@ function postHelper(j) {
     <button class="pcopy" data-id="${esc(j.id)}" data-what="description">Copy description</button>
     <button class="pcopy" data-id="${esc(j.id)}" data-what="tags">Copy tags</button>
     <button class="pcopy" data-id="${esc(j.id)}" data-what="pinned_comment">Copy pinned comment</button>
+    <span class="sublinks" data-id="${esc(j.id)}"></span>
     ${j.format === 'long' ? `<a class="btnlink thlink" data-id="${esc(j.id)}" href="#" target="_blank" rel="noopener" hidden>Thumbnail</a>` : ''}
     ${j.status === 'post_yourself' ? `<button class="pdone primary" data-id="${esc(j.id)}">I posted it</button>` : ''}
   </div>`;
@@ -812,6 +818,20 @@ $('saveConn').addEventListener('click', async () => {
   }
   paintConn();
 });
+// ---------- subtitle languages ----------
+const SUB_LANGS = { en: 'English', hi: 'Hindi', es: 'Spanish', pt: 'Portuguese', fr: 'French', de: 'German', ar: 'Arabic', id: 'Indonesian', ja: 'Japanese' };
+function paintSubLangs() {
+  const on = store.get('subLangs', ['hi', 'es']);
+  $('subLangs').innerHTML = Object.entries(SUB_LANGS).filter(([k]) => k !== 'en').map(([k, n]) => `<button type="button" class="cchip${on.includes(k) ? ' on' : ''}" data-l="${k}">${n}</button>`).join('');
+}
+$('subLangs').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-l]'); if (!b) return;
+  let on = store.get('subLangs', ['hi', 'es']);
+  on = on.includes(b.dataset.l) ? on.filter((x) => x !== b.dataset.l) : [...on, b.dataset.l].slice(-4);
+  store.set('subLangs', on); paintSubLangs(); toast(on.length ? 'Saved. New videos get these subtitles.' : 'No extra languages. Only English subtitles.');
+});
+paintSubLangs();
+
 // ---------- caption font ----------
 const CAPTION_FONTS = [
   ['Anton', "'Anton'", 'Tall and bold (current)'], ['Bebas Neue', "'Bebas Neue'", 'Clean and modern'],
@@ -838,7 +858,7 @@ $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken'
 // ---------- YouTube sign-in ----------
 // Google sends you back to this page with a one-time code. The app swaps it for a long-lasting
 // "refresh token", which you save as a GitHub secret so the cloud can upload for you.
-const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly';
+const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/youtube.force-ssl';
 function ytRedirect() { return location.origin + location.pathname.replace(/index\.html$/, ''); }
 function ytOut(html, cls) { const m = $('ytMsg'); m.className = 'msg ' + (cls || ''); m.innerHTML = html; }
 $('ytRedirect').textContent = ytRedirect();
