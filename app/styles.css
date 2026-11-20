@@ -181,3 +181,8 @@ button.primary { background: linear-gradient(135deg, var(--accent) 0%, var(--acc
 .wkday h2 { font-size: 18px; }
 .slot { display: flex; align-items: center; gap: 10px; margin: 8px 0; } .slot .kind { flex: none; width: 58px; text-align: center; margin: 0; }
 .slot.done span:last-child { color: var(--ok); font-weight: 600; }
+
+.thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.thpick { margin: 0; padding: 0; border: 3px solid transparent; border-radius: 14px; overflow: hidden; background: none; }
+.thpick img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.thpick.on { border-color: var(--accent); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent); }
