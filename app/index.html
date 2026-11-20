@@ -31,7 +31,26 @@
   <!-- NEW VIDEO -->
   <section id="tab-create" class="tab on">
     <h1>Plan a new video</h1>
+    <div class="seg modeSeg" id="modeSeg">
+      <button type="button" data-v="one" class="on">One video</button>
+      <button type="button" data-v="week">Plan the week</button>
+    </div>
+    <div id="weekPlan" hidden>
+      <p class="hint">Fill in topics for the coming days. Each video starts the day before its date, so it is ready on the day. Empty boxes are skipped.</p>
+      <div class="card">
+        <label>Long video length</label>
+        <div class="chips" id="wkLen"></div>
+        <p class="hint" style="margin-top:10px">Free pictures allow about one 40-minute video a day, or three 10-minute ones. Extra videos wait their turn.</p>
+        <button type="button" id="wkFill">Fill empty boxes with ideas</button>
+      </div>
+      <div id="wkDays"></div>
+      <button class="primary" type="button" id="wkSave">Save the week's plan</button>
+      <p id="wkMsg" class="msg"></p>
+      <datalist id="ideaTopics"></datalist>
+    </div>
+    <div id="onePlan">
     <p class="hint">Fill this in and tap <b>Start making it</b>. The cloud makes the video while you do other things.</p>
+    <div class="presets"><span class="plabel">Presets</span><div class="chips" id="presetChips"></div></div>
     <form id="jobForm" class="card">
       <label>Format</label>
       <div class="seg" id="formatSeg">
@@ -77,8 +96,10 @@
       <textarea id="notes" rows="3" placeholder="Anything else: facts to include, things to avoid, a question to end on..."></textarea>
 
       <button class="primary" type="submit" id="submitBtn">Start making it</button>
+      <button type="button" id="savePreset">Save these settings as a preset</button>
       <p id="formMsg" class="msg"></p>
     </form>
+    </div>
   </section>
 
   <!-- QUEUE -->

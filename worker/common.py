@@ -117,6 +117,27 @@ def save(paths, message):
     raise RuntimeError("could not save to GitHub")
 
 
+def ordered_jobs():
+    """Job files in the order they should be made: planned date first (from the week planner), then oldest."""
+    def key(p):
+        j = read_json(p, {}) or {}
+        return (str(j.get("plan_date") or j.get("created", "")[:10]), p.name)
+    return sorted((ROOT / "jobs").glob("*.json"), key=key)
+
+
+def not_yet(job):
+    """True for a job planned more than a day ahead: it is started the day before its planned date."""
+    import datetime
+    d = job.get("plan_date")
+    if not d:
+        return False
+    try:
+        day = datetime.date.fromisoformat(str(d)[:10])
+    except ValueError:
+        return False
+    return day - datetime.timedelta(days=1) > datetime.datetime.now(datetime.timezone.utc).date()
+
+
 def stale(job, minutes):
     """True if a job has been 'in progress' far too long (its run probably crashed)."""
     import datetime
