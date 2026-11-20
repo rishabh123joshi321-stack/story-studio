@@ -21,7 +21,7 @@ PROGRESSIONS = {
 }
 TONE_TO_MOOD = {
     "Curious and warm": "warm", "Dramatic and suspenseful": "dramatic", "Light and funny": "light",
-    "Calm and reflective": "calm", "Epic and inspiring": "epic",
+    "Calm and reflective": "calm", "Epic and inspiring": "epic", "Fun and witty": "light",
 }
 
 

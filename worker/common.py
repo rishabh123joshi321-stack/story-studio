@@ -23,11 +23,30 @@ _models_cache = None
 # The channel's own visual identity. Every scene prompt is written for this,
 # so the look stays consistent and original (not modelled on any channel).
 HOUSE_STYLE = (
-    "hand-painted gouache storybook illustration, warm muted palette of ochre, "
-    "teal and deep brick red, visible paper grain, bold simple shapes and "
-    "silhouettes, soft rim light, gentle depth haze, calm composition, "
+    "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, "
+    "bright warm colours, big expressive comedic faces with exaggerated emotions, "
+    "simple readable shapes, detailed but uncluttered backgrounds, storybook comic look, "
     "no text, no letters, no logos, no watermarks"
 )
+
+# The channel's own recurring guide (an original design, not based on any other channel).
+HOST = {
+    "name": "Tara",
+    "look": ("a cheerful young time-traveller girl drawn as a simple cartoon, round face, big curious eyes, "
+             "short messy black hair under brass explorer goggles worn on her head, mustard-yellow jacket with "
+             "rolled sleeves, teal scarf, brown satchel bag across her body, a rolled-up old map in one hand, "
+             "brown boots, thin dark outlines, flat colours"),
+    "poses": {
+        "talk": "standing facing the viewer, mouth open mid-sentence, one hand gesturing",
+        "point": "pointing to the side with one arm stretched out, excited grin",
+        "shrug": "shrugging with both palms up, eyebrows raised, half smile",
+        "think": "hand on chin, looking up thoughtfully, one eyebrow raised",
+        "shock": "jaw dropped, eyes wide, both hands on cheeks, surprised",
+        "wave": "waving hello with a big happy smile",
+        "laugh": "laughing with eyes closed, hand on belly",
+        "worried": "nervous smile, sweat drop, hands clasped together",
+    },
+}
 
 
 class WorkerError(Exception):

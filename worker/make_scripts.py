@@ -10,7 +10,7 @@ import random
 import sys
 import time
 
-from common import HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
+from common import HOST, HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
 
 WORDS_PER_SECOND = 2.5  # about 150 words a minute, a relaxed narration pace
 MAX_JOBS_PER_RUN = int(os.environ.get("MAX_JOBS_PER_RUN", "6"))
@@ -33,8 +33,15 @@ Rules you always follow:
 - Clear storytelling with a beginning, middle and end, and real educational value (context, causes, consequences).
 - Respectful to all cultures and people. No graphic violence; describe tragedy with care.
 - End with a short, natural call to subscribe that fits the story (not pushy).
+- Voice: fun, chatty and witty, like a funny friend who loves history. Short punchy sentences, playful asides,
+  surprising comparisons to modern life, light jokes and rhetorical questions. Never boring, never mean.
+  For tragedies (wars, disasters, deaths) keep the humour gentle and respectful, or drop it.
 - Visual descriptions are for AI-illustrated scenes in this house style: {HOUSE_STYLE}.
-  Describe setting, figures, mood and camera framing. Never depict a living real person's likeness. No text in images.
+  Describe ONE clear moment: who is there, what they are doing, their funny facial expression, the setting and
+  framing. Repeat a recurring person's look (clothes, hair, colours) every time they appear so they stay recognisable.
+  Never depict a living real person's likeness. No text in images.
+- The channel has a recurring guide character, {HOST['name']}, a cheerful time-traveller who talks straight to
+  the viewer on a plain background. Use her for asides, questions, jokes and explanations between story scenes.
 - Write in clear, simple English for a global audience.
 Answer only with JSON in the exact shape requested."""
 
@@ -42,7 +49,7 @@ Answer only with JSON in the exact shape requested."""
 def target(job):
     secs = job["length"] * (60 if job.get("lengthUnit") == "minutes" else 1)
     words = int(secs * WORDS_PER_SECOND)
-    scene_secs = 5 if job["format"] == "short" else 14
+    scene_secs = 4 if job["format"] == "short" else 5
     return secs, words, max(5, round(secs / scene_secs))
 
 
@@ -62,6 +69,10 @@ Owner's extra notes: {job.get('notes') or 'none'}
 {('Changes the owner asked for after reading the previous version (follow these closely): ' + job['revision_notes'] + chr(10)) if job.get('revision_notes') else ''}Length: about {secs} seconds of narration, so {int(words * 0.9)} to {words} words in total. Never go over {words} words.
 Number of scenes: about {scenes}. Frame each scene for {aspect}.
 Story structure to use: {structure}
+Scene mix: about one in three scenes is a "host" scene with {HOST['name']}; the rest are "story" scenes.
+Keep each scene to one or two short sentences (about {4 if job['format'] == 'short' else 5} seconds).
+When several story scenes in a row happen in the same place, set "same_place_as_previous": true on the later
+ones and describe the new action; the same background picture is reused with a different camera move.
 
 Reference material (facts must come from here or be widely documented):
 {refs}
@@ -72,9 +83,14 @@ Return JSON:
   "hook": "the opening line, spoken in the first 5 seconds",
   "scenes": [
     {{"narration": "what the narrator says in this scene",
-      "visual": "detailed illustration prompt for this scene",
-      "motion": "one gentle camera move: slow zoom in | slow zoom out | pan left | pan right | drift up | drift down",
-      "on_screen_text": "optional 1 to 4 words to show, or empty"}}
+      "kind": "story | host",
+      "visual": "for story scenes: detailed cartoon illustration prompt; for host scenes: empty",
+      "same_place_as_previous": false,
+      "motion": "slow zoom in | slow zoom out | pan left | pan right | drift up | drift down",
+      "date_label": "e.g. '1666' or '1000 BC' when the story moves to a new time, else empty",
+      "bubble": "optional speech bubble, max 6 funny words said by a character in the picture, else empty",
+      "host_pose": "for host scenes: talk | point | shrug | think | shock | wave | laugh | worried",
+      "host_text": "for host scenes: optional handwritten note or question on screen, max 8 words, else empty"}}
   ],
   "call_to_action": "the closing subscribe line (also include it in the last scene's narration)",
   "why_it_matters": "one sentence on the value this video gives viewers",
