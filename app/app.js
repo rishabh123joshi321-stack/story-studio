@@ -107,9 +107,22 @@ function shotText(s, shots) {
 $('tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-tab]'); if (b) showTab(b.dataset.tab); });
 
 // ---------- new video form ----------
+// Each dropdown is shown as tap-to-choose chips (the hidden dropdown still holds the value).
+function chipify(id) {
+  const sel = $(id);
+  let box = $(id + 'Chips');
+  if (!box) { box = document.createElement('div'); box.id = id + 'Chips'; box.className = 'chips'; sel.after(box); sel.hidden = true;
+    box.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; sel.value = b.dataset.v; paintChips(id); }); }
+  paintChips(id);
+}
+function paintChips(id) {
+  const sel = $(id);
+  $(id + 'Chips').innerHTML = [...sel.options].map((o) => `<button type="button" class="cchip${o.value === sel.value ? ' on' : ''}" data-v="${esc(o.value)}">${esc(o.textContent)}</button>`).join('');
+}
 function fillLengths() {
   $('length').innerHTML = LENGTHS[format].map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   $('length').value = format === 'short' ? '45' : '40';
+  chipify('length');
 }
 $('formatSeg').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
@@ -157,7 +170,14 @@ async function loadQueue() {
   if (!jobs.length) { list.innerHTML = '<div class="card empty">Nothing yet. Plan your first video in the New video tab.</div>'; return; }
   queueJobs = jobs;
   paintReviewCount(jobs);
-  list.innerHTML = jobs.map((j) => {
+  paintToday(jobs);
+  const f = store.get('qFilter', 'all');
+  const groups = { work: ['requested', 'scripting', 'script_ready', 'rendering', 'video_ready', 'approved', 'uploading'], ready: ['ready', 'post_yourself'], done: ['uploaded', 'posted', 'rejected'], failed: ['failed'] };
+  const shown = f === 'all' ? jobs : jobs.filter((j) => (groups[f] || []).includes(j.status));
+  $('qFilters').innerHTML = [['all', 'All'], ['work', 'In progress'], ['ready', 'Needs you'], ['done', 'Done'], ['failed', 'Problems']]
+    .map(([k, t]) => { const n = k === 'all' ? jobs.length : jobs.filter((j) => groups[k].includes(j.status)).length; return `<button type="button" class="cchip${k === f ? ' on' : ''}" data-f="${k}">${t} <span class="cnt">${n}</span></button>`; }).join('');
+  if (!shown.length) { list.innerHTML = '<div class="card empty">Nothing here.</div>'; return; }
+  list.innerHTML = shown.map((j) => {
     const cls = ['ready', 'video_ready', 'uploaded', 'post_yourself', 'posted'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering', 'uploading', 'approved'].includes(j.status) ? 'working' : '';
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
     const tap = mode() === 'github' && !['requested', 'failed', 'uploaded', 'post_yourself', 'posted'].includes(j.status);
@@ -177,10 +197,34 @@ async function loadQueue() {
     else if (j.error) extra = `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>`;
     if (['post_yourself', 'uploaded'].includes(j.status) && mode() === 'github') extra += postHelper(j);
     if (j.status === 'failed' && mode() === 'github') extra += `<button class="retry" data-id="${esc(j.id)}">Try again</button>`;
-    return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div><h3>${esc(j.topic)}</h3><div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
+    return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div class="jmain">${stepper(j.status)}<h3>${esc(j.topic)}</h3><div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
   }).join('');
 }
 let queueJobs = [];
+const STEPS = ['Script', 'Video', 'Review', 'YouTube'];
+function stepAt(st) {
+  return { requested: 0, scripting: 0, script_ready: 1, rendering: 1, video_ready: 1, ready: 2, approved: 3, uploading: 3, post_yourself: 3, uploaded: 4, posted: 4 }[st];
+}
+function stepper(st) {
+  const at = stepAt(st); if (at === undefined) return '';
+  return `<div class="steps">${STEPS.map((n, i) => `<span class="${i < at ? 'done' : i === at ? 'now' : ''}">${n}</span>`).join('')}</div>`;
+}
+// The "Today" card: what needs you now, and yesterday's numbers.
+async function paintToday(jobs) {
+  const el = $('todayCard'); if (!el) return;
+  const review = jobs.filter((j) => j.status === 'ready').length, post = jobs.filter((j) => j.status === 'post_yourself').length;
+  const making = jobs.filter((j) => ['requested', 'scripting', 'script_ready', 'rendering', 'video_ready'].includes(j.status)).length;
+  const problems = jobs.filter((j) => j.status === 'failed').length;
+  const hr = new Date().getHours(), hello = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  const todo = [review && `<b>${review}</b> to review`, post && `<b>${post}</b> to post`, problems && `<b>${problems}</b> need${problems > 1 ? '' : 's'} attention`].filter(Boolean);
+  let numbers = '';
+  try {
+    const h = mode() === 'github' ? await gh.getFile('stats/history.json') : null; const rows = (h && h.data) || [];
+    if (rows.length >= 2) { const a = rows[rows.length - 2], b = rows[rows.length - 1]; numbers = `<div class="tnum"><span>+${fmtN(Math.max(0, b.views - a.views))} views</span><span>${b.subscribers - a.subscribers >= 0 ? '+' : ''}${fmtN(b.subscribers - a.subscribers)} subscribers</span><span class="tmut">since yesterday</span></div>`; }
+  } catch { /* stats not ready yet */ }
+  el.innerHTML = `<div class="k">${hello}</div><div class="tline">${todo.length ? todo.join(' · ') : 'Nothing waiting for you right now.'}</div>
+    <div class="tmut">${making ? `${making} video${making > 1 ? 's' : ''} being made` : 'Nothing being made'}</div>${numbers}`;
+}
 // "Post it yourself": until Google's audit passes, videos sent by the app are locked Private,
 // so the owner posts them from the YouTube app with these buttons.
 function postHelper(j) {
@@ -200,6 +244,7 @@ async function copyPkg(id, what) {
   const text = what === 'tags' ? (p.tags || []).join(', ') : String(p[what] || '');
   await navigator.clipboard.writeText(text);
 }
+$('qFilters').addEventListener('click', (e) => { const b = e.target.closest('button[data-f]'); if (b) { store.set('qFilter', b.dataset.f); loadQueue(); } });
 $('queueList').addEventListener('click', async (e) => {
   const pc = e.target.closest('button.pcopy');
   if (pc) {
@@ -714,7 +759,7 @@ $('ytMsg').addEventListener('click', async (e) => {
   $('tLong').value = store.get('tLong', 3); $('tShort').value = store.get('tShort', 3);
   $('demoBtn').textContent = demo.on() ? 'Turn off demo mode' : 'Turn on demo mode';
   ['voice', 'tone', 'audience'].forEach((k) => { const v = store.get('last' + k[0].toUpperCase() + k.slice(1)); if (v) $(k).value = v; });
-  fillLengths(); paintConn();
+  fillLengths(); ['tone', 'audience', 'voice'].forEach(chipify); paintConn();
   $('ytClientId').value = store.get('ytClientId', ''); if (store.get('ytSecret', '')) $('ytSecret').placeholder = 'Saved on this tablet';
   showTab(mode() === 'none' ? 'settings' : store.get('tab', 'create'));
   ytFinish();
