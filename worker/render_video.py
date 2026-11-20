@@ -27,7 +27,7 @@ import urllib.request
 import numpy as np
 import soundfile as sf
 
-from common import HOUSE_STYLE, ROOT, UA, WorkerError, read_json, save, stale, sync, write_json
+from common import ordered_jobs, not_yet, HOUSE_STYLE, ROOT, UA, WorkerError, read_json, save, stale, sync, write_json
 from music import SR, make_music
 from overlays import cut_out_white, ensure_host, font, host_pose, sprite_prompt
 
@@ -623,9 +623,9 @@ def process(path):
 def main():
     only = os.environ.get("ONLY_JOB", "").strip()
     done = 0
-    for path in sorted((ROOT / "jobs").glob("*.json")):
+    for path in ordered_jobs():
         job = read_json(path, {})
-        if job.get("status") not in ("script_ready", "rendering") or (only and job.get("id") != only):
+        if job.get("status") not in ("script_ready", "rendering") or (only and job.get("id") != only) or not_yet(job):
             continue
         if done >= MAX_RENDERS:
             break

@@ -10,7 +10,7 @@ import random
 import sys
 import time
 
-from common import ACTIONS, CAMERAS, EFFECTS, HOST, HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
+from common import ordered_jobs, not_yet, ACTIONS, CAMERAS, EFFECTS, HOST, HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
 
 WORDS_PER_SECOND = 2.5  # about 150 words a minute, a relaxed narration pace
 MAX_JOBS_PER_RUN = int(os.environ.get("MAX_JOBS_PER_RUN", "6"))
@@ -580,11 +580,13 @@ def process(job_path):
 
 
 def main():
-    jobs = sorted((ROOT / "jobs").glob("*.json"))
+    jobs = ordered_jobs()
     done = 0
     for path in jobs:
         if done >= MAX_JOBS_PER_RUN:
             break
+        if not_yet(read_json(path, {}) or {}):
+            continue
         if process(path):
             done += 1
             time.sleep(4)

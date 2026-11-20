@@ -156,6 +156,108 @@ $('jobForm').addEventListener('submit', async (e) => {
   } finally { btn.disabled = false; btn.textContent = 'Start making it'; }
 });
 
+// ---------- presets (tone presets) ----------
+const DEFAULT_PRESETS = [
+  { name: 'Epic battle', tone: 'Epic and inspiring', theme: 'turning point', audience: 'General global audience' },
+  { name: 'Mystery', tone: 'Dramatic and suspenseful', theme: 'unsolved mystery', audience: 'General global audience' },
+  { name: 'Forgotten hero', tone: 'Curious and warm', theme: 'forgotten hero', audience: 'Curious adults new to history' },
+  { name: 'Funny fails', tone: 'Light and funny', theme: 'history’s biggest blunders', audience: 'General global audience' },
+];
+function presets() { return store.get('presets', DEFAULT_PRESETS); }
+function paintPresets() {
+  $('presetChips').innerHTML = presets().map((p, i) => `<button type="button" class="cchip" data-i="${i}">${esc(p.name)}</button>`).join('');
+}
+$('presetChips').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  const p = presets()[Number(b.dataset.i)]; if (!p) return;
+  ['tone', 'audience', 'voice'].forEach((k) => { if (p[k]) { $(k).value = p[k]; paintChips(k); } });
+  if (p.theme !== undefined) $('theme').value = p.theme;
+  if (p.notes !== undefined) $('notes').value = p.notes;
+  document.querySelectorAll('#presetChips .cchip').forEach((x) => x.classList.toggle('on', x === b));
+  toast(`Preset "${p.name}" applied`);
+});
+$('presetChips').addEventListener('contextmenu', (e) => {
+  const b = e.target.closest('button[data-i]'); if (!b) return; e.preventDefault();
+  const list = presets(); const p = list[Number(b.dataset.i)];
+  if (p && window.confirm(`Delete the preset "${p.name}"?`)) { list.splice(Number(b.dataset.i), 1); store.set('presets', list); paintPresets(); }
+});
+$('savePreset').addEventListener('click', () => {
+  const name = (window.prompt('Name for this preset (for example "Epic battle"):') || '').trim().slice(0, 30); if (!name) return;
+  const list = presets().filter((p) => p.name !== name);
+  list.push({ name, tone: $('tone').value, audience: $('audience').value, voice: $('voice').value, theme: $('theme').value.trim(), notes: $('notes').value.trim() });
+  store.set('presets', list); paintPresets(); toast('Preset saved. Long-press a preset to delete it.');
+});
+
+// ---------- week planner ----------
+$('modeSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#modeSeg button').forEach((x) => x.classList.toggle('on', x === b));
+  const week = b.dataset.v === 'week';
+  $('weekPlan').hidden = !week; $('onePlan').hidden = week;
+  if (week) loadWeek();
+});
+let wkIdeas = [], wkLen = '40';
+const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+async function loadWeek() {
+  $('wkLen').innerHTML = LENGTHS.long.map(([v, t]) => `<button type="button" class="cchip${v === wkLen ? ' on' : ''}" data-v="${v}">${t}</button>`).join('');
+  const tL = store.get('tLong', 3), tS = store.get('tShort', 3);
+  let planned = [];
+  try {
+    if (mode() === 'github') {
+      const f = await gh.getFile('ideas/latest.json'); wkIdeas = (f && f.data.ideas) || [];
+      planned = (await gh.listJobs()).filter((j) => j.plan_date);
+    }
+  } catch { /* planner works without ideas */ }
+  $('ideaTopics').innerHTML = wkIdeas.map((i) => `<option value="${esc(i.topic || i.title)}">`).join('');
+  const days = [];
+  for (let k = 1; k <= 7; k++) { const d = new Date(); d.setDate(d.getDate() + k); days.push(d); }
+  $('wkDays').innerHTML = days.map((d) => {
+    const day = isoDay(d), have = planned.filter((j) => j.plan_date === day);
+    const hl = have.filter((j) => j.format === 'long'), hs = have.filter((j) => j.format === 'short');
+    const slot = (fmt, n) => `<div class="slot"><span class="kind">${fmt === 'long' ? 'Long' : 'Short'}</span><input list="ideaTopics" data-day="${day}" data-fmt="${fmt}" placeholder="Topic ${n}"></div>`;
+    return `<div class="card wkday"><h2>${esc(d.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'short' }))}</h2>
+      ${have.map((j) => `<div class="slot done"><span class="kind">${j.format === 'long' ? 'Long' : 'Short'}</span><span>${esc(j.topic)}</span></div>`).join('')}
+      ${Array.from({ length: Math.max(0, tL - hl.length) }, (_, i) => slot('long', i + 1)).join('')}
+      ${Array.from({ length: Math.max(0, tS - hs.length) }, (_, i) => slot('short', i + 1)).join('')}</div>`;
+  }).join('');
+}
+$('wkLen').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; wkLen = b.dataset.v; document.querySelectorAll('#wkLen .cchip').forEach((x) => x.classList.toggle('on', x === b)); });
+$('wkFill').addEventListener('click', () => {
+  const used = new Set([...document.querySelectorAll('#wkDays input')].map((i) => i.value.trim()).filter(Boolean));
+  const pool = { long: wkIdeas.filter((i) => i.format === 'long'), short: wkIdeas.filter((i) => i.format !== 'long') };
+  let filled = 0;
+  document.querySelectorAll('#wkDays input').forEach((inp) => {
+    if (inp.value.trim()) return;
+    const list = pool[inp.dataset.fmt].length ? pool[inp.dataset.fmt] : wkIdeas;
+    const pick = list.find((i) => !used.has(i.topic || i.title)); if (!pick) return;
+    inp.value = pick.topic || pick.title; inp.dataset.angle = pick.angle || ''; used.add(inp.value); filled++;
+  });
+  toast(filled ? `Filled ${filled} box${filled > 1 ? 'es' : ''}. Change any you don't like.` : 'No more ideas. Ask for fresh ones in the Ideas tab.');
+});
+$('wkSave').addEventListener('click', async () => {
+  const msg = $('wkMsg'); msg.className = 'msg';
+  if (mode() === 'none') { msg.className = 'msg bad'; msg.textContent = 'Connect your GitHub project in Settings first.'; return; }
+  const items = [...document.querySelectorAll('#wkDays input')].filter((i) => i.value.trim());
+  if (!items.length) { msg.className = 'msg bad'; msg.textContent = 'Type at least one topic.'; return; }
+  const btn = $('wkSave'); btn.disabled = true;
+  let n = 0;
+  try {
+    for (const inp of items) {
+      btn.textContent = `Saving ${n + 1} of ${items.length}...`;
+      const fmt = inp.dataset.fmt;
+      const job = { id: newId(), created: new Date().toISOString(), status: 'requested', plan_date: inp.dataset.day,
+        format: fmt, length: fmt === 'long' ? Number(wkLen) : 58, lengthUnit: fmt === 'short' ? 'seconds' : 'minutes',
+        topic: inp.value.trim(), theme: inp.dataset.angle || '', tone: $('tone').value, audience: $('audience').value, voice: $('voice').value,
+        notes: '', captionFont: store.get('captionFont', 'Anton') };
+      if (mode() === 'github') await gh.saveJob(job); else demo.save(job);
+      n++; await new Promise((r) => setTimeout(r, 1100));
+    }
+    msg.className = 'msg ok'; msg.textContent = `Planned ${n} video${n > 1 ? 's' : ''}. They appear in the Queue with their dates.`;
+    toast('Week planned'); loadWeek();
+  } catch (err) { msg.className = 'msg bad'; msg.textContent = `Saved ${n}, then stopped: ${err.message}. Tap Save again for the rest.`; loadWeek(); }
+  finally { btn.disabled = false; btn.textContent = "Save the week's plan"; }
+});
+
 // ---------- queue ----------
 async function loadQueue() {
   const list = $('queueList');
@@ -193,6 +295,7 @@ async function loadQueue() {
     else if (j.status === 'rendering') extra = '<div class="meta">Pictures, voice and music are being made. Short videos take about 10 minutes, long ones up to an hour.</div>';
     else if (j.status === 'script_ready' && j.error) extra = `<div class="meta">Video retrying soon: ${esc(j.error)}</div>`;
     else if (j.status === 'script_ready') extra = j.flags ? `<div class="meta flagnote">${j.flags} fact${j.flags > 1 ? 's' : ''} to check. Tap to read.</div>` : '<div class="meta okline">All facts checked. Tap to read.</div>';
+    else if (j.status === 'requested' && j.plan_date && j.plan_date > isoDay(new Date())) extra = `<div class="meta">Planned for ${esc(new Date(j.plan_date + 'T12:00').toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'short' }))}. It starts the day before.</div>`;
     else if (j.status === 'requested' && j.error) extra = `<div class="meta">Retrying soon: ${esc(j.error)}</div>`;
     else if (j.error) extra = `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>`;
     if (['post_yourself', 'uploaded'].includes(j.status) && mode() === 'github') extra += postHelper(j);
@@ -759,7 +862,7 @@ $('ytMsg').addEventListener('click', async (e) => {
   $('tLong').value = store.get('tLong', 3); $('tShort').value = store.get('tShort', 3);
   $('demoBtn').textContent = demo.on() ? 'Turn off demo mode' : 'Turn on demo mode';
   ['voice', 'tone', 'audience'].forEach((k) => { const v = store.get('last' + k[0].toUpperCase() + k.slice(1)); if (v) $(k).value = v; });
-  fillLengths(); ['tone', 'audience', 'voice'].forEach(chipify); paintConn();
+  fillLengths(); ['tone', 'audience', 'voice'].forEach(chipify); paintPresets(); paintConn();
   $('ytClientId').value = store.get('ytClientId', ''); if (store.get('ytSecret', '')) $('ytSecret').placeholder = 'Saved on this tablet';
   showTab(mode() === 'none' ? 'settings' : store.get('tab', 'create'));
   ytFinish();
