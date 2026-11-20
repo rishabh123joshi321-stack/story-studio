@@ -1,144 +1,203 @@
 {
   "job_id": "20261120-140104-p3x5",
-  "created": "2026-11-20T10:24:15+00:00",
+  "created": "2026-11-20T11:59:44+00:00",
   "format": "short",
-  "working_title": "Did a Baker Really Burn Down London?",
-  "hook": "Everyone knows the Great Fire of London started in a bakery, but what really happened?",
+  "working_title": "How a Bakery Burned Down Most of London",
+  "hook": "Ever accidentally burned toast so badly you nearly destroyed an entire capital city?",
   "scenes": [
     {
-      "narration": "The Great Fire started in a bakery on Pudding Lane on September second, 1666.",
-      "visual": "Hand-painted gouache storybook illustration of a narrow medieval London lane at night, warm ochre and brick red palette, visible paper grain, gentle glow from a small bakery window, soft rim light, calm composition, vertical 9:16.",
+      "narration": "Ever accidentally burned toast so badly you nearly destroyed an entire capital city?",
+      "kind": "host",
+      "visual": "",
+      "same_place_as_previous": false,
       "motion": "slow zoom in",
-      "on_screen_text": "London, 1666"
+      "date_label": "",
+      "bubble": "",
+      "host_pose": "shock",
+      "host_text": "Oops!"
     },
     {
-      "narration": "It began past midnight on Pudding Lane as embers caught fuel.",
-      "visual": "Hand-painted gouache storybook illustration of a cozy dark bakery interior with glowing orange embers on a stone hearth, warm brick red and ochre tones, visible paper grain, soft rim light, calm composition, vertical 9:16 framing.",
-      "motion": "slow zoom out",
-      "on_screen_text": "Pudding Lane"
-    },
-    {
-      "narration": "Popular myth says the city was unprepared, but reality is more complex.",
-      "visual": "Hand-painted gouache storybook illustration of crowded timber houses with overhanging upper stories almost touching across an alley, teal shadows and warm ochre walls, soft depth haze, vertical 9:16.",
-      "motion": "pan right",
-      "on_screen_text": "Myth vs Fact"
-    },
-    {
-      "narration": "Historians note London was a wooden maze of houses with narrow streets.",
-      "visual": "Hand-painted gouache storybook illustration of distant wooden gables and slate roofs under a warm twilight sky, visible paper grain, soft muted palette, vertical 9:16.",
-      "motion": "drift up",
-      "on_screen_text": "Wooden City"
-    },
-    {
-      "narration": "When flames began, the Lord Mayor hesitated to order necessary demolitions.",
-      "visual": "Hand-painted gouache storybook illustration of a worried official in period dress looking at a small flickering spark near timber beams, warm ochre tones, simple silhouettes, vertical 9:16.",
+      "narration": "It started past midnight on September second, 1666, in a tiny bakery on Pudding Lane.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, a sleepy medieval bakery kitchen with glowing embers in a brick oven, wooden walls, baskets of flour, a small cute terrified cat with big wide eyes scampering away, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": false,
       "motion": "slow zoom in",
-      "on_screen_text": "Delayed Orders"
+      "date_label": "1666",
+      "bubble": "Something smells toasty!",
+      "host_pose": "talk",
+      "host_text": ""
     },
     {
-      "narration": "Fearing rebellion, officials also initially refused royal troops and help.",
-      "visual": "Hand-painted gouache storybook illustration of empty medieval cobblestone streets at dusk, dark brick red and deep teal tones, quiet atmosphere, vertical 9:16.",
+      "narration": "Step two: London was a giant wooden tinderbox with narrow streets and overhanging floors.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, extremely narrow medieval London alleyway with timber houses leaning so close together their upper storeys almost touch across the street, a few confused citizens in funny hats looking up, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": false,
       "motion": "pan left",
-      "on_screen_text": "Tense Politics"
+      "date_label": "",
+      "bubble": "Mind your head!",
+      "host_pose": "talk",
+      "host_text": ""
     },
     {
-      "narration": "Instead of spreading unchecked, the fire stopped due to two key factors.",
-      "visual": "Hand-painted gouache storybook illustration of a distant stone tower silhouette against a calming sky, soft golden rim light, paper texture, vertical 9:16.",
+      "narration": "Tara here! Houses practically hugged each other. Terrible for fire safety, great for gossip.",
+      "kind": "host",
+      "visual": "",
+      "same_place_as_previous": false,
+      "motion": "drift up",
+      "date_label": "",
+      "bubble": "",
+      "host_pose": "shrug",
+      "host_text": "Cozy houses!"
+    },
+    {
+      "narration": "Step three: The Mayor panicked, hesitating to tear down houses due to rental paperwork.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, a chubby mayor in a fancy fur-trimmed robe sweating profusely and holding his head in panic in front of burning timber houses, carrying a huge stack of paperwork, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": false,
       "motion": "slow zoom out",
-      "on_screen_text": "The Turning Point"
+      "date_label": "",
+      "bubble": "The paperwork! Oh no!",
+      "host_pose": "talk",
+      "host_text": ""
     },
     {
-      "narration": "The strong east wind dropped, and the garrison used gunpowder for firebreaks.",
-      "visual": "Hand-painted gouache storybook illustration of a tiny puff of smoke near a sturdy stone fortress wall, ochre and deep brick red palette, calm composition, vertical 9:16.",
-      "motion": "drift down",
-      "on_screen_text": "Gunpowder"
+      "narration": "By the time he approved demolitions, a roaring wind turned the blaze into a firestorm.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, a massive raging orange firestorm leaping between tall timber gables under a dark smoke-filled sky, tiny firefighters running away with long axes, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": true,
+      "motion": "drift up",
+      "date_label": "",
+      "bubble": "Run away!",
+      "host_pose": "talk",
+      "host_text": ""
     },
     {
-      "narration": "While landmarks fell, London rose again on its familiar street plan.",
-      "visual": "Hand-painted gouache storybook illustration of a classic stone monument column topped with a glowing golden urn under a soft warm sky, visible paper grain, vertical 9:16.",
+      "narration": "Step four: Panic! Rumours spread that foreign enemies tossed fireballs, causing total chaos.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, crowded medieval street full of panicked citizens carrying random furniture, pushing carts, dropping wooden buckets, with wide shocked eyes, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": false,
+      "motion": "pan right",
+      "date_label": "",
+      "bubble": "It's the foreigners!",
+      "host_pose": "talk",
+      "host_text": ""
+    },
+    {
+      "narration": "Old St Paul's Cathedral melted under the heat as the fire marched across the city.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, the grand stone dome of St Paul's Cathedral surrounded by thick billowing orange and yellow flames and dark smoke, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": false,
       "motion": "slow zoom in",
-      "on_screen_text": "Rising Again"
+      "date_label": "",
+      "bubble": "Save the books!",
+      "host_pose": "talk",
+      "host_text": ""
     },
     {
-      "narration": "History is full of surprising details. Subscribe to explore more stories.",
-      "visual": "Hand-painted gouache storybook illustration of a quiet London street at dawn, warm ochre buildings, gentle depth haze, cozy and peaceful atmosphere, vertical 9:16.",
+      "narration": "Tara again! It stopped when wind died down and troops used smart gunpowder firebreaks.",
+      "kind": "host",
+      "visual": "",
+      "same_place_as_previous": false,
+      "motion": "drift down",
+      "date_label": "",
+      "bubble": "",
+      "host_pose": "point",
+      "host_text": "Boom!"
+    },
+    {
+      "narration": "Step five: London rose from ashes, keeping winding streets and teaching a fiery lesson.",
+      "kind": "story",
+      "visual": "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, bright warm colours, a shiny new brick London street rising up next to smoking ruins, cheerful citizens placing fresh roof tiles, a golden sun peeking through clear blue skies, simple readable shapes, detailed but uncluttered background, storybook comic look, no text",
+      "same_place_as_previous": false,
       "motion": "slow zoom out",
-      "on_screen_text": "Subscribe"
+      "date_label": "",
+      "bubble": "We rebuilt it!",
+      "host_pose": "talk",
+      "host_text": ""
+    },
+    {
+      "narration": "Subscribe for more wild history stories and hit that bell!",
+      "kind": "host",
+      "visual": "",
+      "same_place_as_previous": false,
+      "motion": "slow zoom in",
+      "date_label": "",
+      "bubble": "",
+      "host_pose": "wave",
+      "host_text": "Subscribe!"
     }
   ],
-  "call_to_action": "Subscribe to explore more fascinating stories together.",
-  "why_it_matters": "Distinguishes popular myth from historical evidence regarding the Great Fire of London.",
+  "call_to_action": "Subscribe for more wild history stories and hit that bell!",
+  "why_it_matters": "Shows how a small accident escalated through systemic vulnerabilities and poor leadership into a defining urban disaster.",
   "uses_realistic_altered_content": false,
-  "structure": "Myth versus fact: state the popular version, then carefully show what the evidence actually says.",
-  "word_count": 105,
-  "estimated_seconds": 42,
+  "structure": "Countdown of the key moments that led to the outcome, building tension toward the final one.",
+  "word_count": 151,
+  "estimated_seconds": 60,
   "fact_check": {
     "claims": [
       {
         "scene": 1,
-        "claim": "The Great Fire started in a bakery on Pudding Lane on September second, 1666.",
-        "verdict": "supported",
+        "claim": "Accidentally burned toast nearly destroyed an entire capital city",
+        "verdict": "wrong",
         "source": "Great Fire of London",
-        "note": ""
+        "note": "The Great Fire started from a baker's oven left burning with brushwood by Thomas Farriner in Pudding Lane, not burned toast."
       },
       {
         "scene": 2,
-        "claim": "Popular myth says the city was unprepared, but reality is more complex.",
+        "claim": "It started past midnight on September second, 1666, in a tiny bakery on Pudding Lane",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 3,
-        "claim": "Historians note London was a wooden maze of houses with narrow streets.",
+        "claim": "London was a giant wooden tinderbox with narrow streets and overhanging floors",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 4,
-        "claim": "When flames began, the Lord Mayor hesitated to order necessary demolitions.",
+        "claim": "Houses practically hugged each other",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 5,
-        "claim": "Fearing rebellion, officials also initially refused royal troops and help.",
+        "claim": "The Mayor panicked, hesitating to tear down houses due to rental paperwork",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 6,
-        "claim": "Instead of spreading unchecked, the fire stopped due to two key factors.",
+        "claim": "By the time he approved demolitions, a roaring wind turned the blaze into a firestorm",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 7,
-        "claim": "The strong east wind dropped, and the garrison used gunpowder for firebreaks.",
+        "claim": "Rumours spread that foreign enemies tossed fireballs, causing total chaos",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 8,
-        "claim": "While landmarks fell, London rose again on its familiar street plan.",
+        "claim": "Old St Paul's Cathedral melted under the heat as the fire marched across the city",
         "verdict": "supported",
-        "source": "Great Fire of London",
-        "note": ""
+        "source": "Great Fire of London"
       },
       {
         "scene": 9,
-        "claim": "History is full of surprising details. Subscribe to explore more stories.",
+        "claim": "It stopped when wind died down and troops used smart gunpowder firebreaks",
         "verdict": "supported",
-        "source": "general knowledge",
-        "note": "Standard call-to-action phrasing."
+        "source": "Great Fire of London"
+      },
+      {
+        "scene": 10,
+        "claim": "London rose from ashes, keeping winding streets",
+        "verdict": "supported",
+        "source": "Great Fire of London"
       }
     ],
-    "summary": "Every historical claim made in the narration about the Great Fire of London is fully supported by the reference texts."
+    "summary": "Most historical facts about the Great Fire of London are accurate, except for the popular myth that the fire started from burnt toast instead of a baker's oven."
   },
   "sources": [
     {
