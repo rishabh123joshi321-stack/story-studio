@@ -112,7 +112,7 @@ def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{urllib.parse.quote(model)}:generateContent"
         for attempt in range(max_tries):
             try:
-                res = http_json(url, payload, {"x-goog-api-key": key}, timeout=240)
+                res = http_json(url, payload, {"x-goog-api-key": key}, timeout=150)
                 parts = res.get("candidates", [{}])[0].get("content", {}).get("parts", [])
                 text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
                 if not text.strip():
@@ -130,8 +130,10 @@ def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
                     time.sleep(35 * (attempt + 1))  # per-minute limit: wait, then retry
                     continue
                 if e.code in (500, 502, 503, 504):
-                    time.sleep(10 * (attempt + 1))
-                    continue
+                    if attempt == 0:  # busy: one quick retry, then move to the next model
+                        time.sleep(8)
+                        continue
+                    break
                 if e.code in (400, 401, 403) and "API key" in detail:
                     raise WorkerError("Google refused the Gemini key. Check the GEMINI_API_KEY secret.")
                 break  # 404 (model renamed) or other: try the next model

@@ -341,8 +341,17 @@ def now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
 
 
+def sync():
+    """Get the latest project files, so a stale copy never overwrites newer work."""
+    if os.environ.get("GITHUB_REPOSITORY"):
+        subprocess.run(["git", "pull", "-q", "--rebase", "origin", "main"], cwd=ROOT)
+
+
 def process(path):
+    sync()
     job = read_json(path)
+    if not job or job.get("status") != "script_ready":
+        return False
     script = read_json(ROOT / "scripts" / f"{job['id']}.json")
     if not script:
         return False
