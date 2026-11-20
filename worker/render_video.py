@@ -307,7 +307,7 @@ class Assets:
             return dest
         gw, gh = (768, 1456) if self.vertical else (1344, 832)  # a bit taller; the bottom strip is cut off
         if p.get("full"):
-            prompt = f"{p['look']}. Style: {HOUSE_STYLE}."
+            prompt = f"{p['look'][:1400]}. Style: {HOUSE_STYLE}."
         else:
             prompt = (f"{p['look']}. An empty setting with no people and no animals, background art for an animated "
                       f"film, {'tall vertical' if self.vertical else 'wide'} composition with open ground in the lower "
@@ -361,7 +361,7 @@ def _render_one(args):
 
 
 MAX_SHOT = 4.0
-FOLLOW_CAMS = ["push_in", "pan_left", "pull_out", "pan_right", "tilt_up"]
+FOLLOW_CAMS = ["close_left", "pull_out", "close_right", "push_in", "close_center", "pan_left", "close_top", "pan_right"]
 FOLLOW_ACTS = ["talk", "nod", "sway", "point", "approach", "turn"]
 
 

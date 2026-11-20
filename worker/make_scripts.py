@@ -52,6 +52,13 @@ Rules you always follow:
 - Write in clear, simple English for a global audience.
 Answer only with JSON in the exact shape requested."""
 
+SYSTEM_STILLS = SYSTEM.split("- The video is a cut-out")[0] + f"""- The video is made of rich, detailed painted pictures that look like still frames from a high-end animated
+  feature film ({HOUSE_STYLE}). Each picture shows exactly what the narration says at that moment, with the people
+  drawn inside the scene. No "Did you know?" or fact pop-ups.
+- Never depict a living real person. No text inside pictures.
+- Write in clear, simple English for a global audience.
+Answer only with JSON in the exact shape requested."""
+
 SHOT_RULES = """Each scene is one or two narration sentences with its own list of shots.
 Give one shot for every 6 to 9 words of narration (each shot lasts about 3 seconds).
 Shot fields:
@@ -335,6 +342,98 @@ def tidy(plan, scenes, short):
     return clean, cast_out, [places[p] for p in place_ids if p in used_places], guide and "guide" in used
 
 
+STILLS_RULES = """Each scene is narration plus ONE detailed picture that shows exactly what that narration describes.
+Scene fields:
+- "narration": what the narrator says (SCENE_LENGTH).
+- "picture": a rich description of one cinematic illustration for this exact moment: the setting, the people in it
+  (repeat each person's full look from the cast list every time, plus their expression and what they are doing),
+  the objects the narration mentions, the time of day, the lighting and mood, and the framing (wide establishing shot,
+  medium shot or dramatic close-up; vary them). Every picture must be different: never repeat a picture or setting
+  for a different moment. No text or signs with words. Never a living person.
+- "camera": one of push_in, pull_out, pan_left, pan_right, tilt_up (the slow camera move over the picture).
+- "effect": a gentle moving effect if it fits the moment (fire, embers, smoke, rain, snow, dust, fog, leaves, birds,
+  sparkles, lightning, water), else "none".
+- "time_label": e.g. "London, 1666" when the story jumps in time or place, else ""."""
+
+
+def write_chapter_stills(job, plan, sources, index, words, previous):
+    """Rich still pictures: one detailed illustration per scene, characters drawn inside it."""
+    short = job["format"] == "short"
+    total = len(plan["chapters"])
+    ch = plan["chapters"][index]
+    first, last = index == 0, index == total - 1
+    rules = STILLS_RULES.replace("SCENE_LENGTH", "one sentence, about 5 seconds" if short
+                                 else "two or three sentences, about 15 seconds")
+    cast = "\n".join(f"- {c.get('id')}: {c.get('look')}" for c in plan.get("cast", [])) or "(none)"
+    prompt = f"""Write {'the script' if short else f'chapter {index + 1} of {total}'} of a {'YouTube Short' if short else 'long YouTube video'} about "{job['topic']}".
+{'' if short else f'Chapter title: {ch.get("title")}' + chr(10)}What it covers: {ch.get('covers')}
+Length: {int(words * 0.9)} to {words} words of narration in total. Never go over {words} words.
+{('Start with this hook as the first sentence: ' + plan.get('hook', '')) if first else 'Carry on smoothly from the previous part, which ended: ' + previous}
+{('End with this subscribe line: ' + plan.get('call_to_action', '')) if last else 'End on a line that makes viewers want the next part (no subscribe line yet).'}
+Tone: {job.get('tone')}. Audience: {job.get('audience')}. Frame pictures for a {'vertical 9:16' if short else 'wide 16:9'} screen.
+{('Changes the owner asked for (follow closely): ' + job['revision_notes']) if job.get('revision_notes') else ''}
+
+People and things that appear (describe them exactly like this in every picture they are in):
+{cast}
+
+{rules}
+
+Reference material (facts must come from here or be widely documented):
+{_refs(sources)}
+
+Return JSON:
+{{"scenes": [{{"narration": "...", "picture": "...", "camera": "push_in", "effect": "none", "time_label": ""}}]}}"""
+    out = gemini_json(prompt, SYSTEM_STILLS, temperature=0.8)
+    scenes = out.get("scenes") if isinstance(out, dict) else out if isinstance(out, list) else None
+    if not scenes:
+        raise WorkerError("The AI returned an unusable script part. It will try again within the hour.", transient=True)
+    count = sum(len(str(s.get("narration", "")).split()) for s in scenes)
+    if count > words * 1.2 or count < words * 0.8:  # one correcting pass
+        time.sleep(4)
+        fix = gemini_json(
+            f"""This script part has {count} words of narration but needs {int(words * 0.9)} to {words} words.
+{'Shorten the narration, keeping every fact, the order and the opening and closing lines.' if count > words else
+ 'Add scenes with richer storytelling: context, causes, vivid but accurate detail and consequences, using ONLY facts from the reference material or very widely documented history.'}
+Every scene keeps the same fields, with its own detailed "picture". Return the same JSON shape: {{"scenes": [...]}}.
+
+Reference material:
+{_refs(sources) if count < words else '(not needed)'}
+
+Script part:
+{json.dumps({'scenes': scenes}, ensure_ascii=False)}""", SYSTEM_STILLS, temperature=0.5)
+        fixed = fix.get("scenes") if isinstance(fix, dict) else None
+        if fixed:
+            scenes = fixed
+    return scenes
+
+
+def stills_to_shots(parts, chapters, short):
+    """Turn still-picture scenes into the video maker's format: each picture is its own place."""
+    places, scenes = [], []
+    for i, part in enumerate(parts):
+        for n, sc in enumerate(part):
+            narration = " ".join(str(sc.get("narration", "")).split())
+            picture = " ".join(str(sc.get("picture", "")).split())
+            if not narration:
+                continue
+            if picture:
+                places.append({"id": f"c{i}_p{n}", "look": picture, "full": True})
+            elif not places:
+                continue
+            camera = str(sc.get("camera", "push_in")).lower()
+            effect = str(sc.get("effect", "none")).lower()
+            shot = {"kind": "story", "place": places[-1]["id"], "characters": [],
+                    "camera": camera if camera in CAMERAS else "push_in",
+                    "effect": effect if effect in EFFECTS else "none",
+                    "time_label": str(sc.get("time_label") or "")[:24], "fact": "", "bubble": "", "note": "", "title": ""}
+            shots = [shot]
+            if not short and n == 0:  # chapter title over the chapter's first picture
+                shots.insert(0, dict(shot, kind="title", title=" ".join(str(chapters[i].get("title", "")).split()[:7]),
+                                     camera="push_in", effect="none"))
+            scenes.append({"narration": narration, "chapter": i, "shots": shots})
+    return scenes, places
+
+
 def write_script(job, sources):
     secs, words = target(job)
     short = job["format"] == "short"
@@ -343,16 +442,27 @@ def write_script(job, sources):
     chapters = plan["chapters"][:1] if short else plan["chapters"]
     plan["chapters"] = chapters
     per = words // len(chapters)
-    scenes, chapter_marks, previous = [], [], ""
+    stills = job.get("style", "stills") == "stills"  # rich still pictures (the owner's choice, 2026-11-20)
+    scenes, chapter_marks, previous, parts = [], [], "", []
     for i, ch in enumerate(chapters):
         time.sleep(4)  # stay well inside the free per-minute limit
         print(f"  writing part {i + 1} of {len(chapters)}", flush=True)
-        part = write_chapter(job, plan, sources, i, per, previous)
-        for sc in part:
-            sc["chapter"] = i
-        scenes += part
+        if stills:
+            part = write_chapter_stills(job, plan, sources, i, per, previous)
+            parts.append(part)
+        else:
+            part = write_chapter(job, plan, sources, i, per, previous)
+            for sc in part:
+                sc["chapter"] = i
+            scenes += part
         previous = " ".join(str(s.get("narration", "")) for s in part[-2:])[-400:]
-    clean, cast, places, guide = tidy(plan, scenes, short)
+    if stills:
+        clean, places = stills_to_shots(parts, chapters, short)
+        cast, guide = [], False
+        if not places:
+            raise WorkerError("The AI script had no pictures. It will try again within the hour.", transient=True)
+    else:
+        clean, cast, places, guide = tidy(plan, scenes, short)
     for i, ch in enumerate(chapters):
         first = next((n for n, sc in enumerate(clean) if sc["chapter"] == i), None)
         if first is not None:
@@ -361,7 +471,7 @@ def write_script(job, sources):
         "working_title": plan.get("working_title", job["topic"]),
         "hook": plan.get("hook", ""),
         "structure": structure,
-        "style": "animated-v2",
+        "style": "stills" if stills else "animated-v2",
         "cast": cast,
         "places": places,
         "use_guide": guide,

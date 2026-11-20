@@ -302,6 +302,10 @@ def camera_box(kind, t, secs, bw, bh, W, H):
         z, cx = 1.08, 0.42 + 0.16 * ease(t)
     elif kind == "tilt_up":
         z, cy = 1.08, 0.58 - 0.16 * ease(t)
+    elif kind in ("close_left", "close_right", "close_center", "close_top"):  # tighter framings of the same picture
+        z = 1.5 + 0.06 * ease(t)
+        cx = {"close_left": 0.33 - 0.03 * ease(t), "close_right": 0.67 + 0.03 * ease(t)}.get(kind, 0.5)
+        cy = {"close_top": 0.36, "close_center": 0.48}.get(kind, 0.5)
     elif kind == "crash_zoom":
         z = 1.0 + 0.25 * (1 - ease(now / 0.35))
     else:  # static: a barely-there drift so the frame never looks frozen
