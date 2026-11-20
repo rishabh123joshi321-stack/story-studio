@@ -64,3 +64,6 @@ jobs:
         if: steps.check.outputs.go == 'yes' && matrix.kind == 'long'
         env: { RENDER_FORMAT: '', CLIPS_ONLY: '1' }
         run: python worker/package.py
+      - name: Subtitles in other languages
+        if: steps.check.outputs.go == 'yes'
+        run: python worker/translate.py
