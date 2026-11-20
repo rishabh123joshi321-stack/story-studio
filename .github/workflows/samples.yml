@@ -1,0 +1,20 @@
+name: Make samples
+# Sample characters and a short clip, to choose the look. Only started by hand; never changes videos.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  samples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: |
+          which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
+          pip install -q -r worker/requirements.txt gradio_client
+      - run: python tools/make_samples.py
