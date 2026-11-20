@@ -1,7 +1,7 @@
 {
   "id": "20261121-051615-3wma",
   "created": "2026-11-20T23:46:15.669Z",
-  "status": "script_ready",
+  "status": "rendering",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -18,6 +18,6 @@
   ],
   "intro": true,
   "quote_voice": true,
-  "updated": "2026-11-20T23:55:53+00:00",
+  "updated": "2026-11-20T23:56:32+00:00",
   "flags": 0
 }
