@@ -5,7 +5,7 @@ import textwrap
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-from common import HOST, ROOT
+from common import HOST, ROOT, SPRITE_STYLE
 
 FONTS = {  # all SIL Open Font License
     "Anton-Regular.ttf": "https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf",
@@ -13,7 +13,7 @@ FONTS = {  # all SIL Open Font License
 }
 INK = (29, 34, 40)
 PAPER = (236, 229, 214)
-HOST_DIR = ROOT / "assets" / "host"
+HOST_DIR = ROOT / "assets" / "guide"  # painted guide poses, drawn once and reused
 
 
 def font(cache, name, size):
@@ -151,14 +151,21 @@ def cut_out_white(src, dest):
     out = im.convert("RGBA")
     out.putalpha(alpha)
     bbox = alpha.point(lambda v: 255 if v > 40 else 0).getbbox()
-    if not bbox or (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]) < 0.05 * w * h:
-        raise RuntimeError("could not separate the character from the background")
+    clear = alpha.histogram()[0] / (w * h)
+    if not bbox or (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]) < 0.03 * w * h or clear < 0.15:
+        raise RuntimeError("could not separate the figure from the background")
     out.crop(bbox).save(dest)
     return dest
 
 
+def sprite_prompt(look, pose, kind="person"):
+    body = "full body from head to feet, standing on nothing" if kind in ("person", "animal") else "the whole object"
+    return (f"{look}, {pose}, {body}, one single {kind}, centered, isolated on a plain pure white background, "
+            f"no scenery, no floor, no shadow. Style: {SPRITE_STYLE}")
+
+
 def ensure_host(illustrate, log=print):
-    """Draw any missing guide poses once; they are saved in assets/host/ and reused for every video."""
+    """Draw any missing guide poses once; they are saved in assets/guide/ and reused for every video."""
     HOST_DIR.mkdir(parents=True, exist_ok=True)
     made = []
     for pose, desc in HOST["poses"].items():
@@ -166,18 +173,18 @@ def ensure_host(illustrate, log=print):
         if dest.exists():
             continue
         raw = HOST_DIR / f"_{pose}_raw.png"
-        prompt = (f"{HOST['look']}, {desc}, full body from head to boots, centered, isolated on a plain pure white "
-                  f"background, cartoon character design sheet, no shadow, no scenery, no text")
-        ok = illustrate(prompt, 768, 1152, 42424, raw, raw_prompt=True)
-        try:
-            if ok:
-                cut_out_white(raw, dest)
-                made.append(pose)
-                log(f"  guide pose '{pose}' drawn")
-        except Exception as e:
-            log(f"  guide pose '{pose}' failed: {e}")
-        finally:
-            raw.unlink(missing_ok=True)
+        for attempt in range(2):
+            ok = illustrate(sprite_prompt(HOST["look"], desc), 768, 1216, 42424 + attempt * 101, raw, raw_prompt=True)
+            try:
+                if ok:
+                    cut_out_white(raw, dest)
+                    made.append(pose)
+                    log(f"  guide pose '{pose}' drawn")
+                    break
+            except Exception as e:
+                log(f"  guide pose '{pose}' failed: {e}")
+            finally:
+                raw.unlink(missing_ok=True)
     return made
 
 

@@ -23,19 +23,36 @@ _models_cache = None
 # The channel's own visual identity. Every scene prompt is written for this,
 # so the look stays consistent and original (not modelled on any channel).
 HOUSE_STYLE = (
-    "flat 2D cartoon illustration, bold clean dark outlines, simple cel shading, "
-    "bright warm colours, big expressive comedic faces with exaggerated emotions, "
-    "simple readable shapes, detailed but uncluttered backgrounds, storybook comic look, "
+    "hand-painted gouache storybook illustration, warm muted palette of ochre, "
+    "teal and deep brick red, visible paper grain, bold simple shapes and "
+    "silhouettes, soft rim light, gentle depth haze, expressive faces, "
     "no text, no letters, no logos, no watermarks"
 )
+
+# Characters and objects are drawn separately on white, then cut out and animated over empty backgrounds.
+SPRITE_STYLE = (
+    "hand-painted gouache storybook character art, warm muted palette of ochre, teal and deep brick red, "
+    "bold simple shapes, clean confident outline, expressive face, soft even light, "
+    "no text, no letters, no logos, no watermarks"
+)
+
+# What the animation engine (animate.py) can do; the script writer may only use these.
+ACTIONS = ["stand", "talk", "nod", "shake_head", "walk_in_left", "walk_in_right", "walk_out_left", "walk_out_right",
+           "run_across", "jump", "celebrate", "tremble", "fall", "appear", "disappear", "approach", "retreat", "sneak",
+           "turn", "strike", "point", "bow", "sway",
+           # mostly for things: ships, carts, birds, crowns, cannonballs...
+           "fly_across", "drop_in", "float", "spin", "sail_across"]
+EFFECTS = ["none", "fire", "embers", "smoke", "rain", "snow", "dust", "sparkles", "fog", "lightning", "shake",
+           "glow", "leaves", "birds", "explosion", "water"]
+CAMERAS = ["static", "push_in", "pull_out", "pan_left", "pan_right", "tilt_up", "shake", "crash_zoom"]
 
 # The channel's own recurring guide (an original design, not based on any other channel).
 HOST = {
     "name": "Tara",
-    "look": ("a cheerful young time-traveller girl drawn as a simple cartoon, round face, big curious eyes, "
+    "look": ("a cheerful young time-traveller girl, round friendly face, big curious eyes, "
              "short messy black hair under brass explorer goggles worn on her head, mustard-yellow jacket with "
              "rolled sleeves, teal scarf, brown satchel bag across her body, a rolled-up old map in one hand, "
-             "brown boots, thin dark outlines, flat colours"),
+             "brown boots"),
     "poses": {
         "talk": "standing facing the viewer, mouth open mid-sentence, one hand gesturing",
         "point": "pointing to the side with one arm stretched out, excited grin",
