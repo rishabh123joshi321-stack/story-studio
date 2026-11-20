@@ -30,7 +30,7 @@ for u in ("https://image.pollinations.ai/models", "https://gen.pollinations.ai/i
     code, body, _ = get(u, 60)
     print(u, code, body[:1500].decode("utf-8", "replace"))
 
-tests = json.loads(os.environ.get("LAB_TESTS", "[]")) or [
+tests = json.loads(os.environ.get("LAB_TESTS") or "[]") or [
     {"name": "tara_now", "model": "flux", "w": 768, "h": 1216,
      "prompt": f"{HOST['look']}, standing facing the viewer, one hand gesturing, full body from head to feet, one single person, centered, isolated on a plain pure white background, no scenery, no floor, no shadow. Style: {SPRITE_STYLE}"},
     {"name": "tara_stylefirst", "model": "flux", "w": 768, "h": 1216,
