@@ -14,7 +14,7 @@ const LENGTHS = {
   long: [['8', '8 minutes'], ['10', '10 minutes'], ['12', '12 minutes'], ['15', '15 minutes'], ['20', '20 minutes']],
 };
 const STATUS_TEXT = {
-  requested: 'Waiting to start', scripting: 'Writing script', rendering: 'Making video',
+  requested: 'Waiting to start', scripting: 'Writing script', script_ready: 'Script ready', rendering: 'Making video',
   ready: 'Ready to review', approved: 'Approved', scheduled: 'Scheduled', uploaded: 'Uploaded',
   rejected: 'Rejected', failed: 'Needs attention',
 };
@@ -27,6 +27,7 @@ function toast(text) {
   clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 3000);
 }
 function esc(s) { return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function unb64(b) { const bin = atob(String(b).replace(/\s/g, '')); return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0))); }
 function b64(str) { const bytes = new TextEncoder().encode(str); let bin = ''; bytes.forEach((b) => { bin += String.fromCharCode(b); }); return btoa(bin); }
 function newId() { const d = new Date(); const p = (n) => String(n).padStart(2, '0'); return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}-${Math.random().toString(36).slice(2, 6)}`; }
 function isToday(iso) { return new Date(iso).toDateString() === new Date().toDateString(); }
@@ -47,6 +48,13 @@ const gh = {
   async test() { return this.call(''); },
   async saveJob(job) {
     return this.call(`/contents/jobs/${job.id}.json`, { method: 'PUT', body: JSON.stringify({ message: `New video request: ${job.topic.slice(0, 60)}`, content: b64(JSON.stringify(job, null, 2) + '\n') }) });
+  },
+  async getFile(path) {
+    try { const f = await this.call(`/contents/${path}`); return { sha: f.sha, data: JSON.parse(unb64(f.content)) }; }
+    catch (e) { if (e.status === 404) return null; throw e; }
+  },
+  async putFile(path, data, message, sha) {
+    return this.call(`/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message, content: b64(JSON.stringify(data, null, 2) + '\n'), ...(sha ? { sha } : {}) }) });
   },
   async listJobs() {
     let files;
@@ -73,10 +81,11 @@ function paintConn() {
 
 // ---------- tabs ----------
 function showTab(name) {
-  document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
+  document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === name || (name === 'script' && b.dataset.tab === 'queue')));
   document.querySelectorAll('.tab').forEach((s) => s.classList.toggle('on', s.id === 'tab-' + name));
-  store.set('tab', name);
+  if (name !== 'script') store.set('tab', name);
   if (name === 'queue') loadQueue();
+  if (name === 'ideas') loadIdeas();
 }
 $('tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-tab]'); if (b) showTab(b.dataset.tab); });
 
@@ -128,12 +137,107 @@ async function loadQueue() {
   const tL = store.get('tLong', 2), tS = store.get('tShort', 4);
   $('dailyBar').innerHTML = `<div><b>${today.filter((j) => j.format === 'long').length} / ${tL}</b>long videos planned today</div><div><b>${today.filter((j) => j.format === 'short').length} / ${tS}</b>Shorts planned today</div>`;
   if (!jobs.length) { list.innerHTML = '<div class="card empty">Nothing yet. Plan your first video in the New video tab.</div>'; return; }
+  queueJobs = jobs;
   list.innerHTML = jobs.map((j) => {
-    const cls = j.status === 'ready' ? 'ready' : j.status === 'failed' ? 'failed' : ['scripting', 'rendering'].includes(j.status) ? 'working' : '';
+    const cls = j.status === 'ready' ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering'].includes(j.status) ? 'working' : '';
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-    return `<div class="card job"><div><h3>${esc(j.topic)}</h3><div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${j.error ? `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>` : ''}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
+    const tap = mode() === 'github' && !['requested', 'failed'].includes(j.status);
+    let extra = '';
+    if (j.status === 'script_ready') extra = j.flags ? `<div class="meta flagnote">${j.flags} fact${j.flags > 1 ? 's' : ''} to check. Tap to read.</div>` : '<div class="meta okline">All facts checked. Tap to read.</div>';
+    else if (j.status === 'requested' && j.error) extra = `<div class="meta">Retrying soon: ${esc(j.error)}</div>`;
+    else if (j.error) extra = `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>`;
+    if (j.status === 'failed' && mode() === 'github') extra += `<button class="retry" data-id="${esc(j.id)}">Try again</button>`;
+    return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div><h3>${esc(j.topic)}</h3><div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
   }).join('');
 }
+let queueJobs = [];
+$('queueList').addEventListener('click', async (e) => {
+  const retry = e.target.closest('button.retry');
+  if (retry) {
+    e.stopPropagation(); retry.disabled = true; retry.textContent = 'Sending...';
+    try {
+      const f = await gh.getFile(`jobs/${retry.dataset.id}.json`);
+      if (!f) throw new Error('not found');
+      const job = { ...f.data, status: 'requested' }; delete job.error; delete job.attempts;
+      await gh.putFile(`jobs/${job.id}.json`, job, `Try again: ${job.topic.slice(0, 60)}`, f.sha);
+      toast('Sent again. Check back in a few minutes.'); loadQueue();
+    } catch (err) { toast('Could not send: ' + err.message); retry.disabled = false; retry.textContent = 'Try again'; }
+    return;
+  }
+  const card = e.target.closest('.job.tap'); if (!card) return;
+  const job = queueJobs.find((j) => j.id === card.dataset.id);
+  if (job && job.status !== 'failed') openScript(job);
+});
+
+// ---------- script view ----------
+async function openScript(job) {
+  showTab('script');
+  const v = $('scriptView');
+  v.innerHTML = '<div class="card empty">Loading script...</div>';
+  let f;
+  try { f = await gh.getFile(`scripts/${job.id}.json`); } catch (err) { v.innerHTML = `<div class="card empty">Could not load (${esc(err.message)}).</div>`; return; }
+  if (!f) { v.innerHTML = '<div class="card empty">The script is not saved yet. Try again in a few minutes.</div>'; return; }
+  const s = f.data;
+  const claims = (s.fact_check && s.fact_check.claims) || [];
+  const flagged = claims.filter((c) => c.verdict !== 'supported');
+  const mins = Math.floor((s.estimated_seconds || 0) / 60), secs = (s.estimated_seconds || 0) % 60;
+  v.innerHTML = `
+    <h1>${esc(s.working_title || job.topic)}</h1>
+    <p class="hint">${job.format === 'short' ? 'Short' : 'Long video'} · ${s.word_count || '?'} words · about ${mins ? mins + ' min ' : ''}${secs} sec · ${(s.scenes || []).length} scenes</p>
+    <div class="card"><h2>Opening hook</h2><p class="hookline">${esc(s.hook)}</p>${s.why_it_matters ? `<p class="hint" style="margin-top:10px">Why it matters: ${esc(s.why_it_matters)}</p>` : ''}</div>
+    <div class="card"><h2>Fact check</h2>
+      ${flagged.length ? `<p class="flagnote">${flagged.length} thing${flagged.length > 1 ? 's' : ''} for you to check before this becomes a video:</p>` : `<p class="okline">All ${claims.length} facts were backed by the sources.</p>`}
+      ${flagged.map((c) => `<div class="fact ${c.verdict === 'wrong' ? 'wrong' : ''}"><b>Scene ${esc(c.scene)}: ${c.verdict === 'wrong' ? 'Probably wrong' : 'Not certain'}</b>${esc(c.claim)}${c.note ? `<div class="meta">${esc(c.note)}</div>` : ''}</div>`).join('')}
+      ${s.fact_check && s.fact_check.summary ? `<p class="hint" style="margin-top:10px">${esc(s.fact_check.summary)}</p>` : ''}
+    </div>
+    <div class="card"><h2>Script</h2>
+      ${(s.scenes || []).map((sc, i) => `<div class="scene"><p><span class="n">${i + 1}</span>${esc(sc.narration)}</p><div class="meta">Picture: ${esc(sc.visual)}${sc.motion ? ` (${esc(sc.motion)})` : ''}</div></div>`).join('')}
+    </div>
+    ${(s.sources || []).length ? `<div class="card"><h2>Sources</h2>${s.sources.map((x) => `<p><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></p>`).join('')}</div>` : ''}
+    <p class="hint">In the next stage this script turns into a video automatically. Editing and approving come in the Review tab later.</p>`;
+}
+$('backToQueue').addEventListener('click', () => showTab('queue'));
+
+// ---------- ideas ----------
+let ideaCache = [];
+async function loadIdeas() {
+  const list = $('ideasList');
+  if (mode() !== 'github') { list.innerHTML = '<div class="card empty">Connect your GitHub project in Settings to get ideas.</div>'; return; }
+  list.innerHTML = '<div class="card empty">Loading ideas...</div>';
+  let f;
+  try { f = await gh.getFile('ideas/latest.json'); } catch (err) { list.innerHTML = `<div class="card empty">Could not load ideas (${esc(err.message)}).</div>`; return; }
+  if (!f) { list.innerHTML = '<div class="card empty">No ideas yet. Tap <b>Get fresh ideas</b> and check back in about 5 minutes.</div>'; return; }
+  ideaCache = f.data.ideas || [];
+  const when = new Date(f.data.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+  list.innerHTML = `<p class="hint">Made ${when}${f.data.focus ? ` · about "${esc(f.data.focus)}"` : ''}</p>` + ideaCache.map((i, n) => `
+    <div class="card idea"><span class="score">${i.score}</span>
+      <span class="kind">${esc(i.kind)}</span><span class="kind">${i.format === 'long' ? 'Long' : 'Short'}</span>
+      <h3>${esc(i.title || i.topic)}</h3>
+      <p>${esc(i.angle)}</p>
+      <div class="meta">${esc(i.signal)}${i.publish_by ? ` · publish by ${esc(i.publish_by)}` : ''}</div>
+      <button class="use" data-n="${n}">Use this</button>
+    </div>`).join('');
+}
+$('ideasList').addEventListener('click', (e) => {
+  const b = e.target.closest('button.use'); if (!b) return;
+  const i = ideaCache[Number(b.dataset.n)]; if (!i) return;
+  const fmt = i.format === 'long' ? 'long' : 'short';
+  document.querySelector(`#formatSeg button[data-v="${fmt}"]`).click();
+  $('topic').value = i.topic || i.title || ''; $('theme').value = i.angle || '';
+  showTab('create'); window.scrollTo(0, 0); toast('Idea added. Check the details, then tap Start making it.');
+});
+$('refreshIdeas').addEventListener('click', loadIdeas);
+$('askIdeas').addEventListener('click', async () => {
+  const msg = $('ideasMsg'); msg.className = 'msg';
+  if (mode() !== 'github') { msg.className = 'msg bad'; msg.textContent = 'Connect your GitHub project in Settings first.'; return; }
+  const btn = $('askIdeas'); btn.disabled = true; btn.textContent = 'Asking...';
+  try {
+    const old = await gh.getFile('requests/ideas.json');
+    await gh.putFile('requests/ideas.json', { requested: new Date().toISOString(), focus: $('ideaFocus').value.trim() }, 'Ask for fresh topic ideas', old && old.sha);
+    msg.className = 'msg ok'; msg.textContent = 'Asked! New ideas usually arrive in about 5 minutes. Tap Refresh then.';
+  } catch (err) { msg.className = 'msg bad'; msg.textContent = 'Could not ask: ' + err.message; }
+  finally { btn.disabled = false; btn.textContent = 'Get fresh ideas'; }
+});
 $('refreshQueue').addEventListener('click', loadQueue);
 
 // ---------- settings ----------

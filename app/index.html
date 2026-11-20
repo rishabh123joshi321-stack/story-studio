@@ -87,7 +87,24 @@
     <div id="queueList"></div>
   </section>
 
-  <section id="tab-ideas" class="tab"><h1>Topic ideas</h1><div class="card soon">Coming in Stage 2: trending and evergreen topic ideas, ranked, with one tap to use them.</div></section>
+  <!-- IDEAS -->
+  <section id="tab-ideas" class="tab">
+    <div class="row"><h1>Topic ideas</h1><button id="refreshIdeas" class="ghost">Refresh</button></div>
+    <p class="hint">Fresh ideas arrive every morning, ranked by how likely viewers are to watch. Tap <b>Use this</b> to plan a video from one.</p>
+    <div class="card">
+      <label for="ideaFocus">Want ideas about something specific? (optional)</label>
+      <input id="ideaFocus" placeholder="e.g. ancient India, inventions, the ocean, World War II">
+      <button class="primary" id="askIdeas">Get fresh ideas</button>
+      <p id="ideasMsg" class="msg"></p>
+    </div>
+    <div id="ideasList"></div>
+  </section>
+
+  <!-- SCRIPT VIEW -->
+  <section id="tab-script" class="tab">
+    <button id="backToQueue" class="ghost">&larr; Back to queue</button>
+    <div id="scriptView"></div>
+  </section>
   <section id="tab-review" class="tab"><h1>Review</h1><div class="card soon">Coming in Stage 5: watch each finished video and tap Approve, Edit, Regenerate, or Reject.</div></section>
   <section id="tab-stats" class="tab"><h1>Dashboard</h1><div class="card soon">Coming in Stage 7: views, watch time, subscribers, and your progress toward the Partner Program.</div></section>
   <section id="tab-money" class="tab"><h1>Income</h1><div class="card soon">Coming in Stage 8: your affiliate links and a media-kit page for sponsors.</div></section>

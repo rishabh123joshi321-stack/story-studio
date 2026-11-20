@@ -1,0 +1,145 @@
+"""Shared helpers for the Story Studio cloud workers.
+
+Standard library only, so the GitHub Actions job needs nothing installed.
+"""
+import json
+import os
+import pathlib
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+UA = "StoryStudio/1.0 (open-source video script tool)"
+
+# Free-tier Gemini models, tried in order. Override with the GEMINI_MODELS
+# repository variable if Google renames them.
+DEFAULT_MODELS = "gemini-flash-latest,gemini-2.5-flash,gemini-2.0-flash"
+
+# The channel's own visual identity. Every scene prompt is written for this,
+# so the look stays consistent and original (not modelled on any channel).
+HOUSE_STYLE = (
+    "hand-painted gouache storybook illustration, warm muted palette of ochre, "
+    "teal and deep brick red, visible paper grain, bold simple shapes and "
+    "silhouettes, soft rim light, gentle depth haze, calm composition, "
+    "no text, no letters, no logos, no watermarks"
+)
+
+
+class WorkerError(Exception):
+    """An error with a message the channel owner can understand."""
+
+    def __init__(self, message, transient=False):
+        super().__init__(message)
+        self.transient = transient
+
+
+def read_json(path, default=None):
+    try:
+        return json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
+
+
+def write_json(path, data):
+    path = pathlib.Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def http_json(url, data=None, headers=None, timeout=90):
+    body = json.dumps(data).encode() if data is not None else None
+    req = urllib.request.Request(url, data=body, headers={"User-Agent": UA, **(headers or {})})
+    if body is not None:
+        req.add_header("Content-Type", "application/json")
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+# ---------------------------------------------------------------- Gemini
+def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
+    """Ask Gemini for a JSON answer. Tries each free model in turn."""
+    key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not key:
+        raise WorkerError("The Gemini key is missing. Add it as the GEMINI_API_KEY secret in GitHub.")
+    models = [m.strip() for m in (os.environ.get("GEMINI_MODELS") or DEFAULT_MODELS).split(",") if m.strip()]
+    payload = {
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"},
+    }
+    if system:
+        payload["systemInstruction"] = {"parts": [{"text": system}]}
+    last = "no model answered"
+    for model in models:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{urllib.parse.quote(model)}:generateContent"
+        for attempt in range(max_tries):
+            try:
+                res = http_json(url, payload, {"x-goog-api-key": key}, timeout=240)
+                parts = res.get("candidates", [{}])[0].get("content", {}).get("parts", [])
+                text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
+                if not text.strip():
+                    last = f"{model} returned an empty answer"
+                    break
+                return parse_json_text(text)
+            except urllib.error.HTTPError as e:
+                detail = e.read().decode("utf-8", "replace")[:300]
+                last = f"{model}: HTTP {e.code} {detail}"
+                if e.code == 429:  # free-tier rate limit: wait, then try again
+                    time.sleep(35 * (attempt + 1))
+                    continue
+                if e.code in (500, 502, 503, 504):
+                    time.sleep(10 * (attempt + 1))
+                    continue
+                if e.code in (400, 401, 403) and "API key" in detail:
+                    raise WorkerError("Google refused the Gemini key. Check the GEMINI_API_KEY secret.")
+                break  # 404 (model renamed) or other: try the next model
+            except (urllib.error.URLError, TimeoutError, ValueError) as e:
+                last = f"{model}: {e}"
+                time.sleep(5)
+    raise WorkerError(f"The AI service did not answer ({last[:160]}). It will try again within the hour.", transient=True)
+
+
+def parse_json_text(text):
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        text = text[text.find("\n") + 1:] if "\n" in text else text
+    start = min([i for i in (text.find("{"), text.find("[")) if i >= 0], default=0)
+    return json.loads(text[start:])
+
+
+# ---------------------------------------------------------------- Wikipedia
+WIKI_API = "https://en.wikipedia.org/w/api.php"
+
+
+def wiki_search(query, limit=3):
+    q = urllib.parse.urlencode({"action": "query", "list": "search", "srsearch": query,
+                                "srlimit": limit, "format": "json", "formatversion": 2})
+    try:
+        return [h["title"] for h in http_json(f"{WIKI_API}?{q}")["query"]["search"]]
+    except Exception:
+        return []
+
+
+def wiki_extract(title, max_chars=12000):
+    q = urllib.parse.urlencode({"action": "query", "prop": "extracts", "explaintext": 1, "redirects": 1,
+                                "titles": title, "format": "json", "formatversion": 2})
+    try:
+        page = http_json(f"{WIKI_API}?{q}")["query"]["pages"][0]
+        text = page.get("extract", "")
+        return {"title": page.get("title", title), "text": text[:max_chars],
+                "url": "https://en.wikipedia.org/wiki/" + urllib.parse.quote(page.get("title", title).replace(" ", "_"))}
+    except Exception:
+        return None
+
+
+def research(topic, theme="", max_pages=3):
+    """Collect reference text for a topic, so the script is grounded in sources."""
+    titles = []
+    for q in (topic, f"{topic} {theme}".strip()):
+        for t in wiki_search(q):
+            if t not in titles:
+                titles.append(t)
+    pages = [p for p in (wiki_extract(t) for t in titles[:max_pages]) if p and p["text"]]
+    return pages
