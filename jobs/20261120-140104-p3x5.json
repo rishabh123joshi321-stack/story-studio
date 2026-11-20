@@ -1,7 +1,7 @@
 {
   "id": "20261120-140104-p3x5",
   "created": "2026-11-20T08:31:04.241Z",
-  "status": "rendering",
+  "status": "requested",
   "format": "short",
   "length": 45,
   "lengthUnit": "seconds",
@@ -16,6 +16,6 @@
   "video_seconds": 53.6,
   "render_minutes": 8.8,
   "title": "Great Fire of London: Did a baker really burn the city?",
-  "revision": 2,
+  "revision": 3,
   "flags": 0
 }

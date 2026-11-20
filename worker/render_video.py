@@ -11,6 +11,7 @@ For each job with status "script_ready":
 import datetime
 import hashlib
 import json
+import math
 import os
 import pathlib
 import random
@@ -313,6 +314,36 @@ def _render_one(args):
     return str(out)
 
 
+MAX_SHOT = 4.0
+FOLLOW_CAMS = ["push_in", "pan_left", "pull_out", "pan_right", "tilt_up"]
+FOLLOW_ACTS = ["talk", "nod", "sway", "point", "approach", "turn"]
+
+
+def split_long(shots, frames):
+    """Cut any shot that would last longer than MAX_SHOT seconds into a few shorter ones,
+    each with a new camera move and the characters doing something new."""
+    per = frames / len(shots) / FPS
+    if per <= MAX_SHOT:
+        return shots
+    pieces = math.ceil(per / 3.2)
+    out = []
+    for n, sh in enumerate(shots):
+        out.append(sh)
+        for k in range(1, pieces):
+            follow = json.loads(json.dumps(sh))
+            follow["camera"] = FOLLOW_CAMS[(n + k) % len(FOLLOW_CAMS)]
+            for j, c in enumerate(follow.get("characters", [])):
+                if c.get("then_pose"):
+                    c["pose"], c["then_pose"] = c["then_pose"], ""
+                c["action"] = FOLLOW_ACTS[(n + k + j) % len(FOLLOW_ACTS)]
+            for key in ("fact", "title", "time_label", "bubble"):
+                follow[key] = ""
+            if follow["kind"] == "title":
+                follow["kind"] = "story"
+            out.append(follow)
+    return out
+
+
 # ---------------------------------------------------------------- assembly
 def render(job, script, out_dir):
     vertical = job["format"] == "short"
@@ -400,6 +431,7 @@ def render(job, script, out_dir):
         shots = [sh for sh in sc.get("shots", []) if sh["kind"] != "guide" or guide_ok] or \
                 [{"kind": "story", "place": place_ids[0], "characters": [], "camera": "push_in", "effect": "none"}]
         shots = shots[:max(1, frames // int(FPS * 1.4))]  # every shot stays on screen at least 1.4 s
+        shots = split_long(shots, frames)  # never hold one picture longer than about 4 s
         cuts = [round(frames * k / len(shots)) for k in range(len(shots) + 1)]
         for k, sh in enumerate(shots):
             n = cuts[k + 1] - cuts[k]
