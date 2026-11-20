@@ -15,7 +15,7 @@ const LENGTHS = {
 };
 const STATUS_TEXT = {
   requested: 'Waiting to start', scripting: 'Writing script', script_ready: 'Script ready', rendering: 'Making video', video_ready: 'Video ready',
-  ready: 'Ready to review', approved: 'Approved', scheduled: 'Scheduled', uploaded: 'Uploaded',
+  ready: 'Ready to review', approved: 'Approved', uploading: 'Uploading', scheduled: 'Scheduled', uploaded: 'On YouTube (private)',
   rejected: 'Rejected', failed: 'Needs attention',
 };
 
@@ -156,12 +156,16 @@ async function loadQueue() {
   queueJobs = jobs;
   paintReviewCount(jobs);
   list.innerHTML = jobs.map((j) => {
-    const cls = ['ready', 'video_ready'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering'].includes(j.status) ? 'working' : '';
+    const cls = ['ready', 'video_ready', 'uploaded'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering', 'uploading', 'approved'].includes(j.status) ? 'working' : '';
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-    const tap = mode() === 'github' && !['requested', 'failed'].includes(j.status);
+    const tap = mode() === 'github' && !['requested', 'failed', 'uploaded'].includes(j.status);
     let extra = '';
     if (j.status === 'ready') extra = `<div class="meta okline">${j.title ? esc(j.title) + '. ' : ''}Video, title and description are ready. Tap to see.</div>`;
     else if (j.status === 'video_ready') extra = `<div class="meta okline">Video made${j.video_seconds ? ` (${Math.floor(j.video_seconds / 60)}:${String(Math.round(j.video_seconds % 60)).padStart(2, '0')})` : ''}. Tap to watch.</div>`;
+    else if (j.status === 'uploaded') extra = `<div class="meta okline">On YouTube as Private. <a href="${esc(j.youtube_studio || j.youtube_url)}" target="_blank" rel="noopener">Open in YouTube Studio</a> to make it Public or schedule it.</div>${j.note ? `<div class="meta">${esc(j.note)}</div>` : ''}`;
+    else if (j.status === 'approved' && j.error) extra = `<div class="meta flagnote">Upload waiting: ${esc(j.error)}</div>`;
+    else if (j.status === 'approved') extra = '<div class="meta">Approved. It will be uploaded to YouTube (as Private) within a few minutes.</div>';
+    else if (j.status === 'uploading') extra = '<div class="meta">Sending to YouTube now. Long videos can take 10 to 20 minutes.</div>';
     else if (j.status === 'rendering') extra = '<div class="meta">Pictures, voice and music are being made. Short videos take about 10 minutes, long ones up to an hour.</div>';
     else if (j.status === 'script_ready' && j.error) extra = `<div class="meta">Video retrying soon: ${esc(j.error)}</div>`;
     else if (j.status === 'script_ready') extra = j.flags ? `<div class="meta flagnote">${j.flags} fact${j.flags > 1 ? 's' : ''} to check. Tap to read.</div>` : '<div class="meta okline">All facts checked. Tap to read.</div>';
@@ -179,8 +183,8 @@ $('queueList').addEventListener('click', async (e) => {
     try {
       const f = await gh.getFile(`jobs/${retry.dataset.id}.json`);
       if (!f) throw new Error('not found');
-      const job = { ...f.data, status: { video: 'script_ready', package: 'video_ready' }[f.data.failed_step] || 'requested' };
-      ['error', 'attempts', 'render_attempts', 'package_attempts', 'failed_step'].forEach((k) => delete job[k]);
+      const job = { ...f.data, status: { video: 'script_ready', package: 'video_ready', upload: 'approved' }[f.data.failed_step] || 'requested' };
+      ['error', 'attempts', 'render_attempts', 'package_attempts', 'upload_attempts', 'failed_step'].forEach((k) => delete job[k]);
       await gh.putFile(`jobs/${job.id}.json`, job, `Try again: ${job.topic.slice(0, 60)}`, f.sha);
       toast('Sent again. Check back in a few minutes.'); loadQueue();
     } catch (err) { toast('Could not send: ' + err.message); retry.disabled = false; retry.textContent = 'Try again'; }
@@ -397,7 +401,7 @@ async function reviewAct(kind) {
       }
       Object.assign(job, { status: 'approved', approved: new Date().toISOString() });
       await gh.putFile(`jobs/${job.id}.json`, job, `Approved: ${job.title.slice(0, 60)}`, rv.jobSha);
-      toast('Approved! It will be uploaded in the next stage.');
+      toast('Approved! It goes to YouTube as Private in a few minutes.');
     } else if (kind === 'regen') {
       const what = document.querySelector('input[name="regen"]:checked').value;
       const notes = $('rvNotes').value.trim();
@@ -459,6 +463,53 @@ $('saveTargets').addEventListener('click', () => { store.set('tLong', Number($('
 $('demoBtn').addEventListener('click', () => { const on = !demo.on(); store.set('demo', on); $('demoBtn').textContent = on ? 'Turn off demo mode' : 'Turn on demo mode'; paintConn(); toast(on ? 'Demo mode on' : 'Demo mode off'); });
 $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken').placeholder = 'github_pat_...'; paintConn(); toast('Access key removed from this tablet'); });
 
+// ---------- YouTube sign-in ----------
+// Google sends you back to this page with a one-time code. The app swaps it for a long-lasting
+// "refresh token", which you save as a GitHub secret so the cloud can upload for you.
+const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly';
+function ytRedirect() { return location.origin + location.pathname.replace(/index\.html$/, ''); }
+function ytOut(html, cls) { const m = $('ytMsg'); m.className = 'msg ' + (cls || ''); m.innerHTML = html; }
+$('ytRedirect').textContent = ytRedirect();
+$('ytConnect').addEventListener('click', () => {
+  const id = $('ytClientId').value.trim(), secret = $('ytSecret').value.trim();
+  if (!id.endsWith('.apps.googleusercontent.com')) return ytOut('The Client ID should end with .apps.googleusercontent.com', 'bad');
+  if (!secret) return ytOut('Please paste the Client secret too.', 'bad');
+  store.set('ytClientId', id); store.set('ytSecret', secret);
+  const q = new URLSearchParams({ client_id: id, redirect_uri: ytRedirect(), response_type: 'code', scope: YT_SCOPES,
+    access_type: 'offline', prompt: 'consent', include_granted_scopes: 'true', state: 'yt' });
+  location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + q;
+});
+async function ytFinish() {
+  const q = new URLSearchParams(location.search);
+  if (q.get('state') !== 'yt') return false;
+  history.replaceState(null, '', ytRedirect());
+  showTab('settings');
+  $('ytCard').scrollIntoView();
+  if (q.get('error')) { ytOut('Google sign-in was cancelled (' + esc(q.get('error')) + '). Tap Sign in with Google to try again.', 'bad'); return true; }
+  ytOut('Finishing sign-in...');
+  try {
+    const res = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ code: q.get('code'), client_id: store.get('ytClientId', ''), client_secret: store.get('ytSecret', ''),
+        redirect_uri: ytRedirect(), grant_type: 'authorization_code' }) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error_description || data.error || res.status);
+    if (!data.refresh_token) throw new Error('Google did not send a refresh token. Tap Sign in with Google again.');
+    if (!String(data.scope || '').includes('youtube.upload')) throw new Error('The box allowing uploads was not ticked. Sign in again and tick every box.');
+    ytOut(`<b>Signed in.</b> Now add three secrets in GitHub (Settings &gt; Secrets and variables &gt; Actions &gt; New repository secret):
+      <span class="ytrow"><b>YT_CLIENT_ID</b><button data-copy="id">Copy</button></span>
+      <span class="ytrow"><b>YT_CLIENT_SECRET</b><button data-copy="secret">Copy</button></span>
+      <span class="ytrow"><b>YT_REFRESH_TOKEN</b><button data-copy="refresh">Copy</button></span>
+      Tap Copy, then paste it into the Secret box of the secret with that name. Never paste these in chat.`, 'ok');
+    ytFinish.vals = { id: store.get('ytClientId', ''), secret: store.get('ytSecret', ''), refresh: data.refresh_token };
+  } catch (err) { ytOut('Sign-in did not finish: ' + esc(err.message), 'bad'); }
+  return true;
+}
+$('ytMsg').addEventListener('click', async (e) => {
+  const b = e.target.closest('button[data-copy]'); if (!b || !ytFinish.vals) return;
+  try { await navigator.clipboard.writeText(ytFinish.vals[b.dataset.copy]); b.textContent = 'Copied'; toast('Copied. Paste it into GitHub.'); }
+  catch { toast('Could not copy. Long-press to copy instead.'); }
+});
+
 // ---------- start ----------
 (function init() {
   const c = gh.conf();
@@ -468,6 +519,8 @@ $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken'
   $('demoBtn').textContent = demo.on() ? 'Turn off demo mode' : 'Turn on demo mode';
   ['voice', 'tone', 'audience'].forEach((k) => { const v = store.get('last' + k[0].toUpperCase() + k.slice(1)); if (v) $(k).value = v; });
   fillLengths(); paintConn();
+  $('ytClientId').value = store.get('ytClientId', ''); if (store.get('ytSecret', '')) $('ytSecret').placeholder = 'Saved on this tablet';
   showTab(mode() === 'none' ? 'settings' : store.get('tab', 'create'));
+  ytFinish();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
