@@ -131,6 +131,13 @@ $('formatSeg').addEventListener('click', (e) => {
   format = b.dataset.v;
   document.querySelectorAll('#formatSeg button').forEach((x) => x.classList.toggle('on', x === b));
   fillLengths();
+  $('kindBox').hidden = format !== 'short';
+});
+let kind = 'story';
+$('kindSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  kind = b.dataset.v;
+  document.querySelectorAll('#kindSeg button').forEach((x) => x.classList.toggle('on', x === b));
 });
 
 $('jobForm').addEventListener('submit', async (e) => {
@@ -145,6 +152,7 @@ $('jobForm').addEventListener('submit', async (e) => {
     captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
+  if (format === 'short' && kind === 'quiz') job.kind = 'quiz';
   const series = $('series').value.trim();
   if (series) { job.series = series; job.part = (seriesParts[series] || 0) + 1; }
   store.set('lastVoice', job.voice); store.set('lastTone', job.tone); store.set('lastAudience', job.audience);

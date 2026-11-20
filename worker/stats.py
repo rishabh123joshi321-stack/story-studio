@@ -147,12 +147,14 @@ def main():
         import insights
         jobs = {p.stem: read_json(p, {}) for p in (ROOT / "jobs").glob("*.json")}
         pkgs = {p.stem: read_json(p, {}) for p in (ROOT / "packages").glob("*.json")}
-        stats["insights"] = insights.build(stats, jobs, pkgs, stats.get("per_video", {}))
+        hooks = {p.stem: (read_json(p, {}) or {}).get("hook_style") for p in (ROOT / "scripts").glob("*.json")}
+        stats["insights"] = insights.build(stats, jobs, pkgs, stats.get("per_video", {}), hooks)
+        insights.want_extra_clip(stats, jobs, pkgs)
         stats["report"] = insights.weekly(stats, hist, jobs)
     except Exception as e:  # insights are a bonus
         log("Insights skipped:", repr(e))
     write_json(ROOT / "stats" / "latest.json", stats)
-    save(["stats"], "Update channel stats")
+    save(["stats", "jobs"], "Update channel stats")
     log("Stats saved.", json.dumps({k: stats.get(k) for k in ("channel", "last28", "ypp")})[:500])
 
 

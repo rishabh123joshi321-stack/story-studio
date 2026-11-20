@@ -356,6 +356,9 @@ Scene fields:
 - "effect": a gentle moving effect if it fits the moment (fire, embers, smoke, rain, snow, dust, fog, leaves, birds,
   sparkles, lightning, water), else "none".
 - "time_label": short, e.g. "London, 1666" or "2 Sept 1666", when the story jumps in time or place, else "".
+- Maps: when the story moves between places or geography matters, make one scene's picture an illustrated antique-style
+  painted map of the region, seen from above, with the key places shown by small painted landmarks, ships or armies
+  and NO written labels (about one map per chapter in long videos, at most one in a Short); put the place name in time_label.
 - Where a historical figure's real, well-documented words fit the moment, quote them in the narration inside
   \u201ccurly quotation marks\u201d (a second voice reads them). Never invent or embellish quotes.
 - "sfx": a quiet background sound that fits the moment: one of fire, crowd, sea, wind, rain, battle, bells, thunder, birds, none.
@@ -459,9 +462,25 @@ def series_note(job):
             + " End with one line teasing that the series continues.")
 
 
+HOOK_STYLES = {  # the hook tester rotates these and the Dashboard learns which keeps viewers watching
+    "question": "Open with a gripping question the video answers.",
+    "shock": "Open with the single most surprising true fact in the story.",
+    "scene": "Open inside the moment: drop the viewer into a vivid scene, as if they are there.",
+    "stakes": "Open with what was at stake: who could lose everything, and how close it came.",
+}
+QUIZ_NOTE = (" This is a QUIZ Short. Structure: (1) open by challenging the viewer, e.g. 'Can you guess which year this happened?' "
+             "or 'Who am I?'; (2) give three clues, each harder to miss; (3) say 'Comment your guess before the answer!' and pause; "
+             "(4) reveal the answer with energy; (5) one surprising bonus fact. Keep it accurate and fun.")
+
+
 def write_script(job, sources):
     if job.get("series"):
         job = dict(job, notes=(job.get("notes") or "") + series_note(job))
+    if job.get("kind") == "quiz":
+        job = dict(job, notes=(job.get("notes") or "") + QUIZ_NOTE)
+    hook_style = job.get("hook_style") or random.Random(job["id"]).choice(sorted(HOOK_STYLES))
+    if job.get("kind") != "quiz":
+        job = dict(job, notes=(job.get("notes") or "") + " Opening line style: " + HOOK_STYLES[hook_style])
     secs, words = target(job)
     short = job["format"] == "short"
     structure = random.choice(STRUCTURES)
@@ -497,6 +516,7 @@ def write_script(job, sources):
     return {
         "working_title": plan.get("working_title", job["topic"]),
         "hook": plan.get("hook", ""),
+        "hook_style": "quiz" if job.get("kind") == "quiz" else hook_style,
         "structure": structure,
         "style": "stills" if stills else "animated-v2",
         "cast": cast,

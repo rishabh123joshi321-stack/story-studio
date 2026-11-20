@@ -34,7 +34,7 @@ jobs:
       - name: Anything to make?
         id: check
         run: |
-          if grep -l -E '"status": "(script_ready|rendering|video_ready)"' $(grep -l '"format": "${{ matrix.kind }}"' jobs/*.json 2>/dev/null) /dev/null >/dev/null 2>&1; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "Nothing waiting."; fi
+          if grep -l -E '"status": "(script_ready|rendering|video_ready)"' $(grep -l '"format": "${{ matrix.kind }}"' jobs/*.json 2>/dev/null) /dev/null >/dev/null 2>&1; then echo "go=yes" >> "$GITHUB_OUTPUT"; elif [ "${{ matrix.kind }}" = "long" ] && grep -l '"extra_clip_wanted": true' jobs/*.json >/dev/null 2>&1; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "Nothing waiting."; fi
       - uses: actions/setup-python@v5
         if: steps.check.outputs.go == 'yes'
         with: { python-version: '3.12', cache: 'pip', cache-dependency-path: worker/requirements.txt }
