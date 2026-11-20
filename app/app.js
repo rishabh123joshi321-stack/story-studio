@@ -87,6 +87,7 @@ function showTab(name) {
   if (name === 'queue') loadQueue();
   if (name === 'ideas') loadIdeas();
   if (name === 'review') loadReview();
+  if (name === 'stats') loadStats();
 }
 function chapterAt(s, i) {
   const c = (s.chapters || []).find((x) => x.scene === i + 1);
@@ -462,6 +463,97 @@ async function reviewAct(kind) {
   } finally { buttons.forEach((b) => { b.disabled = false; }); }
 }
 
+// ---------- dashboard ----------
+const fmtN = (n) => Number(n || 0).toLocaleString('en-IN');
+const fmtDur = (s) => `${Math.floor((s || 0) / 60)}:${String(Math.round((s || 0) % 60)).padStart(2, '0')}`;
+function meter(label, have, need, unit) {
+  const pct = Math.min(100, need ? (have / need) * 100 : 0);
+  return `<div class="meter"><div class="mrow"><span>${esc(label)}</span><b>${fmtN(have)} / ${fmtN(need)}${unit ? ' ' + unit : ''}</b></div>
+    <div class="mbar" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct.toFixed(1)}%"></i></div></div>`;
+}
+function viewsChart(daily) {
+  if (!daily || !daily.length) return '<p class="hint">No daily numbers yet. YouTube shares them 2 to 3 days late.</p>';
+  const W = 600, H = 170, padB = 22, padT = 12, n = daily.length, gap = 2;
+  const max = Math.max(1, ...daily.map((d) => d.views));
+  const bw = (W - gap * (n - 1)) / n;
+  const bars = daily.map((d, i) => {
+    const h = Math.max(d.views ? 2 : 0, (d.views / max) * (H - padB - padT));
+    const x = i * (bw + gap), y = H - padB - h;
+    const r = Math.min(4, bw / 2, h);
+    const path = h ? `M${x},${H - padB} V${y + r} Q${x},${y} ${x + r},${y} H${x + bw - r} Q${x + bw},${y} ${x + bw},${y + r} V${H - padB} Z` : '';
+    const label = new Date(d.day).toLocaleDateString([], { day: 'numeric', month: 'short' });
+    return `<g class="cb" data-tip="${esc(label)}: ${fmtN(d.views)} views, ${fmtN(Math.round(d.minutes / 60))} h watched">
+      <rect x="${x}" y="${padT}" width="${bw + gap}" height="${H - padT}" fill="transparent"/>${path ? `<path d="${path}"/>` : ''}</g>`;
+  }).join('');
+  const first = new Date(daily[0].day).toLocaleDateString([], { day: 'numeric', month: 'short' });
+  const last = new Date(daily[n - 1].day).toLocaleDateString([], { day: 'numeric', month: 'short' });
+  return `<div class="chartwrap"><div class="ctip" hidden></div>
+    <svg class="vchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily views for the last ${n} days, highest ${fmtN(max)}">
+      <line x1="0" x2="${W}" y1="${H - padB}" y2="${H - padB}" class="base"/>
+      <text x="0" y="10" class="ax">${fmtN(max)}</text>
+      ${bars}
+      <text x="0" y="${H - 5}" class="ax">${esc(first)}</text><text x="${W}" y="${H - 5}" class="ax" text-anchor="end">${esc(last)}</text>
+    </svg></div>
+    <details class="hint"><summary>Show as a table</summary><table class="stable">${daily.map((d) => `<tr><td>${esc(d.day)}</td><td>${fmtN(d.views)} views</td><td>${fmtN(Math.round(d.minutes / 60))} h</td></tr>`).join('')}</table></details>`;
+}
+async function loadStats() {
+  const v = $('statsView');
+  if (mode() !== 'github') { v.innerHTML = '<div class="card empty">Connect your GitHub project in Settings first.</div>'; return; }
+  let s;
+  try { const f = await gh.getFile('stats/latest.json'); s = f && f.data; } catch (err) { v.innerHTML = `<div class="card empty">Could not load (${esc(err.message)}).</div>`; return; }
+  if (!s) { v.innerHTML = '<div class="card empty">No stats yet. They are collected every morning at 7 AM once YouTube is connected.</div>'; return; }
+  const c = s.channel || {}, l = s.last28, y = s.ypp || {};
+  const recent = s.recent || [];
+  const cutoff = Date.now() - 90 * 864e5;
+  const uploads90 = recent.filter((x) => x.privacy === 'public' && new Date(x.published).getTime() > cutoff).length;
+  const hours = y.long_watch_hours_365 || 0, sv = y.shorts_views_90 || 0;
+  v.innerHTML = `
+    <p class="hint">${esc(c.title || '')} · updated ${esc(new Date(s.updated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }))}</p>
+    ${s.error ? `<div class="card"><p class="flagnote">${esc(s.error)}</p></div>` : ''}
+    <div class="tiles">
+      <div class="tile"><b>${c.subscribers_hidden ? 'Hidden' : fmtN(c.subscribers)}</b><span>Subscribers</span></div>
+      <div class="tile"><b>${fmtN(c.views)}</b><span>Total views</span></div>
+      <div class="tile"><b>${fmtN(c.videos)}</b><span>Videos</span></div>
+    </div>
+    ${l ? `<div class="card"><h2>Last 28 days</h2><div class="tiles in">
+      <div class="tile"><b>${fmtN(l.views)}</b><span>Views</span></div>
+      <div class="tile"><b>${fmtN(l.hours)}</b><span>Hours watched</span></div>
+      <div class="tile"><b>${fmtDur(l.avg_view_seconds)}</b><span>Average watch</span></div>
+      <div class="tile"><b>${l.subs >= 0 ? '+' : ''}${fmtN(l.subs)}</b><span>New subscribers</span></div></div>
+      <h3 class="chartttl">Daily views</h3>${viewsChart(s.daily)}</div>` : ''}
+    ${s.analytics === false ? `<div class="card"><p class="flagnote">${esc(s.analytics_note || 'Watch time is not available yet.')}</p></div>` : ''}
+    <div class="card"><h2>Partner Program progress</h2>
+      <p class="hint">Earn from ads: 1,000 subscribers, plus 4,000 watch hours on long videos in 12 months <i>or</i> 10 million Shorts views in 90 days.</p>
+      ${meter('Subscribers', c.subscribers || 0, 1000)}
+      ${s.analytics ? meter('Long-video watch hours (12 months)', Math.round(hours), 4000, 'h') + meter('Shorts views (90 days)', sv, 10000000) : ''}
+      <p class="hint" style="margin-top:14px">Earlier step (memberships, Super Thanks, shopping): 500 subscribers, 3 public videos in 90 days, and 3,000 watch hours or 3 million Shorts views.</p>
+      ${meter('Subscribers', c.subscribers || 0, 500)}
+      ${meter('Public videos (90 days)', uploads90, 3)}
+      ${s.analytics ? meter('Long-video watch hours (12 months)', Math.round(hours), 3000, 'h') : ''}
+      ${y.exact === false ? '<p class="hint">Watch hours include Shorts here, so the real number is a bit lower.</p>' : ''}
+    </div>
+    <div class="card"><h2>Recent videos</h2>
+      ${recent.length ? recent.slice(0, 15).map((x) => `<a class="vrow" href="https://studio.youtube.com/video/${esc(x.id)}/analytics" target="_blank" rel="noopener">
+        ${x.thumb ? `<img src="${esc(x.thumb)}" alt="" loading="lazy">` : ''}
+        <div><div class="vt">${esc(x.title)}</div><div class="meta">${x.short ? 'Short' : 'Long'} · ${esc(x.privacy)} · ${esc(new Date(x.published).toLocaleDateString())}</div>
+        <div class="meta">${fmtN(x.views)} views · ${fmtN(x.likes)} likes · ${fmtN(x.comments)} comments</div></div></a>`).join('') : '<p class="hint">No videos yet.</p>'}
+    </div>
+    <p class="hint">Numbers refresh every morning at 7 AM. YouTube's own figures run 2 to 3 days behind.</p>`;
+  const wrap = v.querySelector('.chartwrap');
+  if (wrap) {
+    const tip = wrap.querySelector('.ctip');
+    const show = (e) => {
+      const g = e.target.closest('.cb'); if (!g) { tip.hidden = true; return; }
+      v.querySelectorAll('.cb.on').forEach((x) => x.classList.remove('on')); g.classList.add('on');
+      tip.textContent = g.dataset.tip; tip.hidden = false;
+      const r = wrap.getBoundingClientRect(), b = g.getBoundingClientRect();
+      tip.style.left = Math.min(Math.max(0, b.left - r.left + b.width / 2 - 90), r.width - 180) + 'px';
+    };
+    wrap.addEventListener('pointermove', show); wrap.addEventListener('click', show);
+    wrap.addEventListener('pointerleave', () => { tip.hidden = true; v.querySelectorAll('.cb.on').forEach((x) => x.classList.remove('on')); });
+  }
+}
+
 // ---------- settings ----------
 $('saveConn').addEventListener('click', async () => {
   const msg = $('connMsg'); msg.className = 'msg'; msg.textContent = 'Testing...';
@@ -506,7 +598,7 @@ $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken'
 // ---------- YouTube sign-in ----------
 // Google sends you back to this page with a one-time code. The app swaps it for a long-lasting
 // "refresh token", which you save as a GitHub secret so the cloud can upload for you.
-const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly';
+const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly';
 function ytRedirect() { return location.origin + location.pathname.replace(/index\.html$/, ''); }
 function ytOut(html, cls) { const m = $('ytMsg'); m.className = 'msg ' + (cls || ''); m.innerHTML = html; }
 $('ytRedirect').textContent = ytRedirect();

@@ -72,3 +72,17 @@ button.danger-bg { background: var(--bad); }
 .fontpick .meta { display: block; margin-top: 2px; }
 .ytrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0; } .ytrow button { width: auto; margin: 0; padding: 6px 14px; }
 .posthelp { margin-top: 8px; } .posthelp button, .btnlink { margin: 8px 8px 0 0; padding: 8px 14px; } .btnlink { display: inline-block; border-radius: 12px; border: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.tiles.in .tile { background: var(--bg); }
+.tile b { display: block; font-size: 26px; line-height: 1.15; } .tile span { color: var(--muted); font-size: 14px; }
+.meter { margin: 12px 0; } .mrow { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; }
+.mbar { height: 10px; border-radius: 99px; background: var(--line); overflow: hidden; margin-top: 5px; } .mbar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.chartttl { margin: 16px 0 6px; font-size: 16px; }
+.chartwrap { position: relative; } .vchart { width: 100%; height: auto; display: block; }
+.vchart path { fill: var(--accent); } .vchart .cb.on path { opacity: .75; } .vchart .base { stroke: var(--line); stroke-width: 1; }
+.vchart .ax { fill: var(--muted); font-size: 11px; }
+.ctip { position: absolute; top: -6px; width: 180px; background: var(--ink); color: var(--bg); font-size: 13px; padding: 6px 8px; border-radius: 8px; pointer-events: none; text-align: center; }
+.stable { border-collapse: collapse; margin-top: 6px; } .stable td { padding: 2px 10px 2px 0; }
+.vrow { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.vrow img { width: 112px; height: 63px; object-fit: cover; border-radius: 8px; flex: none; } .vt { font-weight: 700; font-size: 15px; }
