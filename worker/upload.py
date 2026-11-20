@@ -163,7 +163,8 @@ def process(path, token):
         log(f"  uploaded as https://youtu.be/{vid}")
         thumb_note = ""
         if job["format"] == "long":
-            thumb = fetch_asset(job, "thumbnail.jpg", folder / "thumbnail.jpg")
+            name = str(pkg.get("thumbnail") or "thumbnail.jpg").rsplit("/", 1)[-1]  # the one picked in Review
+            thumb = fetch_asset(job, name, folder / name)
             if thumb and not set_thumbnail(token, vid, thumb):
                 thumb_note = ("The thumbnail could not be added: YouTube allows custom thumbnails only after the channel "
                               "is verified with a phone number (youtube.com/verify). You can add it in YouTube Studio.")

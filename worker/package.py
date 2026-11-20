@@ -114,7 +114,9 @@ Return JSON:
   "tags": ["10 to 15 search tags, most specific first"],
   "hashtags": ["#2 or 3 relevant hashtags"],
   "thumbnail_text": "2 to 4 punchy words for the thumbnail, not the same as the title",
-  "thumbnail_visual": "one striking, simple illustration idea for the thumbnail, with one clear focal subject and space on the left for text"
+  "thumbnail_visual": "one striking, simple illustration idea for the thumbnail, with one clear focal subject and space on the left for text",
+  "thumbnail_options": [{{"text": "2 to 4 punchy words", "visual": "a different striking illustration idea"}}, {{"text": "...", "visual": "..."}}],
+  "pinned_comment": "one friendly question for viewers to answer in the comments, under 150 characters, that makes them share an opinion about this story (no links, no emojis)"
 }}
 {"For a Short, return an empty chapters list." if short else "Give 4 to 8 chapters that follow the story, starting with scene 1."}"""
     pkg = gemini_json(prompt, SYSTEM, temperature=0.7)
@@ -153,22 +155,25 @@ Return JSON:
         "hashtags": hashtags,
         "thumbnail_text": str(pkg.get("thumbnail_text", "")).strip()[:40],
         "thumbnail_visual": str(pkg.get("thumbnail_visual", "")).strip(),
+        "thumbnail_alts": [{"text": str(o.get("text", "")).strip()[:40], "visual": str(o.get("visual", "")).strip()}
+                           for o in (pkg.get("thumbnail_options") or []) if isinstance(o, dict) and o.get("visual")][:2],
+        "pinned_comment": str(pkg.get("pinned_comment", "")).strip()[:300],
         "category_id": "27",  # Education
         "made_for_kids": False,
         "ai_disclosure": bool(script.get("uses_realistic_altered_content")),
     }
 
 
-def make_thumbnail(job, pkg, dest):
+def make_thumbnail(job, pkg, dest, text=None, visual=None, seed_add=0):
     """1280x720 JPEG: an illustration plus big readable words, in the channel's style."""
     from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
     import render_video as rv
 
     raw = dest.with_suffix(".src.png")
-    visual = pkg.get("thumbnail_visual") or pkg["title"]
+    visual = visual or pkg.get("thumbnail_visual") or pkg["title"]
     if not rv.illustrate(f"{visual}. Bold, high-contrast, close-up focal subject on the right, simple uncluttered background",
-                         1344, 832, abs(hash(job["id"])) % 100000, raw):
+                         1344, 832, (abs(hash(job["id"])) + seed_add) % 100000, raw):
         raise WorkerError("The thumbnail picture could not be made. It will try again within the hour.", transient=True)
     im = Image.open(raw).convert("RGB")
     scale = max(1280 / im.width, 720 / im.height)
@@ -190,7 +195,7 @@ def make_thumbnail(job, pkg, dest):
             rv.download(rv.FONT_URL, font_path)
         except Exception as e:
             print(f"Font download failed: {e}", flush=True)
-    words = (pkg.get("thumbnail_text") or pkg["title"]).upper().split()
+    words = (text or pkg.get("thumbnail_text") or pkg["title"]).upper().split()
     lines, cur = [], []
     for w in words:  # at most ~12 characters per line
         if cur and len(" ".join(cur + [w])) > 12:
@@ -249,6 +254,13 @@ def process(path):
             work.mkdir(exist_ok=True)
             thumb = make_thumbnail(job, pkg, work / "thumbnail.jpg")
             pkg["thumbnail"] = upload_asset(job, thumb)
+            pkg["thumbnail_options"] = [pkg["thumbnail"]]
+            for n, alt in enumerate(pkg.get("thumbnail_alts", []), start=2):  # extra choices for Review; never fatal
+                try:
+                    t = make_thumbnail(job, pkg, work / f"thumbnail-{n}.jpg", alt.get("text"), alt.get("visual"), seed_add=n * 7919)
+                    pkg["thumbnail_options"].append(upload_asset(job, t))
+                except Exception as e:
+                    print(f"Extra thumbnail {n} skipped: {e!r}", flush=True)
         else:
             pkg["thumbnail"] = None
             pkg["thumbnail_note"] = "YouTube picks the cover frame for Shorts. You can change it in the YouTube app."

@@ -279,6 +279,10 @@ async function loadQueue() {
   $('qFilters').innerHTML = [['all', 'All'], ['work', 'In progress'], ['ready', 'Needs you'], ['done', 'Done'], ['failed', 'Problems']]
     .map(([k, t]) => { const n = k === 'all' ? jobs.length : jobs.filter((j) => groups[k].includes(j.status)).length; return `<button type="button" class="cchip${k === f ? ' on' : ''}" data-f="${k}">${t} <span class="cnt">${n}</span></button>`; }).join('');
   if (!shown.length) { list.innerHTML = '<div class="card empty">Nothing here.</div>'; return; }
+  setTimeout(() => list.querySelectorAll('.thlink').forEach(async (a) => {  // show the picked thumbnail as a download link
+    try { if (!pkgCache[a.dataset.id]) { const f = await gh.getFile(`packages/${a.dataset.id}.json`); pkgCache[a.dataset.id] = f && f.data; }
+      const t = pkgCache[a.dataset.id] && pkgCache[a.dataset.id].thumbnail; if (t) { a.href = t; a.hidden = false; } } catch { /* no thumbnail */ }
+  }), 0);
   list.innerHTML = shown.map((j) => {
     const cls = ['ready', 'video_ready', 'uploaded', 'post_yourself', 'posted'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering', 'uploading', 'approved'].includes(j.status) ? 'working' : '';
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
@@ -337,6 +341,8 @@ function postHelper(j) {
     <button class="pcopy" data-id="${esc(j.id)}" data-what="title">Copy title</button>
     <button class="pcopy" data-id="${esc(j.id)}" data-what="description">Copy description</button>
     <button class="pcopy" data-id="${esc(j.id)}" data-what="tags">Copy tags</button>
+    <button class="pcopy" data-id="${esc(j.id)}" data-what="pinned_comment">Copy pinned comment</button>
+    ${j.format === 'long' ? `<a class="btnlink thlink" data-id="${esc(j.id)}" href="#" target="_blank" rel="noopener" hidden>Thumbnail</a>` : ''}
     ${j.status === 'post_yourself' ? `<button class="pdone primary" data-id="${esc(j.id)}">I posted it</button>` : ''}
   </div>`;
 }
@@ -515,7 +521,9 @@ async function openReview(id) {
     <p class="hint">${job.format === 'short' ? 'Short' : 'Long video'} · ${fmtLen(job.video_seconds)} · ${esc(job.topic)}</p>
     <div class="card"><video class="player ${job.format === 'short' ? 'tall' : ''}" src="${esc(job.video)}" controls playsinline preload="metadata"></video>
       <p class="hint" style="margin-top:8px">Won't play? <a href="${esc(job.video)}" target="_blank" rel="noopener">Open the video file</a>.</p></div>
-    ${pkg.thumbnail ? `<div class="card"><h2>Thumbnail</h2><img class="thumb" src="${esc(pkg.thumbnail)}" alt="Thumbnail"></div>` : ''}
+    ${pkg.thumbnail ? `<div class="card"><h2>Thumbnail</h2>${(pkg.thumbnail_options || []).length > 1
+      ? `<p class="hint">Tap the one you like best.</p><div class="thumbs">${pkg.thumbnail_options.map((u) => `<button type="button" class="thpick${u === pkg.thumbnail ? ' on' : ''}" data-u="${esc(u)}"><img src="${esc(u)}" alt="Thumbnail choice" loading="lazy"></button>`).join('')}</div>`
+      : `<img class="thumb" src="${esc(pkg.thumbnail)}" alt="Thumbnail">`}</div>` : ''}
     ${flagged.length ? `<div class="card"><h2>Facts to check</h2>${flagged.map((c) => `<div class="fact ${c.verdict === 'wrong' ? 'wrong' : ''}"><b>Scene ${esc(c.scene)}: ${c.verdict === 'wrong' ? 'Probably wrong' : 'Not certain'}</b>${esc(c.claim)}${c.note ? `<div class="meta">${esc(c.note)}</div>` : ''}</div>`).join('')}
       <p class="hint">If something is wrong, tap <b>Regenerate</b> and choose "Rewrite the script", telling it what to fix.</p></div>` : ''}
     <div class="card"><h2>YouTube details</h2>
@@ -526,6 +534,8 @@ async function openReview(id) {
       <textarea id="rvDesc" rows="10">${esc(pkg.description)}</textarea>
       <label for="rvTags">Tags (separate with commas)</label>
       <textarea id="rvTags" rows="3">${esc((pkg.tags || []).join(', '))}</textarea>
+      <label for="rvPin">Pinned comment <span class="req">post it yourself and tap Pin</span></label>
+      <textarea id="rvPin" rows="2">${esc(pkg.pinned_comment || '')}</textarea>
       <button id="rvSave">Save changes</button>
     </div>
     <div class="card">
@@ -553,6 +563,7 @@ async function openReview(id) {
   v.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { $('rvTitle').value = b.dataset.t; count(); }));
   $('rvSave').addEventListener('click', () => reviewAct('save'));
   $('rvApprove').addEventListener('click', () => reviewAct('approve'));
+  v.querySelectorAll('.thpick').forEach((b) => b.addEventListener('click', () => { v.querySelectorAll('.thpick').forEach((x) => x.classList.toggle('on', x === b)); }));
   $('rvRegen').addEventListener('click', () => { $('rvRegenBox').hidden = !$('rvRegenBox').hidden; $('rvRejectBox').hidden = true; });
   $('rvReject').addEventListener('click', () => { $('rvRejectBox').hidden = !$('rvRejectBox').hidden; $('rvRegenBox').hidden = true; });
   $('rvRegenGo').addEventListener('click', () => reviewAct('regen'));
@@ -562,10 +573,13 @@ async function openReview(id) {
 function editedPackage() {
   const title = $('rvTitle').value.trim();
   const tags = $('rvTags').value.split(',').map((t) => t.trim()).filter(Boolean);
-  return { ...rv.pkg, title, description: $('rvDesc').value.trim(), tags, edited: new Date().toISOString() };
+  const pick = document.querySelector('.thpick.on');
+  return { ...rv.pkg, title, description: $('rvDesc').value.trim(), tags, pinned_comment: $('rvPin') ? $('rvPin').value.trim() : rv.pkg.pinned_comment,
+    thumbnail: pick ? pick.dataset.u : rv.pkg.thumbnail, edited: new Date().toISOString() };
 }
 function packageChanged(p) {
-  return p.title !== rv.pkg.title || p.description !== rv.pkg.description || p.tags.join(',') !== (rv.pkg.tags || []).join(',');
+  return p.title !== rv.pkg.title || p.description !== rv.pkg.description || p.tags.join(',') !== (rv.pkg.tags || []).join(',')
+    || (p.pinned_comment || '') !== (rv.pkg.pinned_comment || '') || p.thumbnail !== rv.pkg.thumbnail;
 }
 
 async function reviewAct(kind) {
