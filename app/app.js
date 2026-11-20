@@ -227,6 +227,13 @@ $('wkFill').addEventListener('click', () => {
   const used = new Set([...document.querySelectorAll('#wkDays input')].map((i) => i.value.trim()).filter(Boolean));
   const pool = { long: wkIdeas.filter((i) => i.format === 'long'), short: wkIdeas.filter((i) => i.format !== 'long') };
   let filled = 0;
+  document.querySelectorAll('#wkDays input').forEach((inp) => {  // anniversaries go on their exact day first
+    if (inp.value.trim()) return;
+    const ann = wkIdeas.find((i) => i.kind === 'anniversary' && i.publish_by === inp.dataset.day && !used.has(i.topic || i.title) && (i.format === 'long') === (inp.dataset.fmt === 'long'))
+      || wkIdeas.find((i) => i.kind === 'anniversary' && i.publish_by === inp.dataset.day && !used.has(i.topic || i.title));
+    if (!ann) return;
+    inp.value = ann.topic || ann.title; inp.dataset.angle = ann.angle || ''; used.add(inp.value); filled++;
+  });
   document.querySelectorAll('#wkDays input').forEach((inp) => {
     if (inp.value.trim()) return;
     const list = pool[inp.dataset.fmt].length ? pool[inp.dataset.fmt] : wkIdeas;
@@ -459,7 +466,12 @@ async function loadIdeas() {
   if (!f) { list.innerHTML = '<div class="card empty">No ideas yet. Tap <b>Get fresh ideas</b> and check back in about 5 minutes.</div>'; return; }
   ideaCache = f.data.ideas || [];
   const when = new Date(f.data.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-  list.innerHTML = `<p class="hint">Made ${when}${f.data.focus ? ` · about "${esc(f.data.focus)}"` : ''}</p>` + ideaCache.map((i, n) => `
+  const anns = ideaCache.filter((i) => i.kind === 'anniversary' && /^\d{4}-\d{2}-\d{2}$/.test(i.publish_by || '')).sort((a, b) => a.publish_by.localeCompare(b.publish_by));
+  const strip = anns.length ? `<div class="card"><h2>On this day: coming up</h2><p class="hint">Stories with anniversaries soon. Videos posted on the exact day get extra searches.</p><div class="annstrip">${anns.map((i) => {
+    const d = new Date(i.publish_by + 'T12:00');
+    return `<button type="button" class="ann" data-n="${ideaCache.indexOf(i)}"><span class="ad">${d.toLocaleDateString([], { day: 'numeric' })}</span><span class="am">${d.toLocaleDateString([], { month: 'short', weekday: 'short' })}</span><span class="at">${esc(i.topic || i.title)}</span>${Number(i.years_ago) > 0 ? `<span class="ay">${esc(i.years_ago)} years</span>` : ''}</button>`;
+  }).join('')}</div></div>` : '';
+  list.innerHTML = `<p class="hint">Made ${when}${f.data.focus ? ` · about "${esc(f.data.focus)}"` : ''}</p>` + strip + ideaCache.map((i, n) => `
     <div class="card idea"><span class="score">${i.score}</span>
       <span class="kind">${esc(i.kind)}</span><span class="kind">${i.format === 'long' ? 'Long' : 'Short'}</span>
       <h3>${esc(i.title || i.topic)}</h3>
@@ -469,7 +481,7 @@ async function loadIdeas() {
     </div>`).join('');
 }
 $('ideasList').addEventListener('click', (e) => {
-  const b = e.target.closest('button.use'); if (!b) return;
+  const b = e.target.closest('button.use, button.ann'); if (!b) return;
   const i = ideaCache[Number(b.dataset.n)]; if (!i) return;
   const fmt = i.format === 'long' ? 'long' : 'short';
   document.querySelector(`#formatSeg button[data-v="${fmt}"]`).click();
