@@ -23,10 +23,10 @@ _models_cache = None
 # The channel's own visual identity. Every scene prompt is written for this,
 # so the look stays consistent and original (not modelled on any channel).
 HOUSE_STYLE = (
-    "hand-painted gouache storybook illustration, warm muted palette of ochre, "
-    "teal and deep brick red, visible paper grain, bold simple shapes and "
-    "silhouettes, soft rim light, gentle depth haze, expressive faces, "
-    "no text, no letters, no logos, no watermarks"
+    "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, "
+    "cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, "
+    "volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, "
+    "historically accurate clothing and architecture, no text, no letters, no logos, no watermarks"
 )
 
 # Characters and objects are drawn separately on white, then cut out and animated over empty backgrounds.
