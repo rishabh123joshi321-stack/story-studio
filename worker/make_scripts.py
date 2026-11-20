@@ -241,7 +241,7 @@ def tidy(plan, scenes, short):
     for c in plan.get("cast", [])[:lim["cast"]]:
         cid = str(c.get("id", "")).strip().lower().replace(" ", "_")
         poses = {str(k).strip().lower().replace(" ", "_"): str(v) for k, v in (c.get("poses") or {}).items()}
-        if cid and cid != "guide" and poses and c.get("look"):
+        if cid and cid not in ("guide", HOST["name"].lower()) and poses and c.get("look"):
             cast[cid] = {"id": cid, "kind": c.get("kind", "person"), "look": str(c["look"]),
                          "poses": dict(list(poses.items())[:lim["poses"]])}
     places = {}
@@ -271,6 +271,7 @@ def tidy(plan, scenes, short):
             chars = []
             for c in (sh.get("characters") or [])[:3]:
                 cid = str(c.get("id", "")).strip().lower().replace(" ", "_")
+                cid = "guide" if cid == HOST["name"].lower() else cid
                 pool = HOST["poses"] if cid == "guide" else cast.get(cid, {}).get("poses")
                 if not pool or (cid == "guide" and not guide):
                     continue
