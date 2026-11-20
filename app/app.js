@@ -88,6 +88,7 @@ function showTab(name) {
   if (name === 'ideas') loadIdeas();
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
+  if (name === 'money') loadMoney();
 }
 function chapterAt(s, i) {
   const c = (s.chapters || []).find((x) => x.scene === i + 1);
@@ -553,6 +554,63 @@ async function loadStats() {
     wrap.addEventListener('pointerleave', () => { tip.hidden = true; v.querySelectorAll('.cb.on').forEach((x) => x.classList.remove('on')); });
   }
 }
+
+// ---------- income ----------
+const money = { aff: { links: [] }, affSha: null, kitSha: null };
+function paintAff() {
+  const links = money.aff.links || [];
+  $('affList').innerHTML = links.length ? links.map((l, i) => `<div class="affrow"><div><b>${esc(l.name)}</b><div class="meta">${esc(l.url)}</div>
+    <div class="meta">${l.always ? 'Every video' : 'Videos about: ' + esc((l.keywords || []).join(', '))}</div></div><button class="danger affdel" data-i="${i}">Remove</button></div>`).join('')
+    : '<p class="hint">No links yet.</p>';
+}
+async function loadMoney() {
+  if (mode() !== 'github') { $('affMsg').textContent = 'Connect your GitHub project in Settings first.'; return; }
+  try {
+    const a = await gh.getFile('config/affiliates.json'); money.aff = (a && a.data) || { links: [] }; money.affSha = a && a.sha;
+    const k = await gh.getFile('config/kit.json'); money.kitSha = k && k.sha;
+    const kit = (k && k.data) || {};
+    $('kitAbout').value = kit.about || ''; $('kitAudience').value = kit.audience || ''; $('kitOffers').value = (kit.offers || []).join('\n');
+    $('kitRates').value = kit.rates || ''; $('kitEmail').value = kit.email || '';
+    paintAff();
+  } catch (err) { $('affMsg').className = 'msg bad'; $('affMsg').textContent = 'Could not load: ' + err.message; }
+}
+async function saveAff(msgText) {
+  const r = await gh.putFile('config/affiliates.json', money.aff, 'Update affiliate links', money.affSha);
+  money.affSha = r.content.sha; paintAff(); toast(msgText);
+}
+$('affAdd').addEventListener('click', async () => {
+  const msg = $('affMsg'); msg.className = 'msg bad';
+  const name = $('affName').value.trim(), url = $('affUrl').value.trim();
+  const keywords = $('affWords').value.split(',').map((w) => w.trim()).filter(Boolean), always = $('affAlways').checked;
+  if (!name) { msg.textContent = 'Please give the link a name.'; return; }
+  if (!/^https:\/\/\S+$/.test(url)) { msg.textContent = 'The link must start with https:// and have no spaces.'; return; }
+  if (!always && !keywords.length) { msg.textContent = 'Add some words, or tick "Add to every video".'; return; }
+  try {
+    money.aff.links = [...(money.aff.links || []), { name, url, keywords, always }];
+    await saveAff('Link added. New videos will use it.');
+    ['affName', 'affUrl', 'affWords'].forEach((id) => { $(id).value = ''; }); $('affAlways').checked = false; msg.textContent = '';
+  } catch (err) { money.aff.links.pop(); msg.textContent = err.status === 409 ? 'Changed elsewhere. Open the Income tab again.' : 'Could not save: ' + err.message; }
+});
+$('affList').addEventListener('click', async (e) => {
+  const b = e.target.closest('.affdel'); if (!b) return;
+  const old = money.aff.links.slice();
+  money.aff.links.splice(Number(b.dataset.i), 1);
+  try { await saveAff('Link removed.'); } catch (err) { money.aff.links = old; toast('Could not save: ' + err.message); }
+});
+$('kitSave').addEventListener('click', async () => {
+  const msg = $('kitMsg');
+  const email = $('kitEmail').value.trim();
+  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.className = 'msg bad'; msg.textContent = 'That email does not look right.'; return; }
+  const kit = { about: $('kitAbout').value.trim(), audience: $('kitAudience').value.trim(), offers: $('kitOffers').value.split('\n').map((x) => x.trim()).filter(Boolean),
+    rates: $('kitRates').value.trim(), email, updated: new Date().toISOString() };
+  try {
+    const r = await gh.putFile('config/kit.json', kit, 'Update media kit', money.kitSha); money.kitSha = r.content.sha;
+    msg.className = 'msg ok'; msg.textContent = 'Saved. The media kit page shows it in about a minute.';
+  } catch (err) { msg.className = 'msg bad'; msg.textContent = 'Could not save: ' + err.message; }
+});
+$('kitCopy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(new URL('kit.html', location.href).href); toast('Media kit link copied.'); } catch { toast('Could not copy.'); }
+});
 
 // ---------- settings ----------
 $('saveConn').addEventListener('click', async () => {

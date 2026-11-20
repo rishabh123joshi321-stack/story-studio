@@ -86,3 +86,4 @@ button.danger-bg { background: var(--bad); }
 .stable { border-collapse: collapse; margin-top: 6px; } .stable td { padding: 2px 10px 2px 0; }
 .vrow { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; }
 .vrow img { width: 112px; height: 63px; object-fit: cover; border-radius: 8px; flex: none; } .vt { font-weight: 700; font-size: 15px; }
+.affrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); } .affrow .meta { word-break: break-all; } .affrow button { margin: 0; flex: none; }
