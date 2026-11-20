@@ -129,30 +129,36 @@ def host_background(W, H, note, date_label, cache, dest, host_left=True):
 
 # ------------------------------------------------------------ the guide character
 def cut_out_white(src, dest):
-    """Remove the plain white background around a cartoon figure (flood fill from the edges)."""
+    """Cut a figure out of a plain background (white, cream or any flat colour), by flood fill from the edges."""
+    import numpy as np
     im = Image.open(src).convert("RGB")
-    im = im.crop((0, 0, im.width, int(im.height * 0.92)))  # drop the free service's mark
-    marker = (255, 0, 255)
     w, h = im.size
-    seeds = [(x, 0) for x in range(0, w, 16)] + [(x, h - 1) for x in range(0, w, 16)] + \
-            [(0, y) for y in range(0, h, 16)] + [(w - 1, y) for y in range(0, h, 16)]
+    arr = np.asarray(im).astype(np.int16)
+    border = np.concatenate([arr[0], arr[-1], arr[:, 0], arr[:, -1]])
+    bg = np.median(border, axis=0)
+    near = np.abs(border - bg).sum(axis=1) < 60
+    if near.mean() < 0.6:
+        raise RuntimeError("the background is not plain enough to cut out")
+    marker = (255, 0, 255)
+    work = im.copy()
+    step = 8
+    seeds = [(x, 0) for x in range(0, w, step)] + [(x, h - 1) for x in range(0, w, step)] + \
+            [(0, y) for y in range(0, h, step)] + [(w - 1, y) for y in range(0, h, step)]
     for pt in seeds:
-        r, g, b = im.getpixel(pt)
-        if r > 215 and g > 215 and b > 215:
-            ImageDraw.floodfill(im, pt, marker, thresh=48)
-    px = im.load()
-    alpha = Image.new("L", im.size, 255)
-    ap = alpha.load()
-    for yy in range(h):
-        for xx in range(w):
-            if px[xx, yy] == marker:
-                ap[xx, yy] = 0
-    alpha = alpha.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))  # trim the white fringe
+        px = work.getpixel(pt)
+        if px != marker and sum(abs(px[i] - bg[i]) for i in range(3)) < 60:
+            ImageDraw.floodfill(work, pt, marker, thresh=40)
+    m = np.asarray(work)
+    gone = (m[:, :, 0] == 255) & (m[:, :, 1] == 0) & (m[:, :, 2] == 255)
+    edge = np.concatenate([gone[0], gone[-1], gone[:, 0], gone[:, -1]])
+    if edge.mean() < 0.85 or gone.mean() < 0.2:
+        raise RuntimeError("could not separate the figure from the background")
+    alpha = Image.fromarray(np.where(gone, 0, 255).astype("uint8"), "L")
+    alpha = alpha.filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.8))  # trim the fringe
     out = im.convert("RGBA")
     out.putalpha(alpha)
     bbox = alpha.point(lambda v: 255 if v > 40 else 0).getbbox()
-    clear = alpha.histogram()[0] / (w * h)
-    if not bbox or (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]) < 0.03 * w * h or clear < 0.15:
+    if not bbox or (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]) < 0.03 * w * h:
         raise RuntimeError("could not separate the figure from the background")
     out.crop(bbox).save(dest)
     return dest

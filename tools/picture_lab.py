@@ -30,7 +30,7 @@ for u in ("https://image.pollinations.ai/models", "https://gen.pollinations.ai/i
     code, body, _ = get(u, 60)
     print(u, code, body[:1500].decode("utf-8", "replace"))
 
-tests = json.loads(os.environ.get("LAB_TESTS", "[]")) or [
+tests = json.loads(os.environ.get("LAB_TESTS") or "[]") or [
     {"name": "tara_now", "model": "flux", "w": 768, "h": 1216,
      "prompt": f"{HOST['look']}, standing facing the viewer, one hand gesturing, full body from head to feet, one single person, centered, isolated on a plain pure white background, no scenery, no floor, no shadow. Style: {SPRITE_STYLE}"},
     {"name": "tara_stylefirst", "model": "flux", "w": 768, "h": 1216,
@@ -42,8 +42,32 @@ tests = json.loads(os.environ.get("LAB_TESTS", "[]")) or [
     {"name": "baker_turbo", "model": "turbo", "w": 768, "h": 1216,
      "prompt": "Gouache storybook illustration, children's picture book character art. A stout 17th-century London baker, flour-dusted apron, panicked, arms raised, full body. Plain flat white background."},
 ]
+if os.environ.get("CF_ACCOUNT_ID") and os.environ.get("CF_API_TOKEN"):  # once Cloudflare is set up, test it instead
+    tests = json.loads(os.environ.get("LAB_TESTS") or "[]") or [dict(t, cf=True) for t in tests if t["name"].endswith("stylefirst") or t["name"] == "tara_now"]
+
+
+def cloudflare(prompt, seed):
+    import base64
+    url = f"https://api.cloudflare.com/client/v4/accounts/{os.environ['CF_ACCOUNT_ID']}/ai/run/@cf/black-forest-labs/flux-1-schnell"
+    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt, "steps": 6, "seed": seed}).encode(),
+                                 headers={"Authorization": f"Bearer {os.environ['CF_API_TOKEN']}", "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=180) as r:
+            return 200, base64.b64decode(json.loads(r.read())["result"]["image"]), {}
+    except urllib.error.HTTPError as e:
+        return e.code, e.read(), {}
+
+
 made = []
 for i, t in enumerate(tests):
+    if t.get("cf"):
+        code, body, _ = cloudflare(t["prompt"], 4242)
+        print(t["name"], "cloudflare", code, len(body), body[:300] if code != 200 else "")
+        if code == 200:
+            p = OUT / f"{t['name']}_cf.jpg"
+            p.write_bytes(body)
+            made.append(str(p))
+        continue
     if i:
         time.sleep(50)
     q = urllib.parse.urlencode({"width": t["w"], "height": t["h"], "seed": 4242, "model": t["model"], "nologo": "true", "private": "true"})

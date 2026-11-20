@@ -71,28 +71,46 @@ def image_pollinations(prompt, w, h, seed, dest):
     return dest
 
 
-def image_gemini(prompt, w, h, seed, dest):
-    key = os.environ.get("GEMINI_API_KEY", "")
-    if not key:
-        raise RuntimeError("no key")
-    model = os.environ.get("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
-    aspect = "9:16" if h > w else "16:9"
-    body = {"contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": aspect}}}
-    req = urllib.request.Request(
-        f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-        data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json", "User-Agent": UA})
+def image_cloudflare(prompt, w, h, seed, dest):
+    """FLUX.1 schnell on Cloudflare Workers AI (free daily allowance, about 170 pictures a day)."""
+    acct, token = os.environ.get("CF_ACCOUNT_ID", "").strip(), os.environ.get("CF_API_TOKEN", "").strip()
+    if not (acct and token):
+        raise RuntimeError("not set up")
+    url = f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/@cf/black-forest-labs/flux-1-schnell"
+    req = urllib.request.Request(url, data=json.dumps({"prompt": prompt[:2000], "steps": 6, "seed": seed % 2147483647}).encode(),
+                                 headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json", "User-Agent": UA})
     with urllib.request.urlopen(req, timeout=180) as r:
         res = json.loads(r.read())
+    img = (res.get("result") or {}).get("image")
+    if not img:
+        raise RuntimeError(f"no image returned: {str(res)[:200]}")
     import base64
-    for p in res.get("candidates", [{}])[0].get("content", {}).get("parts", []):
-        if "inlineData" in p:
-            pathlib.Path(dest).write_bytes(base64.b64decode(p["inlineData"]["data"]))
-            return dest
-    raise RuntimeError("no image returned")
+    pathlib.Path(dest).write_bytes(base64.b64decode(img))
+    return dest
 
 
-PROVIDERS = [("pollinations", image_pollinations), ("gemini", image_gemini)]
+def _fit(dest, w, h, provider):
+    """Same shape from every service: no watermark strip, the requested aspect, the requested size."""
+    from PIL import Image
+    im = Image.open(dest).convert("RGB")
+    if provider == "pollinations":
+        im = im.crop((0, 0, im.width, int(im.height * 0.92)))  # the free service's mark
+    tw, th = w, int(h * 0.92)
+    scale = max(tw / im.width, th / im.height)
+    im = im.resize((max(tw, round(im.width * scale)), max(th, round(im.height * scale))), Image.LANCZOS)
+    left, top = (im.width - tw) // 2, (im.height - th) // 2
+    im.crop((left, top, left + tw, top + th)).save(dest, "PNG")
+
+
+class PicturesUsedUp(WorkerError):
+    def __init__(self):
+        super().__init__("Today's free pictures are used up. The video continues automatically after 5:30 AM India time.",
+                         transient=True)
+
+
+CLOUDFLARE = bool(os.environ.get("CF_ACCOUNT_ID") and os.environ.get("CF_API_TOKEN"))
+# With Cloudflare set up, only Cloudflare is used, so every picture in a video has the same look.
+PROVIDERS = [("cloudflare", image_cloudflare)] if CLOUDFLARE else [("pollinations", image_pollinations)]
 GAP = {"pollinations": 47}  # free tier: one picture every 45 seconds
 _dead = set()
 _last = {}
@@ -107,6 +125,7 @@ def _wait_turn(name, extra=0):
 
 
 def illustrate(visual, w, h, seed, dest, raw_prompt=False):
+    """Draw one picture. The result has the shape (w, 0.92*h) on every service."""
     prompt = visual if raw_prompt else f"{visual}. Style: {HOUSE_STYLE}."
     for name, fn in PROVIDERS:
         if name in _dead:
@@ -116,12 +135,15 @@ def illustrate(visual, w, h, seed, dest, raw_prompt=False):
             _wait_turn(name, extra)
             try:
                 fn(prompt, w, h, seed + attempt, dest)
+                _fit(dest, w, h, name)
                 return name
             except urllib.error.HTTPError as e:
-                detail = e.read()[:300]
-                log(f"  {name} image HTTP {e.code} {detail[:160]!r}")
-                if e.code in (401, 403, 404) or (name == "gemini" and e.code == 429):
-                    _dead.add(name)  # no free quota for this service: stop asking
+                detail = e.read()[:400]
+                log(f"  {name} image HTTP {e.code} {detail[:200]!r}")
+                if name == "cloudflare" and (e.code == 429 or b"allocation" in detail or b"4006" in detail):
+                    raise PicturesUsedUp()
+                if e.code in (401, 403, 404):
+                    _dead.add(name)
                     break
                 m = re.search(rb"[Rr]etry after (\d+)", detail)
                 extra = (int(m.group(1)) + 2) if m else 20 * (attempt + 1)
@@ -224,7 +246,7 @@ class Assets:
         self.job, self.script, self.dir, self.vertical = job, script, folder, vertical
         self.dir.mkdir(parents=True, exist_ok=True)
         self.tag = f"work-{job['id']}-r{job.get('revision', 0)}"
-        self.keep = job["format"] == "long" and bool(os.environ.get("GITHUB_REPOSITORY"))
+        self.keep = bool(os.environ.get("GITHUB_REPOSITORY"))
         self.new_since_save = 0
 
     def restore(self):
@@ -237,7 +259,7 @@ class Assets:
             log(f"  picked up {len(list(self.dir.glob('*.png')))} pictures from the last attempt")
 
     def checkpoint(self, force=False):
-        if not self.keep or (self.new_since_save < 12 and not force) or not self.new_since_save:
+        if not self.keep or (self.new_since_save < 8 and not force) or not self.new_since_save:
             return
         self.new_since_save = 0
         pngs = [p.name for p in self.dir.glob("*.png")]
@@ -266,10 +288,7 @@ class Assets:
         raw = self.dir / f"_raw_{p['id']}.png"
         if not illustrate(prompt, gw, gh, seed, raw, raw_prompt=True):
             return None
-        from PIL import Image
-        im = Image.open(raw).convert("RGB")
-        im.crop((0, 0, im.width, int(im.height * 0.92))).save(dest)
-        raw.unlink(missing_ok=True)
+        raw.replace(dest)
         self.new_since_save += 1
         self.checkpoint()
         return dest
@@ -556,7 +575,8 @@ def process(path):
         log(f"Done in {job['render_minutes']} min: {url}")
     except Exception as e:
         print(repr(e), file=sys.stderr)
-        job["render_attempts"] = job.get("render_attempts", 0) + 1
+        if not isinstance(e, PicturesUsedUp):  # waiting for tomorrow's free pictures is not a failure
+            job["render_attempts"] = job.get("render_attempts", 0) + 1
         transient = getattr(e, "transient", not isinstance(e, WorkerError))
         msg = str(e) if isinstance(e, WorkerError) else f"Something went wrong making the video ({type(e).__name__})."
         if transient and job["render_attempts"] < 3:

@@ -150,7 +150,6 @@ def make_thumbnail(job, pkg, dest):
                          1344, 832, abs(hash(job["id"])) % 100000, raw):
         raise WorkerError("The thumbnail picture could not be made. It will try again within the hour.", transient=True)
     im = Image.open(raw).convert("RGB")
-    im = im.crop((0, 0, im.width, int(im.height * 0.92)))  # cut the free service's mark
     scale = max(1280 / im.width, 720 / im.height)
     im = im.resize((round(im.width * scale), round(im.height * scale)), Image.LANCZOS)
     left, top = (im.width - 1280) // 2, (im.height - 720) // 2
