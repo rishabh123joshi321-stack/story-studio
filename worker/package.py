@@ -233,6 +233,8 @@ def process(path):
     job = read_json(path)
     if not job or job.get("status") != "video_ready":
         return False
+    if os.environ.get("CLIPS_ONLY") and not job.get("parent_id"):
+        return False
     only = os.environ.get("RENDER_FORMAT", "").strip()
     if only and job.get("format") != only:
         return False  # the other video maker packages this one

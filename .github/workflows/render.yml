@@ -57,3 +57,10 @@ jobs:
       - name: Make titles, descriptions and thumbnails
         if: steps.check.outputs.go == 'yes'
         run: python worker/package.py
+      - name: Cut a Short from each long video
+        if: steps.check.outputs.go == 'yes' && matrix.kind == 'long'
+        run: python worker/clips.py
+      - name: Titles for the new Shorts
+        if: steps.check.outputs.go == 'yes' && matrix.kind == 'long'
+        env: { RENDER_FORMAT: '', CLIPS_ONLY: '1' }
+        run: python worker/package.py
