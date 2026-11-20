@@ -121,7 +121,7 @@ Return JSON:
   "uses_realistic_altered_content": false
 }}
 Rules: at most {lim['cast']} cast members with 2 to {lim['poses']} poses each (objects may have 1 pose, e.g. "default");
-at most {lim['places']} places (reuse places; the camera and the cast make each shot different);
+{'4 to ' + str(lim['places']) if short else 'about 3 per chapter, at most ' + str(lim['places'])} places (varied settings: inside, outside, close and wide);
 exactly {chapters} chapter{'s' if chapters > 1 else ''}.
 Typical cast: the key real people (no living people), an everyday person of the time, and moving things that matter
 to the story (a ship, a horse, a cart, a crown, a cannon, a scroll...).
@@ -198,6 +198,39 @@ Script part:
         fixed = fix.get("scenes") if isinstance(fix, dict) else None
         if fixed:
             scenes = fixed
+    return direct_more(scenes, plan, rules, guide)
+
+
+def direct_more(scenes, plan, rules, guide):
+    """AI models tend to give one long shot per scene. Ask once more for real 2-4 second cuts."""
+    words = sum(len(str(s.get("narration", "")).split()) for s in scenes)
+    shots = sum(len(s.get("shots") or []) for s in scenes)
+    need = max(len(scenes), round(words / 7.5))
+    if shots >= need * 0.75:
+        return scenes
+    print(f"  only {shots} shots for {words} words; asking for about {need}", flush=True)
+    time.sleep(4)
+    out = gemini_json(f"""You are the film director. This script part has {shots} shots but needs about {need}
+(one shot for every 6 to 9 words of narration, so the picture changes every 2 to 4 seconds, like a cartoon film).
+Keep every "narration" exactly as it is. Rewrite each scene's "shots" list: split it into several shots that show
+the story beat by beat. Change place, camera, action, characters or effect from one shot to the next, so something
+new moves in every shot. Use different places from the list, objects that move, reaction shots and cutaways.
+
+Cast (ids and pose names):
+{_cast_text(plan)}
+Places (ids):
+{chr(10).join('- ' + p['id'] + ': ' + p['look'][:90] for p in plan['places'])}
+
+{rules}
+{guide}
+
+Return the same JSON shape: {{"scenes": [...]}}.
+
+{json.dumps({'scenes': scenes}, ensure_ascii=False)}""", SYSTEM, temperature=0.7)
+    better = out.get("scenes") if isinstance(out, dict) else None
+    if better and len(better) == len(scenes) and sum(len(s.get("shots") or []) for s in better) > shots:
+        for old, new in zip(scenes, better):
+            old["shots"] = new.get("shots") or old.get("shots")
     return scenes
 
 
