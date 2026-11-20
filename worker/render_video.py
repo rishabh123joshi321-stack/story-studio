@@ -171,12 +171,41 @@ def tts():
     return _tts
 
 
-def speak(text, voice_key, dest):
+QUOTE_VOICE = {"am_michael": ("bm_daniel", "en-gb"), "bm_george": ("am_onyx", "en-us"), "hm_omega": ("bm_daniel", "en-gb")}
+_PRON = None
+
+
+def pronounce(text):
+    """Apply the owner's pronunciation list (config/pronounce.json, edited in the app's Settings)."""
+    global _PRON
+    if _PRON is None:
+        cfg = read_json(ROOT / "config" / "pronounce.json", {}) or {}
+        _PRON = [(re.compile(r"\b" + re.escape(w["word"]) + r"\b", re.I), w["say"]) for w in cfg.get("words", [])
+                 if str(w.get("word", "")).strip() and str(w.get("say", "")).strip()]
+    for rx, say in _PRON:
+        text = rx.sub(say, text)
+    return text
+
+
+def speak(text, voice_key, dest, quote_voice=True):
+    """Narration in the chosen voice; words inside quotation marks (a historical figure speaking)
+    are read by a second, contrasting voice so quotes stand out."""
     voice, lang = VOICES.get(voice_key, VOICES["en-US-male"])
-    audio, sr = tts().create(text, voice=voice, lang=lang, speed=1.0)
-    if sr != SR:
-        raise RuntimeError(f"unexpected sample rate {sr}")
-    audio = np.concatenate([audio, np.zeros(int(PAUSE * SR), dtype=np.float32)])
+    parts = re.split(r'([\u201c"][^\u201d"]{12,}[\u201d"])', text) if quote_voice else [text]
+    chunks = []
+    for part in parts:
+        if not part.strip():
+            continue
+        is_quote = part[:1] in '"\u201c' and part[-1:] in '"\u201d'
+        v, l = QUOTE_VOICE.get(voice, (voice, lang)) if is_quote else (voice, lang)
+        try:
+            audio, sr = tts().create(pronounce(part.strip(' "\u201c\u201d') if is_quote else part), voice=v, lang=l, speed=1.0)
+        except Exception:  # a missing second voice must never break the video
+            audio, sr = tts().create(pronounce(part), voice=voice, lang=lang, speed=1.0)
+        if sr != SR:
+            raise RuntimeError(f"unexpected sample rate {sr}")
+        chunks += [audio, np.zeros(int(0.12 * SR), dtype=np.float32)]
+    audio = np.concatenate(chunks + [np.zeros(int(PAUSE * SR), dtype=np.float32)]) if chunks else np.zeros(int(PAUSE * SR), dtype=np.float32)
     sf.write(dest, audio, SR)
     return len(audio) / SR
 
@@ -406,7 +435,7 @@ def render(job, script, out_dir):
     log(f"Voice for {len(scenes)} scenes...")
     durs = []
     for i, sc in enumerate(scenes):
-        durs.append(max(2.0, speak(sc["narration"], job.get("voice", "en-US-male"), out_dir / f"v{i:03d}.wav")))
+        durs.append(max(2.0, speak(sc["narration"], job.get("voice", "en-US-male"), out_dir / f"v{i:03d}.wav", job.get("quote_voice", True))))
     parts = []
     for i, d in enumerate(durs):
         a = sf.read(out_dir / f"v{i:03d}.wav", dtype="float32")[0]

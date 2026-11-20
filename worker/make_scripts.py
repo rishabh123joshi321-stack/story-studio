@@ -356,6 +356,8 @@ Scene fields:
 - "effect": a gentle moving effect if it fits the moment (fire, embers, smoke, rain, snow, dust, fog, leaves, birds,
   sparkles, lightning, water), else "none".
 - "time_label": short, e.g. "London, 1666" or "2 Sept 1666", when the story jumps in time or place, else "".
+- Where a historical figure's real, well-documented words fit the moment, quote them in the narration inside
+  \u201ccurly quotation marks\u201d (a second voice reads them). Never invent or embellish quotes.
 - "sfx": a quiet background sound that fits the moment: one of fire, crowd, sea, wind, rain, battle, bells, thunder, birds, none.
   Use it only where the sound is really there in the scene; "none" for most calm or explaining scenes."""
 
