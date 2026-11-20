@@ -1,7 +1,7 @@
 {
   "id": "20261120-155617-bpzq",
   "created": "2026-11-20T10:26:17.060Z",
-  "status": "video_ready",
+  "status": "ready",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -12,7 +12,7 @@
   "voice": "en-GB-male",
   "notes": "Please refer to the youtube  channel ' Historically' and do animation like the videos in it",
   "flags": 0,
-  "updated": "2026-11-20T11:17:55+00:00",
+  "updated": "2026-11-20T11:21:24+00:00",
   "video": "https://github.com/rishabh123joshi321-stack/story-studio/releases/download/video-20261120-155617-bpzq/video.mp4",
   "video_seconds": 425.1,
   "scene_starts": [
@@ -60,5 +60,6 @@
     402.53,
     415.19
   ],
-  "render_minutes": 43.4
+  "render_minutes": 43.4,
+  "title": "The Ottoman Empire: From Borderland State to Global Power"
 }
