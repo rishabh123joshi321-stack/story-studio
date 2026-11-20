@@ -1,7 +1,7 @@
 {
   "id": "20261120-140104-p3x5",
   "created": "2026-11-20T08:31:04.241Z",
-  "status": "video_ready",
+  "status": "ready",
   "format": "short",
   "length": 45,
   "lengthUnit": "seconds",
@@ -11,11 +11,11 @@
   "audience": "General global audience",
   "voice": "en-US-male",
   "notes": "",
-  "updated": "2026-11-20T12:55:58+00:00",
+  "updated": "2026-11-20T12:56:44+00:00",
   "video": "https://github.com/rishabh123joshi321-stack/story-studio/releases/download/video-20261120-140104-p3x5/video.mp4",
   "video_seconds": 50.9,
   "render_minutes": 26.2,
-  "title": "Great Fire of London: Did a baker really burn the city?",
+  "title": "Great Fire of London: How 1666 Changed the City Forever",
   "revision": 3,
   "flags": 0,
   "scene_starts": [
