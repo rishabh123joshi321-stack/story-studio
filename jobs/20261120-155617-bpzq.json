@@ -1,7 +1,7 @@
 {
   "id": "20261120-155617-bpzq",
   "created": "2026-11-20T10:26:17.060Z",
-  "status": "ready",
+  "status": "rejected",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -16,7 +16,7 @@
   "video": "https://github.com/rishabh123joshi321-stack/story-studio/releases/download/video-20261120-155617-bpzq/video.mp4",
   "video_seconds": 425.1,
   "scene_starts": [
-    0.0,
+    0,
     7.92,
     16.32,
     27.84,
@@ -61,5 +61,7 @@
     415.19
   ],
   "render_minutes": 43.4,
-  "title": "The Ottoman Empire: From Borderland State to Global Power"
+  "title": "The Ottoman Empire: From Borderland State to Global Power",
+  "rejected": "2026-11-20T12:15:15.320Z",
+  "rejected_reason": "I am making a few changes in the video engine"
 }
