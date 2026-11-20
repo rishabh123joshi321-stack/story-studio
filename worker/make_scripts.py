@@ -4,6 +4,7 @@ Picks up every jobs/<id>.json with status "requested", writes scripts/<id>.json,
 and moves the job to "script_ready" (or "failed" with a plain-language reason).
 """
 import datetime
+import json
 import os
 import random
 import sys
@@ -58,7 +59,7 @@ Theme or angle: {job.get('theme') or 'your choice'}
 Tone: {job.get('tone')}
 Target audience: {job.get('audience')}
 Owner's extra notes: {job.get('notes') or 'none'}
-Length: about {secs} seconds of narration, so about {words} words in total (stay within 10%).
+Length: about {secs} seconds of narration, so {int(words * 0.9)} to {words} words in total. Never go over {words} words.
 Number of scenes: about {scenes}. Frame each scene for {aspect}.
 Story structure to use: {structure}
 
@@ -85,6 +86,19 @@ realistic depiction of a real event that viewers could mistake for real footage.
     if not isinstance(script, dict) or not script.get("scenes"):
         raise WorkerError("The AI returned an unusable script. It will try again within the hour.", transient=True)
     script["structure"] = structure
+    count = sum(len(str(sc.get("narration", "")).split()) for sc in script["scenes"])
+    if count > words * 1.15:  # too long for the slot: one trimming pass
+        time.sleep(4)
+        trimmed = gemini_json(
+            f"""This narration has {count} words but must be at most {words} words. Shorten each scene's
+"narration" so the total is between {int(words * 0.9)} and {words} words. Keep the hook, every fact, the story
+order and the final subscribe line. Do not add new facts. Keep all other fields unchanged.
+Return the same JSON shape.
+
+{json.dumps(script, ensure_ascii=False)}""", SYSTEM, temperature=0.3)
+        if isinstance(trimmed, dict) and trimmed.get("scenes"):
+            trimmed["structure"] = structure
+            script = trimmed
     return script
 
 
