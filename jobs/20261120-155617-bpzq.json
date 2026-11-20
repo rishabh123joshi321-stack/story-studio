@@ -1,7 +1,7 @@
 {
   "id": "20261120-155617-bpzq",
   "created": "2026-11-20T10:26:17.060Z",
-  "status": "script_ready",
+  "status": "rendering",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -12,5 +12,5 @@
   "voice": "en-GB-male",
   "notes": "Please refer to the youtube  channel ' Historically' and do animation like the videos in it",
   "flags": 0,
-  "updated": "2026-11-20T10:32:50+00:00"
+  "updated": "2026-11-20T10:34:30+00:00"
 }
