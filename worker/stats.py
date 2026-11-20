@@ -102,6 +102,11 @@ def analytics(token):
         ypp["long_watch_hours_365"] = round(int(tot[0]["estimatedMinutesWatched"]) / 60, 1) if tot else 0
         ypp["exact"] = False
     out["ypp"] = ypp
+    try:
+        rows = report(token, today - datetime.timedelta(days=365), end, "views,averageViewPercentage", "video", sort="-views", maxResults=50)
+        out["per_video"] = {r["video"]: {"views": int(r["views"]), "averageViewPercentage": round(float(r["averageViewPercentage"]), 1)} for r in rows}
+    except urllib.error.HTTPError as e:
+        log("Per-video numbers not available:", e.code)
     return out
 
 
@@ -131,7 +136,6 @@ def main():
         stats["analytics"] = False
         stats["analytics_note"] = ("Watch time is locked: turn on the YouTube Analytics API in Google Cloud and sign in again "
                                    "in Settings > Connect YouTube (see the steps in chat).")
-    write_json(ROOT / "stats" / "latest.json", stats)
     hist = read_json(ROOT / "stats" / "history.json", []) or []
     if "channel" in stats:
         day = now[:10]
@@ -139,6 +143,15 @@ def main():
         hist.append({"day": day, "subscribers": stats["channel"]["subscribers"], "views": stats["channel"]["views"],
                      "videos": stats["channel"]["videos"]})
         write_json(ROOT / "stats" / "history.json", hist[-400:])
+    try:
+        import insights
+        jobs = {p.stem: read_json(p, {}) for p in (ROOT / "jobs").glob("*.json")}
+        pkgs = {p.stem: read_json(p, {}) for p in (ROOT / "packages").glob("*.json")}
+        stats["insights"] = insights.build(stats, jobs, pkgs, stats.get("per_video", {}))
+        stats["report"] = insights.weekly(stats, hist, jobs)
+    except Exception as e:  # insights are a bonus
+        log("Insights skipped:", repr(e))
+    write_json(ROOT / "stats" / "latest.json", stats)
     save(["stats"], "Update channel stats")
     log("Stats saved.", json.dumps({k: stats.get(k) for k in ("channel", "last28", "ypp")})[:500])
 

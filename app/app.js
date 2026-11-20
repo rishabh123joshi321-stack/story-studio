@@ -711,6 +711,19 @@ async function loadStats() {
       <div class="tile"><b>${l.subs >= 0 ? '+' : ''}${fmtN(l.subs)}</b><span>New subscribers</span></div></div>
       <h3 class="chartttl">Daily views</h3>${viewsChart(s.daily)}</div>` : ''}
     ${s.analytics === false ? `<div class="card"><p class="flagnote">${esc(s.analytics_note || 'Watch time is not available yet.')}</p></div>` : ''}
+    ${(() => { const r = s.report; if (!r || r.views === undefined) return '';
+      const diff = r.views_prev !== undefined ? r.views - r.views_prev : null;
+      return `<div class="card report"><div class="rhead"><div><div class="k">${r.is_sunday ? 'New this Sunday' : 'Last 7 days'}</div><h2>Weekly report card</h2></div>${r.grade ? `<div class="grade g${r.grade}">${r.grade}</div>` : ''}</div>
+        <div class="tiles in"><div class="tile"><b>${fmtN(r.views)}</b><span>Views${diff !== null ? ` (${diff >= 0 ? '+' : ''}${fmtN(diff)} vs week before)` : ''}</span></div>
+        <div class="tile"><b>${r.subs >= 0 ? '+' : ''}${fmtN(r.subs)}</b><span>Subscribers</span></div><div class="tile"><b>${fmtN(r.uploads)}</b><span>Videos posted</span></div>
+        <div class="tile"><b>${fmtN(r.planned_next_week)}</b><span>Planned next week</span></div></div>
+        ${r.best ? `<p class="hint" style="margin:0">Star of the week: <a href="https://youtu.be/${esc(r.best.id)}" target="_blank" rel="noopener">${esc(r.best.title)}</a> · ${fmtN(r.best.views)} views</p>` : ''}
+        ${r.planned_next_week === 0 ? '<p class="hint" style="margin:8px 0 0">Nothing planned for next week yet. Use <b>Plan the week</b> on the New video tab.</p>' : ''}</div>`; })()}
+    ${s.insights ? `<div class="card"><h2>What's working</h2><ul class="tips">${(s.insights.tips || []).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      ${(s.insights.top || []).length ? `<h3 class="chartttl">Your top videos</h3>${s.insights.top.map((v, i) => `<a class="toprow" href="https://studio.youtube.com/video/${esc(v.id)}/analytics" target="_blank" rel="noopener"><span class="rank">${i + 1}</span><span class="tt">${esc(v.title)}</span><span class="meta">${fmtN(v.views)} views${v.avg_pct ? ` · ${v.avg_pct}% watched` : ''}</span></a>`).join('')}` : ''}</div>` : ''}
+    ${s.insights && s.insights.best_time ? `<div class="card"><h2>Best time to post</h2>${s.insights.best_time.slot
+      ? `<p class="bigline">${esc(s.insights.best_time.slot)}</p><p class="hint">India time, based on early views per day.</p>${Object.entries(s.insights.best_time.tested).map(([k, v]) => meter(k, Math.round(v.views_per_day), Math.max(...Object.values(s.insights.best_time.tested).map((x) => x.views_per_day)) || 1, 'views/day')).join('')}`
+      : `<p class="hint">Still learning. ${s.insights.best_time.try_next ? `Post your next 2 videos in the <b>${esc(s.insights.best_time.try_next)}</b> (India time) so the app can compare.` : 'Post at different times of day so the app can compare.'}</p>`}</div>` : ''}
     <div class="card"><h2>Partner Program progress</h2>
       <p class="hint">Earn from ads: 1,000 subscribers, plus 4,000 watch hours on long videos in 12 months <i>or</i> 10 million Shorts views in 90 days.</p>
       ${meter('Subscribers', c.subscribers || 0, 1000)}
