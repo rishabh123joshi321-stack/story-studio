@@ -59,7 +59,7 @@ Theme or angle: {job.get('theme') or 'your choice'}
 Tone: {job.get('tone')}
 Target audience: {job.get('audience')}
 Owner's extra notes: {job.get('notes') or 'none'}
-Length: about {secs} seconds of narration, so {int(words * 0.9)} to {words} words in total. Never go over {words} words.
+{('Changes the owner asked for after reading the previous version (follow these closely): ' + job['revision_notes'] + chr(10)) if job.get('revision_notes') else ''}Length: about {secs} seconds of narration, so {int(words * 0.9)} to {words} words in total. Never go over {words} words.
 Number of scenes: about {scenes}. Frame each scene for {aspect}.
 Story structure to use: {structure}
 

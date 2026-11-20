@@ -42,4 +42,4 @@ jobs:
       - name: Start the video maker if a script is ready
         env: { GH_TOKEN: '${{ github.token }}' }
         run: |
-          if grep -l '"status": "script_ready"' jobs/*.json >/dev/null 2>&1; then gh workflow run render.yml --ref main; fi
+          if grep -l -E '"status": "(script_ready|video_ready)"' jobs/*.json >/dev/null 2>&1; then gh workflow run render.yml --ref main; fi

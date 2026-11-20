@@ -212,7 +212,7 @@ def render(job, script, out_dir):
     scenes = [s for s in script.get("scenes", []) if str(s.get("narration", "")).strip()]
     if not scenes:
         raise WorkerError("The script has no scenes to turn into a video.")
-    seed0 = int(hashlib.sha1(job["id"].encode()).hexdigest()[:6], 16)
+    seed0 = int(hashlib.sha1(f"{job['id']}-{job.get('revision', 0)}".encode()).hexdigest()[:6], 16)  # new pictures on each redo
 
     # 1. voice
     log(f"Voice for {len(scenes)} scenes...")
