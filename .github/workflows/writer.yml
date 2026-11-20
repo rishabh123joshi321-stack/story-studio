@@ -15,7 +15,7 @@ concurrency: { group: writer, cancel-in-progress: false }
 jobs:
   write:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}

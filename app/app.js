@@ -11,7 +11,7 @@ const store = {
 
 const LENGTHS = {
   short: [['30', '30 seconds'], ['45', '45 seconds'], ['58', '58 seconds (max)']],
-  long: [['8', '8 minutes'], ['10', '10 minutes'], ['12', '12 minutes'], ['15', '15 minutes'], ['20', '20 minutes']],
+  long: [['10', '10 minutes'], ['20', '20 minutes'], ['30', '30 minutes'], ['40', '40 minutes'], ['45', '45 minutes']],
 };
 const STATUS_TEXT = {
   requested: 'Waiting to start', scripting: 'Writing script', script_ready: 'Script ready', rendering: 'Making video', video_ready: 'Video ready',
@@ -88,12 +88,26 @@ function showTab(name) {
   if (name === 'ideas') loadIdeas();
   if (name === 'review') loadReview();
 }
+function chapterAt(s, i) {
+  const c = (s.chapters || []).find((x) => x.scene === i + 1);
+  return c ? `<h3 class="chapter">${esc(c.title)}</h3>` : '';
+}
+function shotText(s, shots) {
+  const places = Object.fromEntries((s.places || []).map((p) => [p.id, p.id.replace(/_/g, ' ')]));
+  return shots.map((sh) => {
+    if (sh.kind === 'title') return `Title card: ${esc(sh.title)}`;
+    if (sh.kind === 'guide') return `Guide${sh.note ? `: “${esc(sh.note)}”` : ''}`;
+    const who = (sh.characters || []).map((c) => `${c.id.replace(/_/g, ' ')} ${c.action.replace(/_/g, ' ')}`).join(', ');
+    const extra = [sh.effect && sh.effect !== 'none' ? sh.effect : '', sh.time_label, sh.fact ? 'fact card' : ''].filter(Boolean).join(' · ');
+    return `${esc(places[sh.place] || sh.place)}${who ? ` — ${esc(who)}` : ''}${extra ? ` (${esc(extra)})` : ''}`;
+  }).join('<br>');
+}
 $('tabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-tab]'); if (b) showTab(b.dataset.tab); });
 
 // ---------- new video form ----------
 function fillLengths() {
   $('length').innerHTML = LENGTHS[format].map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
-  $('length').value = format === 'short' ? '45' : '10';
+  $('length').value = format === 'short' ? '45' : '40';
 }
 $('formatSeg').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
@@ -135,7 +149,7 @@ async function loadQueue() {
   try { jobs = mode() === 'github' ? await gh.listJobs() : demo.list(); }
   catch (err) { list.innerHTML = `<div class="card empty">Could not load your queue (${esc(err.message)}).</div>`; return; }
   const today = jobs.filter((j) => isToday(j.created));
-  const tL = store.get('tLong', 2), tS = store.get('tShort', 4);
+  const tL = store.get('tLong', 1), tS = store.get('tShort', 2);
   $('dailyBar').innerHTML = `<div><b>${today.filter((j) => j.format === 'long').length} / ${tL}</b>long videos planned today</div><div><b>${today.filter((j) => j.format === 'short').length} / ${tS}</b>Shorts planned today</div>`;
   if (!jobs.length) { list.innerHTML = '<div class="card empty">Nothing yet. Plan your first video in the New video tab.</div>'; return; }
   queueJobs = jobs;
@@ -209,7 +223,7 @@ async function openScript(job) {
       ${s.fact_check && s.fact_check.summary ? `<p class="hint" style="margin-top:10px">${esc(s.fact_check.summary)}</p>` : ''}
     </div>
     <div class="card"><h2>Script</h2>
-      ${(s.scenes || []).map((sc, i) => `<div class="scene"><p><span class="n">${i + 1}</span>${esc(sc.narration)}</p><div class="meta">Picture: ${esc(sc.visual)}${sc.motion ? ` (${esc(sc.motion)})` : ''}</div></div>`).join('')}
+      ${(s.scenes || []).map((sc, i) => `${chapterAt(s, i)}<div class="scene"><p><span class="n">${i + 1}</span>${esc(sc.narration)}</p><div class="meta">${sc.shots ? shotText(s, sc.shots) : `Picture: ${esc(sc.visual)}`}</div></div>`).join('')}
     </div>
     ${(s.sources || []).length ? `<div class="card"><h2>Sources</h2>${s.sources.map((x) => `<p><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></p>`).join('')}</div>` : ''}
     <p class="hint">The Approve, Edit, Regenerate and Reject buttons come in the next stage. Nothing is uploaded to YouTube until you approve it.</p>`;
@@ -430,7 +444,7 @@ $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken'
   const c = gh.conf();
   $('ghUser').value = c.user; $('ghRepo').value = c.repo;
   if (c.token) $('ghToken').placeholder = 'Saved on this tablet';
-  $('tLong').value = store.get('tLong', 2); $('tShort').value = store.get('tShort', 4);
+  $('tLong').value = store.get('tLong', 1); $('tShort').value = store.get('tShort', 2);
   $('demoBtn').textContent = demo.on() ? 'Turn off demo mode' : 'Turn on demo mode';
   ['voice', 'tone', 'audience'].forEach((k) => { const v = store.get('last' + k[0].toUpperCase() + k.slice(1)); if (v) $(k).value = v; });
   fillLengths(); paintConn();

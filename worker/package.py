@@ -103,7 +103,8 @@ Return JSON:
     if not isinstance(pkg, dict) or not pkg.get("title"):
         raise WorkerError("The AI returned unusable titles. It will try again within the hour.", transient=True)
 
-    chapters = [] if short else build_chapters(pkg.get("chapters"), starts, job.get("video_seconds", 0))
+    raw = script.get("chapters") or pkg.get("chapters")  # long videos are written chapter by chapter
+    chapters = [] if short else build_chapters(raw, starts, job.get("video_seconds", 0))
     hashtags = [h if str(h).startswith("#") else "#" + str(h) for h in pkg.get("hashtags", [])][:3]
     if short and "#Shorts" not in hashtags:
         hashtags.append("#Shorts")
@@ -212,6 +213,9 @@ def process(path):
     job = read_json(path)
     if not job or job.get("status") != "video_ready":
         return False
+    only = os.environ.get("RENDER_FORMAT", "").strip()
+    if only and job.get("format") != only:
+        return False  # the other video maker packages this one
     script = read_json(ROOT / "scripts" / f"{job['id']}.json")
     if not script:
         return False

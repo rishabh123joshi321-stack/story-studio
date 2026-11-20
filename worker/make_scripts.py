@@ -10,10 +10,15 @@ import random
 import sys
 import time
 
-from common import HOST, HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
+from common import ACTIONS, CAMERAS, EFFECTS, HOST, HOUSE_STYLE, ROOT, WorkerError, gemini_json, read_json, research, save, stale, sync, write_json
 
 WORDS_PER_SECOND = 2.5  # about 150 words a minute, a relaxed narration pace
 MAX_JOBS_PER_RUN = int(os.environ.get("MAX_JOBS_PER_RUN", "6"))
+CHAPTER_MINUTES = 4  # long videos are written one chapter at a time
+LIMITS = {  # how many pictures the free image service has to draw per video
+    "short": {"places": 6, "cast": 4, "poses": 3},
+    "long": {"places": 36, "cast": 14, "poses": 4},
+}
 
 # Rotating story shapes keep videos from feeling mass-produced.
 STRUCTURES = [
@@ -25,124 +30,315 @@ STRUCTURES = [
     "Day-in-the-life immersion: put the viewer in the place and time with sensory detail, then explain the event through that lens.",
 ]
 
-SYSTEM = f"""You are the head writer for an original animated-history storytelling YouTube channel.
+SYSTEM = f"""You are the head writer and director of an original animated-history YouTube channel.
 Rules you always follow:
 - Be factually careful. Use the reference material provided. Never invent quotes, numbers, names or dates.
   If something is uncertain or disputed among historians, say so in the narration ("historians still debate...").
 - Hook: the first sentence must grab attention within 5 seconds, without clickbait or false promises.
-- Clear storytelling with a beginning, middle and end, and real educational value (context, causes, consequences).
-- Respectful to all cultures and people. No graphic violence; describe tragedy with care.
+- Teach in every scene: who, what, when, where, why, and what it changed. Explain any unusual word in a few words.
+  Clear storytelling with a beginning, middle and end.
+- Voice: warm, chatty and curious, like a friend who loves history and explains it brilliantly. Vivid, simple
+  explanations, comparisons to everyday life, and questions that make viewers want the answer. Humour is light
+  and occasional (a playful aside now and then, never silly); the knowledge always comes first.
+- Respectful to all cultures and people. No graphic violence or gore; describe tragedy with care.
 - End with a short, natural call to subscribe that fits the story (not pushy).
-- Voice: fun, chatty and witty, like a funny friend who loves history. Short punchy sentences, playful asides,
-  surprising comparisons to modern life, light jokes and rhetorical questions. Never boring, never mean.
-  For tragedies (wars, disasters, deaths) keep the humour gentle and respectful, or drop it.
-- Visual descriptions are for AI-illustrated scenes in this house style: {HOUSE_STYLE}.
-  Describe ONE clear moment: who is there, what they are doing, their funny facial expression, the setting and
-  framing. Repeat a recurring person's look (clothes, hair, colours) every time they appear so they stay recognisable.
-  Never depict a living real person's likeness. No text in images.
-- The channel has a recurring guide character, {HOST['name']}, a cheerful time-traveller who talks straight to
-  the viewer on a plain background. Use her for asides, questions, jokes and explanations between story scenes.
+- The video is a cut-out animated cartoon in a hand-painted storybook style ({HOUSE_STYLE}).
+  Empty painted backgrounds ("places") have separately drawn characters and objects ("cast") moving on top.
+  You direct it shot by shot like a film: something moves, acts or changes in every shot, and the picture changes
+  every 2 to 4 seconds. Vary places, cameras and actions so it never feels like a slideshow.
+- Never depict a living real person. No text inside pictures.
 - Write in clear, simple English for a global audience.
 Answer only with JSON in the exact shape requested."""
+
+SHOT_RULES = """Each scene is one or two narration sentences with its own list of shots.
+Give one shot for every 6 to 9 words of narration (each shot lasts about 3 seconds).
+Shot fields:
+- "kind": "story" (cast acting in a place), "guide" (the guide talks to the viewer on a plain paper background)
+  or "title" (a big chapter title or question on screen; use for chapter starts and big questions only).
+- "place": a place id (story and title shots).
+- "characters": 0 to 3 cast members, each {"id": cast id, "pose": one of its pose names,
+  "then_pose": another pose name to switch to halfway, or "", "action": one action, "position": "left | center | right"}.
+- "action" is one of: ACTIONS.
+  People act: walk_in_left, walk_out_right, run_across, jump, celebrate, tremble, fall, strike, bow, nod, talk...
+  Things move: fly_across (birds, arrows), drop_in, float, spin, sail_across (ships), appear, disappear.
+- "camera": one of CAMERAS (push_in for drama, crash_zoom for shocks, pan for journeys, shake for chaos).
+- "effect": one of EFFECTS that fits the moment (fire, smoke, rain, snow, dust, sparkles, explosion...), else "none".
+- "time_label": e.g. "London, 1666" when the story jumps in time or place, else "".
+- "fact": in about one shot in eight, a surprising related "Did you know?" fact (max 14 words, true and from the
+  reference material), else "".
+- "bubble": rarely, a short speech bubble said by someone in the shot (max 6 words, never a made-up quote of a
+  real person), else "".
+- "note": guide shots only, a short handwritten note on screen (max 8 words), else "".
+- "title": title shots only, max 6 words, else ""."""
 
 
 def target(job):
     secs = job["length"] * (60 if job.get("lengthUnit") == "minutes" else 1)
-    words = int(secs * WORDS_PER_SECOND)
-    scene_secs = 4 if job["format"] == "short" else 5
-    return secs, words, max(5, round(secs / scene_secs))
+    return secs, int(secs * WORDS_PER_SECOND)
 
 
-def write_script(job, sources):
-    secs, words, scenes = target(job)
-    structure = random.choice(STRUCTURES)
-    refs = "\n\n".join(f"### Source {i + 1}: {p['title']} ({p['url']})\n{p['text']}" for i, p in enumerate(sources)) \
+def _refs(sources):
+    return "\n\n".join(f"### Source {i + 1}: {p['title']} ({p['url']})\n{p['text']}" for i, p in enumerate(sources)) \
         or "(No reference text was found. Stick to widely documented facts and flag anything you are not sure of.)"
-    aspect = "vertical 9:16" if job["format"] == "short" else "wide 16:9"
-    prompt = f"""Write a {'YouTube Short' if job['format'] == 'short' else 'long YouTube video'} script.
+
+
+def plan_video(job, sources, structure):
+    """Cast, places and chapter outline for the whole video."""
+    secs, words = target(job)
+    short = job["format"] == "short"
+    lim = LIMITS["short" if short else "long"]
+    chapters = 1 if short else max(2, round(secs / 60 / CHAPTER_MINUTES))
+    guide_poses = ", ".join(HOST["poses"])
+    prompt = f"""Plan a {'YouTube Short' if short else 'long YouTube video'} (about {secs} seconds, {words} words of narration).
 
 Topic: {job['topic']}
 Theme or angle: {job.get('theme') or 'your choice'}
 Tone: {job.get('tone')}
 Target audience: {job.get('audience')}
 Owner's extra notes: {job.get('notes') or 'none'}
-{('Changes the owner asked for after reading the previous version (follow these closely): ' + job['revision_notes'] + chr(10)) if job.get('revision_notes') else ''}Length: about {secs} seconds of narration, so {int(words * 0.9)} to {words} words in total. Never go over {words} words.
-Number of scenes: about {scenes}. Frame each scene for {aspect}.
-Story structure to use: {structure}
-Scene mix: about one in three scenes is a "host" scene with {HOST['name']}; the rest are "story" scenes.
-Keep each scene to one or two short sentences (about {4 if job['format'] == 'short' else 5} seconds).
-When several story scenes in a row happen in the same place, set "same_place_as_previous": true on the later
-ones and describe the new action; the same background picture is reused with a different camera move.
+{('Changes the owner asked for after the previous version (follow these closely): ' + job['revision_notes'] + chr(10)) if job.get('revision_notes') else ''}Story structure to use: {structure}
+Frame everything for a {'vertical 9:16' if short else 'wide 16:9'} screen.
 
 Reference material (facts must come from here or be widely documented):
-{refs}
+{_refs(sources)}
 
 Return JSON:
 {{
   "working_title": "honest, curiosity-driven title under 70 characters",
   "hook": "the opening line, spoken in the first 5 seconds",
-  "scenes": [
-    {{"narration": "what the narrator says in this scene",
-      "kind": "story | host",
-      "visual": "for story scenes: detailed cartoon illustration prompt; for host scenes: empty",
-      "same_place_as_previous": false,
-      "motion": "slow zoom in | slow zoom out | pan left | pan right | drift up | drift down",
-      "date_label": "e.g. '1666' or '1000 BC' when the story moves to a new time, else empty",
-      "bubble": "optional speech bubble, max 6 funny words said by a character in the picture, else empty",
-      "host_pose": "for host scenes: talk | point | shrug | think | shock | wave | laugh | worried",
-      "host_text": "for host scenes: optional handwritten note or question on screen, max 8 words, else empty"}}
+  "cast": [
+    {{"id": "short_snake_case_id", "kind": "person | animal | object",
+      "look": "full visual description so the artist draws it the same every time: age, build, face, hair, clothes and colours (or shape, material and colours for objects); historically accurate",
+      "poses": {{"pose_name": "body position and facial expression, e.g. 'standing, worried, hands clasped'"}}}}
   ],
-  "call_to_action": "the closing subscribe line (also include it in the last scene's narration)",
+  "places": [
+    {{"id": "short_snake_case_id", "look": "the empty setting only (no people or animals): where, era, time of day, weather, key objects, mood"}}
+  ],
+  "chapters": [{{"title": "short chapter title", "covers": "what this part tells, in order, with the key facts"}}],
+  "use_guide": false,
+  "call_to_action": "the closing subscribe line",
   "why_it_matters": "one sentence on the value this video gives viewers",
   "uses_realistic_altered_content": false
 }}
-Set "uses_realistic_altered_content" to true only if a scene would show a realistic-looking real person or
+Rules: at most {lim['cast']} cast members with 2 to {lim['poses']} poses each (objects may have 1 pose, e.g. "default");
+at most {lim['places']} places (reuse places; the camera and the cast make each shot different);
+exactly {chapters} chapter{'s' if chapters > 1 else ''}.
+Typical cast: the key real people (no living people), an everyday person of the time, and moving things that matter
+to the story (a ship, a horse, a cart, a crown, a cannon, a scroll...).
+The channel also has an optional guide, {HOST['name']}, a cheerful young time-traveller (poses: {guide_poses}).
+Set "use_guide" to true only if she would really help explain this topic (tricky ideas, quick recaps, questions to
+the viewer); do not add her to "cast".
+Set "uses_realistic_altered_content" to true only if a shot would show a realistic-looking real person or a
 realistic depiction of a real event that viewers could mistake for real footage."""
-    script = gemini_json(prompt, SYSTEM, temperature=0.85)
-    if not isinstance(script, dict) or not script.get("scenes"):
-        raise WorkerError("The AI returned an unusable script. It will try again within the hour.", transient=True)
-    script["structure"] = structure
-    count = sum(len(str(sc.get("narration", "")).split()) for sc in script["scenes"])
-    if count > words * 1.15:  # too long for the slot: one trimming pass
-        time.sleep(4)
-        trimmed = gemini_json(
-            f"""This narration has {count} words but must be at most {words} words. Shorten each scene's
-"narration" so the total is between {int(words * 0.9)} and {words} words. Keep the hook, every fact, the story
-order and the final subscribe line. Do not add new facts. Keep all other fields unchanged.
-Return the same JSON shape.
+    plan = gemini_json(prompt, SYSTEM, temperature=0.8)
+    if not isinstance(plan, dict) or not plan.get("places") or not plan.get("chapters"):
+        raise WorkerError("The AI returned an unusable plan. It will try again within the hour.", transient=True)
+    return plan
 
-{json.dumps(script, ensure_ascii=False)}""", SYSTEM, temperature=0.3)
-        if isinstance(trimmed, dict) and trimmed.get("scenes"):
-            trimmed["structure"] = structure
-            script = trimmed
-    elif count < words * 0.85:  # too short for the chosen length: one expanding pass
+
+def _cast_text(plan):
+    lines = []
+    for c in plan["cast"]:
+        lines.append(f"- {c['id']} ({c.get('kind', 'person')}): poses {', '.join(c['poses'])}")
+    if plan.get("use_guide"):
+        lines.append(f"- guide ({HOST['name']}, guide shots only): poses {', '.join(HOST['poses'])}")
+    return "\n".join(lines) or "(none)"
+
+
+def write_chapter(job, plan, sources, index, words, previous):
+    short = job["format"] == "short"
+    total = len(plan["chapters"])
+    ch = plan["chapters"][index]
+    first, last = index == 0, index == total - 1
+    rules = SHOT_RULES.replace("ACTIONS", ", ".join(ACTIONS)).replace("CAMERAS", ", ".join(CAMERAS)) \
+        .replace("EFFECTS", ", ".join(EFFECTS))
+    guide = (f"Guide shots with {HOST['name']}: use only where they truly help (a tricky idea, a quick recap, a question "
+             f"to the viewer), at most one shot in eight.") if plan.get("use_guide") else "Do not use guide shots."
+    prompt = f"""Write {'the script' if short else f'chapter {index + 1} of {total}'} of a {'YouTube Short' if short else 'long YouTube video'} about "{job['topic']}".
+{'' if short else f'Chapter title: {ch.get("title")}' + chr(10)}What it covers: {ch.get('covers')}
+Length: {int(words * 0.9)} to {words} words of narration in total. Never go over {words} words.
+{('Start with this hook as the first sentence: ' + plan.get('hook', '')) if first else 'Carry on smoothly from the previous part, which ended: ' + previous}
+{('End with this subscribe line: ' + plan.get('call_to_action', '')) if last else 'End on a line that makes viewers want the next part (no subscribe line yet).'}
+{'' if short else 'Start the chapter with a title shot showing the chapter title.'}
+Tone: {job.get('tone')}. Audience: {job.get('audience')}.
+{('Changes the owner asked for (follow closely): ' + job['revision_notes']) if job.get('revision_notes') else ''}
+
+Cast (use these ids and pose names only):
+{_cast_text(plan)}
+Places (use these ids only):
+{chr(10).join('- ' + p['id'] + ': ' + p['look'][:90] for p in plan['places'])}
+
+{rules}
+{guide}
+
+Reference material (facts must come from here or be widely documented):
+{_refs(sources)}
+
+Return JSON:
+{{"scenes": [{{"narration": "what the narrator says", "shots": [{{"kind": "story", "place": "...", "characters": [{{"id": "...", "pose": "...", "then_pose": "", "action": "walk_in_left", "position": "left"}}], "camera": "push_in", "effect": "none", "time_label": "", "fact": "", "bubble": "", "note": "", "title": ""}}]}}]}}"""
+    out = gemini_json(prompt, SYSTEM, temperature=0.8)
+    scenes = out.get("scenes") if isinstance(out, dict) else out if isinstance(out, list) else None
+    if not scenes:
+        raise WorkerError("The AI returned an unusable script part. It will try again within the hour.", transient=True)
+    count = sum(len(str(s.get("narration", "")).split()) for s in scenes)
+    if count > words * 1.2 or count < words * 0.8:  # one correcting pass
         time.sleep(4)
-        longer = gemini_json(
-            f"""This narration has {count} words but must be between {int(words * 0.9)} and {words} words.
-Expand it by adding more scenes and richer storytelling: context, causes, vivid but accurate detail, and consequences.
-Use ONLY facts from the reference material below or very widely documented history. Never invent quotes, numbers or names.
-Keep the hook as the first line and the subscribe line at the end. Return the same JSON shape, with every scene
-having narration, visual and motion.
+        fix = gemini_json(
+            f"""This script part has {count} words of narration but needs {int(words * 0.9)} to {words} words.
+{'Shorten the narration, keeping every fact, the order and the opening and closing lines.' if count > words else
+ 'Add scenes with richer storytelling: context, causes, vivid but accurate detail and consequences, using ONLY facts from the reference material or very widely documented history.'}
+Keep one shot per 6 to 9 words of narration, using the same fields and the same cast, pose and place ids.
+Return the same JSON shape: {{"scenes": [...]}}.
 
 Reference material:
-{refs}
+{_refs(sources) if count < words else '(not needed)'}
 
-Script:
-{json.dumps(script, ensure_ascii=False)}""", SYSTEM, temperature=0.6)
-        if isinstance(longer, dict) and len(longer.get("scenes", [])) >= len(script["scenes"]):
-            longer["structure"] = structure
-            script = longer
-    return script
+Script part:
+{json.dumps({'scenes': scenes}, ensure_ascii=False)}""", SYSTEM, temperature=0.5)
+        fixed = fix.get("scenes") if isinstance(fix, dict) else None
+        if fixed:
+            scenes = fixed
+    return scenes
+
+
+def tidy(plan, scenes, short):
+    """Make every shot use only known places, cast, poses, actions, cameras and effects."""
+    lim = LIMITS["short" if short else "long"]
+    cast = {}
+    for c in plan.get("cast", [])[:lim["cast"]]:
+        cid = str(c.get("id", "")).strip().lower().replace(" ", "_")
+        poses = {str(k).strip().lower().replace(" ", "_"): str(v) for k, v in (c.get("poses") or {}).items()}
+        if cid and cid != "guide" and poses and c.get("look"):
+            cast[cid] = {"id": cid, "kind": c.get("kind", "person"), "look": str(c["look"]),
+                         "poses": dict(list(poses.items())[:lim["poses"]])}
+    places = {}
+    for p in plan.get("places", [])[:lim["places"]]:
+        pid = str(p.get("id", "")).strip().lower().replace(" ", "_")
+        if pid and p.get("look"):
+            places[pid] = {"id": pid, "look": str(p["look"])}
+    if not places:
+        raise WorkerError("The AI plan had no usable places. It will try again within the hour.", transient=True)
+    guide = bool(plan.get("use_guide"))
+    place_ids = list(places)
+    last_place = place_ids[0]
+    clean = []
+    for sc in scenes:
+        narration = " ".join(str(sc.get("narration", "")).split())
+        if not narration:
+            continue
+        shots = []
+        for sh in (sc.get("shots") or [])[:8]:
+            kind = str(sh.get("kind", "story")).lower()
+            kind = kind if kind in ("story", "guide", "title") else "story"
+            if kind == "guide" and not guide:
+                kind = "story"
+            place = str(sh.get("place", "")).strip().lower().replace(" ", "_")
+            place = place if place in places else last_place
+            last_place = place
+            chars = []
+            for c in (sh.get("characters") or [])[:3]:
+                cid = str(c.get("id", "")).strip().lower().replace(" ", "_")
+                pool = HOST["poses"] if cid == "guide" else cast.get(cid, {}).get("poses")
+                if not pool or (cid == "guide" and not guide):
+                    continue
+                pose = str(c.get("pose", "")).strip().lower().replace(" ", "_")
+                pose = pose if pose in pool else next(iter(pool))
+                then = str(c.get("then_pose", "")).strip().lower().replace(" ", "_")
+                action = str(c.get("action", "stand")).strip().lower().replace(" ", "_")
+                pos = str(c.get("position", "center")).strip().lower()
+                chars.append({"id": cid, "pose": pose, "then_pose": then if then in pool and then != pose else "",
+                              "action": action if action in ACTIONS else "stand",
+                              "position": pos if pos in ("left", "center", "right") else "center"})
+            if kind == "guide":
+                g = next((c for c in chars if c["id"] == "guide"), None)
+                chars = [g or {"id": "guide", "pose": "talk", "then_pose": "", "action": "talk", "position": "center"}]
+            else:
+                chars = [c for c in chars if c["id"] != "guide"]
+            camera = str(sh.get("camera", "static")).strip().lower()
+            effect = str(sh.get("effect", "none")).strip().lower()
+            shots.append({
+                "kind": kind, "place": place, "characters": chars,
+                "camera": camera if camera in CAMERAS else "static",
+                "effect": effect if effect in EFFECTS else "none",
+                "time_label": str(sh.get("time_label") or "")[:24],
+                "fact": " ".join(str(sh.get("fact") or "").split()[:16]),
+                "bubble": " ".join(str(sh.get("bubble") or "").split()[:7]),
+                "note": " ".join(str(sh.get("note") or "").split()[:9]),
+                "title": " ".join(str(sh.get("title") or "").split()[:7]) if kind == "title" else "",
+            })
+        if not shots:
+            shots = [{"kind": "story", "place": last_place, "characters": [], "camera": "push_in", "effect": "none",
+                      "time_label": "", "fact": "", "bubble": "", "note": "", "title": ""}]
+        clean.append({"narration": narration, "chapter": sc.get("chapter", 0), "shots": shots})
+    # keep only what is actually used, so no picture is drawn for nothing
+    used_places = {sh["place"] for sc in clean for sh in sc["shots"] if sh["kind"] != "guide"}
+    used = {}
+    for sc in clean:
+        for sh in sc["shots"]:
+            for c in sh["characters"]:
+                used.setdefault(c["id"], set()).update({c["pose"]} | ({c["then_pose"]} if c["then_pose"] else set()))
+    cast_out = []
+    for cid, c in cast.items():
+        if cid in used:
+            c["poses"] = {k: v for k, v in c["poses"].items() if k in used[cid]}
+            cast_out.append(c)
+    return clean, cast_out, [places[p] for p in place_ids if p in used_places], guide and "guide" in used
+
+
+def write_script(job, sources):
+    secs, words = target(job)
+    short = job["format"] == "short"
+    structure = random.choice(STRUCTURES)
+    plan = plan_video(job, sources, structure)
+    chapters = plan["chapters"][:1] if short else plan["chapters"]
+    plan["chapters"] = chapters
+    per = words // len(chapters)
+    scenes, chapter_marks, previous = [], [], ""
+    for i, ch in enumerate(chapters):
+        time.sleep(4)  # stay well inside the free per-minute limit
+        print(f"  writing part {i + 1} of {len(chapters)}", flush=True)
+        part = write_chapter(job, plan, sources, i, per, previous)
+        for sc in part:
+            sc["chapter"] = i
+        scenes += part
+        previous = " ".join(str(s.get("narration", "")) for s in part[-2:])[-400:]
+    clean, cast, places, guide = tidy(plan, scenes, short)
+    for i, ch in enumerate(chapters):
+        first = next((n for n, sc in enumerate(clean) if sc["chapter"] == i), None)
+        if first is not None:
+            chapter_marks.append({"title": str(ch.get("title") or f"Part {i + 1}")[:60], "scene": first + 1})
+    return {
+        "working_title": plan.get("working_title", job["topic"]),
+        "hook": plan.get("hook", ""),
+        "structure": structure,
+        "style": "animated-v2",
+        "cast": cast,
+        "places": places,
+        "use_guide": guide,
+        "chapters": [] if short else chapter_marks,
+        "scenes": clean,
+        "call_to_action": plan.get("call_to_action", ""),
+        "why_it_matters": plan.get("why_it_matters", ""),
+        "uses_realistic_altered_content": bool(plan.get("uses_realistic_altered_content")),
+    }
 
 
 def fact_check(job, script, sources):
-    narration = "\n".join(f"[{i + 1}] {s.get('narration', '')}" for i, s in enumerate(script["scenes"]))
+    """Check narration and on-screen facts, in chunks so long videos fit."""
     refs = "\n\n".join(f"### {p['title']} ({p['url']})\n{p['text']}" for p in sources) or "(none)"
-    prompt = f"""You are a strict history fact-checker. Check every factual claim in this narration
-(names, dates, numbers, places, causes, quotes) against the reference material and well-established history.
+    lines = []
+    for i, s in enumerate(script["scenes"]):
+        extra = [sh[k] for sh in s.get("shots", []) for k in ("fact", "bubble", "note", "title") if sh.get(k)]
+        lines.append(f"[{i + 1}] {s.get('narration', '')}" + (f" (on screen: {' | '.join(extra)})" if extra else ""))
+    claims, summaries = [], []
+    for start in range(0, len(lines), 90):
+        if start:
+            time.sleep(4)
+        prompt = f"""You are a strict history fact-checker. Check every factual claim in this narration and its
+on-screen text (names, dates, numbers, places, causes, quotes) against the reference material and well-established history.
 
 Narration (scene numbers in brackets):
-{narration}
+{chr(10).join(lines[start:start + 90])}
 
 Reference material:
 {refs}
@@ -156,13 +352,16 @@ Return JSON:
   "summary": "one plain-English sentence for the channel owner"
 }}
 Use "uncertain" when the sources do not clearly back the claim or historians disagree."""
-    result = gemini_json(prompt, "You check facts carefully and answer only with JSON.", temperature=0.1)
-    claims = result.get("claims", []) if isinstance(result, dict) else []
+        result = gemini_json(prompt, "You check facts carefully and answer only with JSON.", temperature=0.1)
+        if isinstance(result, dict):
+            claims += [c for c in result.get("claims", []) if isinstance(c, dict)]
+            if result.get("summary"):
+                summaries.append(str(result["summary"]))
     for c in claims:
         c["verdict"] = str(c.get("verdict", "uncertain")).lower()
         if c["verdict"] not in ("supported", "uncertain", "wrong"):
             c["verdict"] = "uncertain"
-    return {"claims": claims, "summary": result.get("summary", "") if isinstance(result, dict) else ""}
+    return {"claims": claims, "summary": " ".join(summaries[:3])}
 
 
 def process(job_path):
@@ -190,7 +389,7 @@ def process(job_path):
             "format": job["format"],
             **script,
             "word_count": words,
-            "estimated_seconds": round(words / 2.5),
+            "estimated_seconds": round(words / WORDS_PER_SECOND),
             "fact_check": check,
             "sources": [{"title": p["title"], "url": p["url"]} for p in sources],
         })
