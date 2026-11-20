@@ -5,6 +5,7 @@ Standard library only, so the GitHub Actions job needs nothing installed.
 import json
 import os
 import pathlib
+import sys
 import time
 import urllib.error
 import urllib.parse
@@ -13,9 +14,10 @@ import urllib.request
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 UA = "StoryStudio/1.0 (open-source video script tool)"
 
-# Free-tier Gemini models, tried in order. Override with the GEMINI_MODELS
-# repository variable if Google renames them.
-DEFAULT_MODELS = "gemini-flash-latest,gemini-2.5-flash,gemini-2.0-flash"
+# Free-tier Gemini models are found automatically (Google renames them often).
+# To force a choice, set the GEMINI_MODELS repository variable, e.g. "gemini-2.5-flash".
+FALLBACK_MODELS = ["gemini-flash-latest", "gemini-2.5-flash", "gemini-flash-lite-latest", "gemini-2.5-flash-lite"]
+_models_cache = None
 
 # The channel's own visual identity. Every scene prompt is written for this,
 # so the look stays consistent and original (not modelled on any channel).
@@ -58,12 +60,46 @@ def http_json(url, data=None, headers=None, timeout=90):
 
 
 # ---------------------------------------------------------------- Gemini
+def _version(name):
+    import re
+    m = re.search(r"(\d+(?:\.\d+)?)", name)
+    return float(m.group(1)) if m else 0.0
+
+
+def gemini_models(key):
+    """Ask Google which text models this key can use, best first."""
+    global _models_cache
+    if _models_cache is not None:
+        return _models_cache
+    override = [m.strip() for m in os.environ.get("GEMINI_MODELS", "").split(",") if m.strip()]
+    if override:
+        _models_cache = override
+        return override
+    found = []
+    try:
+        url = "https://generativelanguage.googleapis.com/v1beta/models?pageSize=200"
+        for m in http_json(url, headers={"x-goog-api-key": key}).get("models", []):
+            name = m.get("name", "").removeprefix("models/")
+            if "generateContent" not in m.get("supportedGenerationMethods", []):
+                continue
+            if "flash" not in name or any(x in name for x in ("image", "tts", "audio", "live", "thinking", "exp", "preview", "embedding", "8b")):
+                continue
+            found.append(name)
+    except Exception as e:
+        print(f"Could not list models: {e}", file=sys.stderr)
+    # Prefer the "latest" aliases, then the newest version; full flash before lite.
+    found.sort(key=lambda n: ("latest" not in n, "lite" in n, -_version(n), len(n)))
+    print("Gemini models to try:", found[:6] or FALLBACK_MODELS, file=sys.stderr)
+    _models_cache = (found[:6] or FALLBACK_MODELS)
+    return _models_cache
+
+
 def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
     """Ask Gemini for a JSON answer. Tries each free model in turn."""
     key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not key:
         raise WorkerError("The Gemini key is missing. Add it as the GEMINI_API_KEY secret in GitHub.")
-    models = [m.strip() for m in (os.environ.get("GEMINI_MODELS") or DEFAULT_MODELS).split(",") if m.strip()]
+    models = gemini_models(key)
     payload = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"},
@@ -71,6 +107,7 @@ def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
     if system:
         payload["systemInstruction"] = {"parts": [{"text": system}]}
     last = "no model answered"
+    tried = []
     for model in models:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{urllib.parse.quote(model)}:generateContent"
         for attempt in range(max_tries):
@@ -83,10 +120,14 @@ def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
                     break
                 return parse_json_text(text)
             except urllib.error.HTTPError as e:
-                detail = e.read().decode("utf-8", "replace")[:300]
-                last = f"{model}: HTTP {e.code} {detail}"
-                if e.code == 429:  # free-tier rate limit: wait, then try again
-                    time.sleep(35 * (attempt + 1))
+                detail = e.read().decode("utf-8", "replace")[:600]
+                last = f"{model}: HTTP {e.code}"
+                print(f"Gemini {model} attempt {attempt + 1}: HTTP {e.code} {detail}", file=sys.stderr)
+                if e.code == 429:
+                    if "PerDay" in detail or "limit: 0" in detail:
+                        last = f"{model}: free daily limit reached"
+                        break  # no free quota left on this model today: try the next one
+                    time.sleep(35 * (attempt + 1))  # per-minute limit: wait, then retry
                     continue
                 if e.code in (500, 502, 503, 504):
                     time.sleep(10 * (attempt + 1))
@@ -96,8 +137,10 @@ def gemini_json(prompt, system="", temperature=0.7, max_tries=3):
                 break  # 404 (model renamed) or other: try the next model
             except (urllib.error.URLError, TimeoutError, ValueError) as e:
                 last = f"{model}: {e}"
+                print(f"Gemini {model} attempt {attempt + 1}: {e}", file=sys.stderr)
                 time.sleep(5)
-    raise WorkerError(f"The AI service did not answer ({last[:160]}). It will try again within the hour.", transient=True)
+        tried.append(last)
+    raise WorkerError("The AI service did not answer (" + "; ".join(tried)[:220] + "). It will try again within the hour.", transient=True)
 
 
 def parse_json_text(text):
