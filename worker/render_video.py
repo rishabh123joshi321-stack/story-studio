@@ -25,7 +25,7 @@ import urllib.request
 import numpy as np
 import soundfile as sf
 
-from common import HOUSE_STYLE, ROOT, UA, WorkerError, read_json, write_json
+from common import HOUSE_STYLE, ROOT, UA, WorkerError, read_json, save, stale, sync, write_json
 from music import SR, make_music
 
 CACHE = pathlib.Path(os.environ.get("SS_CACHE", pathlib.Path.home() / ".cache" / "storystudio"))
@@ -322,34 +322,15 @@ def publish(job, video):
     return f"https://github.com/{repo}/releases/download/{tag}/video.mp4"
 
 
-def save(message):
-    if not os.environ.get("GITHUB_REPOSITORY"):
-        return
-    subprocess.run(["git", "add", "jobs"], cwd=ROOT, check=True)
-    if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode == 0:
-        return
-    subprocess.run(["git", "commit", "-q", "-m", message], cwd=ROOT, check=True)
-    for i in range(5):
-        if subprocess.run(["git", "pull", "-q", "--rebase", "-X", "theirs", "origin", "main"], cwd=ROOT).returncode == 0 and \
-                subprocess.run(["git", "push", "-q", "origin", "HEAD:main"], cwd=ROOT).returncode == 0:
-            return
-        time.sleep(5 * (i + 1))
-    raise RuntimeError("could not save to GitHub")
-
-
 def now():
     return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
-
-
-def sync():
-    """Get the latest project files, so a stale copy never overwrites newer work."""
-    if os.environ.get("GITHUB_REPOSITORY"):
-        subprocess.run(["git", "pull", "-q", "--rebase", "origin", "main"], cwd=ROOT)
 
 
 def process(path):
     sync()
     job = read_json(path)
+    if job and job.get("status") == "rendering" and stale(job, 180):
+        job["status"] = "script_ready"
     if not job or job.get("status") != "script_ready":
         return False
     script = read_json(ROOT / "scripts" / f"{job['id']}.json")
@@ -360,7 +341,7 @@ def process(path):
     job["updated"] = now()
     job.pop("error", None)
     write_json(path, job)
-    save(f"Making video: {job['topic'][:60]}")
+    save(["jobs"], f"Making video: {job['topic'][:60]}")
     out_dir = WORK / job["id"]
     out_dir.mkdir(parents=True, exist_ok=True)
     started = time.time()
@@ -385,7 +366,7 @@ def process(path):
             job["error"] = msg + " Tap Try again in the Queue."
     job["updated"] = now()
     write_json(path, job)
-    save(f"Video {'ready' if job['status'] == 'video_ready' else 'update'}: {job['topic'][:60]}")
+    save(["jobs"], f"Video {'ready' if job['status'] == 'video_ready' else 'update'}: {job['topic'][:60]}")
     shutil.rmtree(out_dir, ignore_errors=True)
     return True
 
@@ -395,7 +376,7 @@ def main():
     done = 0
     for path in sorted((ROOT / "jobs").glob("*.json")):
         job = read_json(path, {})
-        if job.get("status") != "script_ready" or (only and job.get("id") != only):
+        if job.get("status") not in ("script_ready", "rendering") or (only and job.get("id") != only):
             continue
         if done >= MAX_RENDERS:
             break
