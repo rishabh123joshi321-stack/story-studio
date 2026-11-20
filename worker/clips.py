@@ -104,17 +104,19 @@ def process(path):
     if r.returncode != 0:
         log("Could not download the long video:", r.stderr[-300:])
         return False
-    n, dur = pick_segment(starts, job["video_seconds"])
+    lead = float(job.get("intro_seconds") or 0)  # skip the branded intro
+    rel = [x - lead for x in starts]
+    n, dur = pick_segment(rel, job["video_seconds"] - lead - (10.0 if lead else 0))
     title = pkg.get("title") or job.get("title") or job["topic"]
     text_layer(title, job.get("captionFont", "Anton"), folder / "text.png")
     out = folder / "video.mp4"
-    make_clip(src, 0, dur, folder / "text.png", out)
+    make_clip(src, lead, dur, folder / "text.png", out)
     cid = f"{job['id']}-s1"
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     clip = {k: job.get(k) for k in ("tone", "audience", "voice", "captionFont", "theme")}
     clip.update(id=cid, parent_id=job["id"], created=now, updated=now, format="short", length=round(dur), lengthUnit="seconds",
                 topic=f"{job['topic']} (Short)", notes="Cut from the long video.", status="video_ready",
-                video_seconds=dur, scene_starts=[s for s in starts[:n]])
+                video_seconds=dur, scene_starts=[round(s, 2) for s in rel[:n]])
     clip["video"] = publish(clip, out)
     sub = dict(script)
     sub["scenes"] = script["scenes"][:n]

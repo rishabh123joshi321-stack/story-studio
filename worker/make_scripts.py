@@ -342,6 +342,7 @@ def tidy(plan, scenes, short):
     return clean, cast_out, [places[p] for p in place_ids if p in used_places], guide and "guide" in used
 
 
+SFX_TAGS = ("fire", "crowd", "sea", "wind", "rain", "battle", "bells", "thunder", "birds", "none")
 STILLS_RULES = """Each scene is narration plus ONE detailed picture that shows exactly what that narration describes.
 Scene fields:
 - "narration": what the narrator says (SCENE_LENGTH).
@@ -354,7 +355,9 @@ Scene fields:
 - "camera": one of push_in, pull_out, pan_left, pan_right, tilt_up (the slow camera move over the picture).
 - "effect": a gentle moving effect if it fits the moment (fire, embers, smoke, rain, snow, dust, fog, leaves, birds,
   sparkles, lightning, water), else "none".
-- "time_label": short, e.g. "London, 1666" or "2 Sept 1666", when the story jumps in time or place, else ""."""
+- "time_label": short, e.g. "London, 1666" or "2 Sept 1666", when the story jumps in time or place, else "".
+- "sfx": a quiet background sound that fits the moment: one of fire, crowd, sea, wind, rain, battle, bells, thunder, birds, none.
+  Use it only where the sound is really there in the scene; "none" for most calm or explaining scenes."""
 
 
 def write_chapter_stills(job, plan, sources, index, words, previous):
@@ -386,7 +389,7 @@ Reference material (facts must come from here or be widely documented):
 {_refs(sources)}
 
 Return JSON:
-{{"scenes": [{{"narration": "...", "picture": "...", "camera": "push_in", "effect": "none", "time_label": ""}}]}}"""
+{{"scenes": [{{"narration": "...", "picture": "...", "camera": "push_in", "effect": "none", "time_label": "", "sfx": "none"}}]}}"""
     out = gemini_json(prompt, SYSTEM_STILLS, temperature=0.8)
     scenes = out.get("scenes") if isinstance(out, dict) else out if isinstance(out, list) else None
     if not scenes:
@@ -434,7 +437,8 @@ def stills_to_shots(parts, chapters, short):
             if not short and n == 0:  # chapter title over the chapter's first picture
                 shots.insert(0, dict(shot, kind="title", title=" ".join(str(chapters[i].get("title", "")).split()[:7]),
                                      camera="push_in", effect="none"))
-            scenes.append({"narration": narration, "chapter": i, "shots": shots})
+            sfx = str(sc.get("sfx", "none")).lower().strip()
+            scenes.append({"narration": narration, "chapter": i, "shots": shots, "sfx": sfx if sfx in SFX_TAGS else "none"})
     return scenes, places
 
 

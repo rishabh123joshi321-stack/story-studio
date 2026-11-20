@@ -520,6 +520,9 @@ def render(job, script, out_dir):
     fonts_dir = CACHE / "fonts"
     fonts = {"display": str(fonts_dir / "Anton-Regular.ttf"), "hand": str(fonts_dir / "PatrickHand-Regular.ttf")}
     captions(scenes, starts, durs, W, H, vertical, out_dir / "captions.ass", guide_times, job.get("captionFont", "Anton"))
+    import sfx  # quiet background sounds that follow each scene (fire, crowd, sea...)
+    amb = sfx.track(scenes, starts, durs, total, seed=seed0)
+    sf.write(out_dir / "sfx.wav", amb, SR)
 
     # 5. animate every shot, several at once
     workers = max(1, (os.cpu_count() or 2))
@@ -541,15 +544,25 @@ def render(job, script, out_dir):
              f"[2:a]aloop=loop=-1:size=2e9,atrim=0:{total:.2f},lowpass=f=2400,volume=0.22[m];"
              f"[1:a]asplit=2[v1][vv];"
              f"[m][v1]sidechaincompress=threshold=0.03:ratio=6:attack=30:release=600[md];"
-             f"[vv][md]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
+             f"[3:a]atrim=0:{total:.2f}[fx];"
+             f"[vv][md][fx]amix=inputs=3:duration=first:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
     out = out_dir / "video.mp4"
     run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(out_dir / "clips.txt"),
-         "-i", str(out_dir / "voice.wav"), "-i", str(music_path),
+         "-i", str(out_dir / "voice.wav"), "-i", str(music_path), "-i", str(out_dir / "sfx.wav"),
          "-filter_complex", graph, "-map", "[vout]", "-map", "[aout]",
          "-c:v", "libx264", "-preset", os.environ.get("X264_PRESET", "veryfast"), "-crf", "20", "-pix_fmt", "yuv420p",
-         "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-t", f"{total:.2f}",
+         "-r", str(FPS), "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "1", "-t", f"{total:.2f}",
          "-movflags", "+faststart", str(out)])
     assets.done()
+    if not vertical and job.get("intro", True):  # long videos: branded intro + end screen
+        try:
+            import branding
+            out, lead, added = branding.wrap(out, W, H, CACHE, out_dir)
+            starts = [x + lead for x in starts]
+            total += added
+            job["intro_seconds"] = lead
+        except Exception as e:
+            log(f"  intro/end screen skipped: {e!r}")
     return out, total, [round(x, 2) for x in starts]
 
 
