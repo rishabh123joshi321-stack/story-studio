@@ -24,7 +24,10 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
       - name: Write scripts for new video requests
-        run: python worker/make_scripts.py
+        run: |
+          git config user.name "story-studio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python worker/make_scripts.py
       - name: Refresh topic ideas if needed
         run: python worker/make_ideas.py --if-needed || echo "Ideas will be retried next hour."
       - name: Save results to the project
