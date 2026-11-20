@@ -90,7 +90,7 @@ def story_overlay(W, H, date_label, bubble_text, side, cache, dest):
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
     if date_label:
-        date_tag(d, W, H, str(date_label)[:16], cache)
+        date_tag(d, W, H, str(date_label)[:32], cache)
     if bubble_text:
         bubble(d, W, H, " ".join(str(bubble_text).split()[:8]), side, cache)
     im.save(dest)
@@ -109,7 +109,7 @@ def host_background(W, H, note, date_label, cache, dest, host_left=True):
     im = Image.composite(im, Image.new("RGB", (W, H), (205, 196, 178)), vig)
     d = ImageDraw.Draw(im, "RGBA")
     if date_label:
-        date_tag(d, W, H, str(date_label)[:16], cache)
+        date_tag(d, W, H, str(date_label)[:32], cache)
     if note:
         vertical = H > W
         size = int(W * (0.075 if vertical else 0.045))

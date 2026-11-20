@@ -354,7 +354,7 @@ Scene fields:
 - "camera": one of push_in, pull_out, pan_left, pan_right, tilt_up (the slow camera move over the picture).
 - "effect": a gentle moving effect if it fits the moment (fire, embers, smoke, rain, snow, dust, fog, leaves, birds,
   sparkles, lightning, water), else "none".
-- "time_label": e.g. "London, 1666" when the story jumps in time or place, else ""."""
+- "time_label": short, e.g. "London, 1666" or "2 Sept 1666", when the story jumps in time or place, else ""."""
 
 
 def write_chapter_stills(job, plan, sources, index, words, previous):
@@ -363,18 +363,21 @@ def write_chapter_stills(job, plan, sources, index, words, previous):
     total = len(plan["chapters"])
     ch = plan["chapters"][index]
     first, last = index == 0, index == total - 1
-    rules = STILLS_RULES.replace("SCENE_LENGTH", "one sentence, about 5 seconds" if short
+    rules = STILLS_RULES.replace("SCENE_LENGTH", "one short sentence of 10 to 14 words, about 5 seconds" if short
                                  else "two or three sentences, about 15 seconds")
-    cast = "\n".join(f"- {c.get('id')}: {c.get('look')}" for c in plan.get("cast", [])) or "(none)"
+    n_scenes = max(3, round(words / (12 if short else 37)))
+    cast = "\n".join(f"- {str(c.get('id', '')).replace('_', ' ')}: {c.get('look')}" for c in plan.get("cast", [])) or "(none)"
     prompt = f"""Write {'the script' if short else f'chapter {index + 1} of {total}'} of a {'YouTube Short' if short else 'long YouTube video'} about "{job['topic']}".
 {'' if short else f'Chapter title: {ch.get("title")}' + chr(10)}What it covers: {ch.get('covers')}
 Length: {int(words * 0.9)} to {words} words of narration in total. Never go over {words} words.
+Number of scenes (each with its own picture): {n_scenes}.
 {('Start with this hook as the first sentence: ' + plan.get('hook', '')) if first else 'Carry on smoothly from the previous part, which ended: ' + previous}
 {('End with this subscribe line: ' + plan.get('call_to_action', '')) if last else 'End on a line that makes viewers want the next part (no subscribe line yet).'}
 Tone: {job.get('tone')}. Audience: {job.get('audience')}. Frame pictures for a {'vertical 9:16' if short else 'wide 16:9'} screen.
 {('Changes the owner asked for (follow closely): ' + job['revision_notes']) if job.get('revision_notes') else ''}
 
-People and things that appear (describe them exactly like this in every picture they are in):
+People and things that appear (in pictures, call them by name and describe them exactly like this every time;
+never write ids with underscores):
 {cast}
 
 {rules}
@@ -426,7 +429,7 @@ def stills_to_shots(parts, chapters, short):
             shot = {"kind": "story", "place": places[-1]["id"], "characters": [],
                     "camera": camera if camera in CAMERAS else "push_in",
                     "effect": effect if effect in EFFECTS else "none",
-                    "time_label": str(sc.get("time_label") or "")[:24], "fact": "", "bubble": "", "note": "", "title": ""}
+                    "time_label": str(sc.get("time_label") or "")[:32], "fact": "", "bubble": "", "note": "", "title": ""}
             shots = [shot]
             if not short and n == 0:  # chapter title over the chapter's first picture
                 shots.insert(0, dict(shot, kind="title", title=" ".join(str(chapters[i].get("title", "")).split()[:7]),
