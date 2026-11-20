@@ -321,7 +321,7 @@ $('refreshQueue').addEventListener('click', loadQueue);
 // ---------- review ----------
 function paintReviewCount(jobs) {
   const n = jobs.filter((j) => j.status === 'ready').length;
-  document.querySelector('.tabs button[data-tab="review"]').textContent = n ? `Review (${n})` : 'Review';
+  document.querySelector('.tabs button[data-tab="review"] span').textContent = n ? `Review (${n})` : 'Review';
 }
 function fmtLen(sec) { sec = Math.round(sec || 0); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`; }
 
@@ -509,10 +509,12 @@ async function loadStats() {
   const uploads90 = recent.filter((x) => x.privacy === 'public' && new Date(x.published).getTime() > cutoff).length;
   const hours = y.long_watch_hours_365 || 0, sv = y.shorts_views_90 || 0;
   v.innerHTML = `
-    <p class="hint">${esc(c.title || '')} · updated ${esc(new Date(s.updated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }))}</p>
+    <div class="dhero"><div class="k">Your channel</div><h2>${esc(c.title || 'Your channel')}</h2>
+      <div class="big">${c.subscribers_hidden ? '—' : fmtN(c.subscribers)}</div><div class="lbl">subscribers · updated ${esc(new Date(s.updated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }))}</div>
+      ${(() => { const g = c.subscribers >= 1000 ? null : c.subscribers >= 500 ? 1000 : c.subscribers >= 100 ? 500 : 100; return g ? `<div class="next">Next goal: <b>${fmtN(g)} subscribers</b> · ${fmtN(Math.max(0, g - (c.subscribers || 0)))} to go<div class="mbar"><i style="width:${Math.min(100, ((c.subscribers || 0) / g) * 100).toFixed(1)}%"></i></div></div>` : ''; })()}
+    </div>
     ${s.error ? `<div class="card"><p class="flagnote">${esc(s.error)}</p></div>` : ''}
     <div class="tiles">
-      <div class="tile"><b>${c.subscribers_hidden ? 'Hidden' : fmtN(c.subscribers)}</b><span>Subscribers</span></div>
       <div class="tile"><b>${fmtN(c.views)}</b><span>Total views</span></div>
       <div class="tile"><b>${fmtN(c.videos)}</b><span>Videos</span></div>
     </div>
