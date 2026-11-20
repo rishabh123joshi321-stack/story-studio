@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Media kit</title>
+<style>
+:root{--bg:#f5f1e8;--card:#fffdf8;--ink:#1d2b3a;--muted:#5f6b76;--accent:#c2572b;--line:#e3dccd}
+@media (prefers-color-scheme:dark){:root{--bg:#141b22;--card:#1d2731;--ink:#ece6da;--muted:#9aa6b1;--line:#2e3a46;--accent:#e07a4a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px 16px 48px}
+.hero{background:#1d2b3a;color:#f5f1e8;border-radius:18px;padding:26px 22px}
+.hero h1{margin:0 0 6px;font-size:32px}.hero p{margin:0;opacity:.9}.kicker{text-transform:uppercase;letter-spacing:.12em;font-size:12px;opacity:.75;margin-bottom:6px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}.tile b{display:block;font-size:28px;line-height:1.15}.tile span{color:var(--muted);font-size:14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0}h2{margin:0 0 10px;font-size:20px}
+ul{margin:0;padding-left:20px}.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.vid{color:var(--ink);text-decoration:none}.vid img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:var(--line)}.vid b{display:block;font-size:14px;margin-top:4px}.vid span{font-size:13px;color:var(--muted)}
+.cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;padding:12px 20px;border-radius:12px;font-weight:700;margin-top:6px}
+.muted{color:var(--muted);font-size:14px}
+@media print{body{background:#fff}.cta{border:1px solid #000;color:#000;background:none}}
+</style></head>
+<body><main id="kit"><p class="muted">Loading...</p></main>
+<script>
+'use strict';
+const owner = location.hostname.split('.')[0], repo = location.pathname.split('/').filter(Boolean)[0] || 'story-studio';
+const raw = (p) => fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/${p}?t=${Date.now()}`).then((r) => r.ok ? r.json() : null).catch(() => null);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const n = (x) => Number(x || 0).toLocaleString('en-US');
+const dur = (s) => `${Math.floor((s || 0) / 60)}:${String(Math.round((s || 0) % 60)).padStart(2, '0')}`;
+(async () => {
+  const [kit, stats] = await Promise.all([raw('config/kit.json'), raw('stats/latest.json')]);
+  const k = kit || {}, s = stats || {}, c = s.channel || {}, l = s.last28 || null;
+  const pub = (s.recent || []).filter((v) => v.privacy === 'public');
+  const top = pub.slice().sort((a, b) => b.views - a.views).slice(0, 6);
+  document.title = (c.title || 'Channel') + ' media kit';
+  document.getElementById('kit').innerHTML = `
+    <div class="hero"><div class="kicker">Media kit</div><h1>${esc(c.title || 'Our channel')}</h1><p>${esc(k.about || 'A YouTube channel telling true stories from history.')}</p></div>
+    <div class="tiles">
+      <div class="tile"><b>${c.subscribers_hidden ? 'Hidden' : n(c.subscribers)}</b><span>Subscribers</span></div>
+      <div class="tile"><b>${n(c.views)}</b><span>Total views</span></div>
+      ${l ? `<div class="tile"><b>${n(l.views)}</b><span>Views, last 28 days</span></div><div class="tile"><b>${dur(l.avg_view_seconds)}</b><span>Average watch time</span></div>` : ''}
+      <div class="tile"><b>${n(c.videos)}</b><span>Videos</span></div>
+    </div>
+    ${k.audience ? `<section><h2>Audience</h2><p>${esc(k.audience)}</p></section>` : ''}
+    ${(k.offers || []).length ? `<section><h2>Partnership options</h2><ul>${k.offers.map((o) => `<li>${esc(o)}</li>`).join('')}</ul>${k.rates ? `<p class="muted" style="margin-top:10px">${esc(k.rates)}</p>` : ''}</section>` : ''}
+    ${top.length ? `<section><h2>Popular videos</h2><div class="vids">${top.map((v) => `<a class="vid" href="https://youtu.be/${esc(v.id)}" target="_blank" rel="noopener">${v.thumb ? `<img src="${esc(v.thumb)}" alt="" loading="lazy">` : ''}<b>${esc(v.title)}</b><span>${n(v.views)} views</span></a>`).join('')}</div></section>` : ''}
+    <section><h2>Work with us</h2>${k.email ? `<p>Email <b>${esc(k.email)}</b></p><a class="cta" href="mailto:${esc(k.email)}?subject=${encodeURIComponent('Sponsorship enquiry: ' + (c.title || ''))}">Get in touch</a>` : '<p class="muted">Contact details coming soon.</p>'}</section>
+    <p class="muted">Numbers from YouTube, updated ${s.updated ? esc(new Date(s.updated).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })) : 'daily'}.</p>`;
+})();
+</script></body></html>

@@ -73,6 +73,24 @@ def trim_tags(tags, limit=450):
     return out
 
 
+AFFILIATE_NOTE = "Some links above are affiliate links: I may earn a small commission, at no extra cost to you."
+
+
+def affiliate_links(job, title_guess="", text=""):
+    """Up to 3 of the owner's affiliate links (config/affiliates.json, edited in the app's Income tab)
+    whose keywords appear in this video's topic, title or description, plus any marked 'every video'."""
+    cfg = read_json(ROOT / "config" / "affiliates.json", {}) or {}
+    hay = f"{job.get('topic', '')} {title_guess} {text}".lower()
+    picked = []
+    for l in cfg.get("links", []):
+        if not str(l.get("url", "")).startswith("https://"):
+            continue
+        words = [w.strip().lower() for w in l.get("keywords", []) if w.strip()]
+        if l.get("always") or any(w in hay for w in words):
+            picked.append({"name": str(l.get("name", "Link"))[:80], "url": l["url"]})
+    return picked[:3]
+
+
 def write_package(job, script):
     short = job["format"] == "short"
     starts = scene_starts(job, script)
@@ -109,6 +127,9 @@ Return JSON:
     if short and "#Shorts" not in hashtags:
         hashtags.append("#Shorts")
     parts = [str(pkg.get("description", "")).strip()]
+    links = affiliate_links(job, title_guess=str(pkg.get("title", "")), text=parts[0])
+    if links:
+        parts.append("Recommended\n" + "\n".join(f"- {l['name']}: {l['url']}" for l in links) + "\n" + AFFILIATE_NOTE)
     if chapters:
         parts.append("Chapters\n" + "\n".join(f"{fmt_time(t)} {title}" for t, title in chapters))
     srcs = script.get("sources", [])

@@ -120,7 +120,47 @@
     <div id="reviewView"></div>
   </section>
   <section id="tab-stats" class="tab"><h1>Dashboard</h1><div id="statsView"><div class="card empty">Loading...</div></div></section>
-  <section id="tab-money" class="tab"><h1>Income</h1><div class="card soon">Coming in Stage 8: your affiliate links and a media-kit page for sponsors.</div></section>
+  <section id="tab-money" class="tab"><h1>Income</h1>
+    <div class="card">
+      <h2>Affiliate links</h2>
+      <p class="hint">Links to products you trust (for example history books). Each new video gets up to 3 matching links in its description, with a short note saying they are affiliate links.</p>
+      <div id="affList"></div>
+      <label for="affName">Name shown in the description</label>
+      <input id="affName" placeholder="Book: The Great Fire of London">
+      <label for="affUrl">Link (starts with https://)</label>
+      <input id="affUrl" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://amzn.to/...">
+      <label for="affWords">Add to videos about (words, separated by commas)</label>
+      <input id="affWords" placeholder="london, fire, 1666">
+      <label class="check"><input type="checkbox" id="affAlways"> Add to every video</label>
+      <button class="primary" id="affAdd">Add link</button>
+      <p id="affMsg" class="msg"></p>
+    </div>
+    <div class="card">
+      <h2>Media kit for sponsors</h2>
+      <p class="hint">A one-page profile of your channel with your latest numbers, to send to brands. It updates itself every morning.</p>
+      <label for="kitAbout">About your channel</label>
+      <textarea id="kitAbout" rows="4" placeholder="Bars &amp; Brains tells the true stories behind history's biggest moments, in short, beautifully illustrated videos."></textarea>
+      <label for="kitAudience">Who watches</label>
+      <input id="kitAudience" placeholder="Curious learners, students and history fans worldwide">
+      <label for="kitOffers">What you offer sponsors (one per line)</label>
+      <textarea id="kitOffers" rows="4" placeholder="60-second sponsor mention in a long video&#10;Product link pinned in the description&#10;Dedicated Short"></textarea>
+      <label for="kitRates">Rates (optional)</label>
+      <input id="kitRates" placeholder="Rates on request">
+      <label for="kitEmail">Business email</label>
+      <input id="kitEmail" type="email" autocomplete="off" autocapitalize="off" placeholder="yourchannel.business@gmail.com">
+      <p class="hint">Everything in this box is shown publicly on your media-kit page, including the email. A separate business email is safest.</p>
+      <button class="primary" id="kitSave">Save media kit</button>
+      <a class="btnlink" id="kitOpen" href="kit.html" target="_blank" rel="noopener">Open my media kit</a>
+      <button id="kitCopy">Copy link</button>
+      <p id="kitMsg" class="msg"></p>
+    </div>
+    <div class="card">
+      <h2>Ways to earn</h2>
+      <p><b>Affiliate programs (free to join):</b> Amazon Associates India (affiliate-program.amazon.in) works well for history books. You need 3 sales within 180 days of joining, or the account closes and you can join again later. Join only programs that never ask for a card. Tell me before you sign up and I'll walk you through it.</p>
+      <p><b>Sponsors:</b> send brands your media kit link. When a video has a paid sponsor, tick <b>"Includes paid promotion"</b> in YouTube Studio for that video.</p>
+      <p><b>Ads:</b> the Dashboard shows your progress to the Partner Program.</p>
+    </div>
+  </section>
 
   <!-- SETTINGS -->
   <section id="tab-settings" class="tab">
