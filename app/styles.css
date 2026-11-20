@@ -53,3 +53,4 @@ button:disabled { opacity: .6; }
 .hookline { font-size: 19px; font-weight: 700; margin: 6px 0 0; }
 a { color: var(--accent); }
 .job .meta.flagnote { color: var(--warn); } .job .meta.okline { color: var(--ok); }
+.player { width: 100%; border-radius: 12px; background: #000; display: block; } .player.tall { max-height: 70vh; width: auto; max-width: 100%; margin: 0 auto; aspect-ratio: 9 / 16; }
