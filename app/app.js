@@ -151,7 +151,7 @@ async function loadQueue() {
   try { jobs = mode() === 'github' ? await gh.listJobs() : demo.list(); }
   catch (err) { list.innerHTML = `<div class="card empty">Could not load your queue (${esc(err.message)}).</div>`; return; }
   const today = jobs.filter((j) => isToday(j.created));
-  const tL = store.get('tLong', 1), tS = store.get('tShort', 2);
+  const tL = store.get('tLong', 3), tS = store.get('tShort', 3);
   $('dailyBar').innerHTML = `<div><b>${today.filter((j) => j.format === 'long').length} / ${tL}</b>long videos planned today</div><div><b>${today.filter((j) => j.format === 'short').length} / ${tS}</b>Shorts planned today</div>`;
   if (!jobs.length) { list.innerHTML = '<div class="card empty">Nothing yet. Plan your first video in the New video tab.</div>'; return; }
   queueJobs = jobs;
@@ -650,7 +650,8 @@ $('ytMsg').addEventListener('click', async (e) => {
   const c = gh.conf();
   $('ghUser').value = c.user; $('ghRepo').value = c.repo;
   if (c.token) $('ghToken').placeholder = 'Saved on this tablet';
-  $('tLong').value = store.get('tLong', 1); $('tShort').value = store.get('tShort', 2);
+  if (store.get('targetsV', 1) < 2) { store.set('tLong', 3); store.set('tShort', 3); store.set('targetsV', 2); }
+  $('tLong').value = store.get('tLong', 3); $('tShort').value = store.get('tShort', 3);
   $('demoBtn').textContent = demo.on() ? 'Turn off demo mode' : 'Turn on demo mode';
   ['voice', 'tone', 'audience'].forEach((k) => { const v = store.get('last' + k[0].toUpperCase() + k.slice(1)); if (v) $(k).value = v; });
   fillLengths(); paintConn();
