@@ -227,5 +227,15 @@ def research(topic, theme="", max_pages=3):
         for t in wiki_search(q):
             if t not in titles:
                 titles.append(t)
+    titles = [t for i, t in enumerate(titles) if i == 0 or _related(t, topic, titles[0])]
     pages = [p for p in (wiki_extract(t) for t in titles[:max_pages]) if p and p["text"]]
     return pages
+
+
+def _related(title, topic, best):
+    """Keep only search results that share a real word with the topic (handles typos)."""
+    import difflib
+    stop = {"the", "of", "and", "a", "an", "in", "on", "to", "for", "how", "why", "what", "who", "history"}
+    words = lambda s: {w for w in "".join(c.lower() if c.isalnum() else " " for c in s).split() if w not in stop and len(w) > 2}
+    ref = words(topic) | words(best)
+    return any(difflib.get_close_matches(w, ref, n=1, cutoff=0.8) for w in words(title))
