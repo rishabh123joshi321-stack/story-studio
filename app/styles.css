@@ -71,3 +71,4 @@ button.danger-bg { background: var(--bad); }
 .fontsample { font-size: 26px; display: inline-block; line-height: 1.2; }
 .fontpick .meta { display: block; margin-top: 2px; }
 .ytrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0; } .ytrow button { width: auto; margin: 0; padding: 6px 14px; }
+.posthelp { margin-top: 8px; } .posthelp button, .btnlink { margin: 8px 8px 0 0; padding: 8px 14px; } .btnlink { display: inline-block; border-radius: 12px; border: 1px solid var(--line); color: var(--ink); text-decoration: none; }

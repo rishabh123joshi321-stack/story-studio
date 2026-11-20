@@ -15,7 +15,7 @@ const LENGTHS = {
 };
 const STATUS_TEXT = {
   requested: 'Waiting to start', scripting: 'Writing script', script_ready: 'Script ready', rendering: 'Making video', video_ready: 'Video ready',
-  ready: 'Ready to review', approved: 'Approved', uploading: 'Uploading', scheduled: 'Scheduled', uploaded: 'On YouTube (private)',
+  ready: 'Ready to review', approved: 'Approved', uploading: 'Uploading', scheduled: 'Scheduled', uploaded: 'On YouTube (private)', post_yourself: 'Ready to post', posted: 'Posted',
   rejected: 'Rejected', failed: 'Needs attention',
 };
 
@@ -156,13 +156,15 @@ async function loadQueue() {
   queueJobs = jobs;
   paintReviewCount(jobs);
   list.innerHTML = jobs.map((j) => {
-    const cls = ['ready', 'video_ready', 'uploaded'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering', 'uploading', 'approved'].includes(j.status) ? 'working' : '';
+    const cls = ['ready', 'video_ready', 'uploaded', 'post_yourself', 'posted'].includes(j.status) ? 'ready' : j.status === 'failed' ? 'failed' : j.status === 'script_ready' ? 'scripted' : ['scripting', 'rendering', 'uploading', 'approved'].includes(j.status) ? 'working' : '';
     const when = new Date(j.created).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-    const tap = mode() === 'github' && !['requested', 'failed', 'uploaded'].includes(j.status);
+    const tap = mode() === 'github' && !['requested', 'failed', 'uploaded', 'post_yourself', 'posted'].includes(j.status);
     let extra = '';
     if (j.status === 'ready') extra = `<div class="meta okline">${j.title ? esc(j.title) + '. ' : ''}Video, title and description are ready. Tap to see.</div>`;
     else if (j.status === 'video_ready') extra = `<div class="meta okline">Video made${j.video_seconds ? ` (${Math.floor(j.video_seconds / 60)}:${String(Math.round(j.video_seconds % 60)).padStart(2, '0')})` : ''}. Tap to watch.</div>`;
     else if (j.status === 'uploaded') extra = `<div class="meta okline">On YouTube as Private. <a href="${esc(j.youtube_studio || j.youtube_url)}" target="_blank" rel="noopener">Open in YouTube Studio</a> to make it Public or schedule it.</div>${j.note ? `<div class="meta">${esc(j.note)}</div>` : ''}`;
+    else if (j.status === 'post_yourself') extra = '<div class="meta okline">Approved. Post it from the YouTube app:</div>';
+    else if (j.status === 'posted') extra = '<div class="meta okline">Posted on YouTube.</div>';
     else if (j.status === 'approved' && j.error) extra = `<div class="meta flagnote">Upload waiting: ${esc(j.error)}</div>`;
     else if (j.status === 'approved') extra = '<div class="meta">Approved. It will be uploaded to YouTube (as Private) within a few minutes.</div>';
     else if (j.status === 'uploading') extra = '<div class="meta">Sending to YouTube now. Long videos can take 10 to 20 minutes.</div>';
@@ -171,12 +173,49 @@ async function loadQueue() {
     else if (j.status === 'script_ready') extra = j.flags ? `<div class="meta flagnote">${j.flags} fact${j.flags > 1 ? 's' : ''} to check. Tap to read.</div>` : '<div class="meta okline">All facts checked. Tap to read.</div>';
     else if (j.status === 'requested' && j.error) extra = `<div class="meta">Retrying soon: ${esc(j.error)}</div>`;
     else if (j.error) extra = `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>`;
+    if (['post_yourself', 'uploaded'].includes(j.status) && mode() === 'github') extra += postHelper(j);
     if (j.status === 'failed' && mode() === 'github') extra += `<button class="retry" data-id="${esc(j.id)}">Try again</button>`;
     return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div><h3>${esc(j.topic)}</h3><div class="meta">${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
   }).join('');
 }
 let queueJobs = [];
+// "Post it yourself": until Google's audit passes, videos sent by the app are locked Private,
+// so the owner posts them from the YouTube app with these buttons.
+function postHelper(j) {
+  return `<div class="posthelp">
+    ${j.status === 'post_yourself' ? '<p class="meta">1. Download the video. 2. In the YouTube app tap + then Upload a video and pick it. 3. Paste the title and description, and add the tags under Add tags (or Show more). 4. Tap I posted it.</p>' : '<p class="meta">This copy is locked Private by Google. To publish now, download it and post it from the YouTube app, then delete the locked copy in Studio.</p>'}
+    ${j.video ? `<a class="btnlink" href="${esc(j.video)}" download>Download video</a>` : ''}
+    <button class="pcopy" data-id="${esc(j.id)}" data-what="title">Copy title</button>
+    <button class="pcopy" data-id="${esc(j.id)}" data-what="description">Copy description</button>
+    <button class="pcopy" data-id="${esc(j.id)}" data-what="tags">Copy tags</button>
+    ${j.status === 'post_yourself' ? `<button class="pdone primary" data-id="${esc(j.id)}">I posted it</button>` : ''}
+  </div>`;
+}
+const pkgCache = {};
+async function copyPkg(id, what) {
+  if (!pkgCache[id]) { const f = await gh.getFile(`packages/${id}.json`); if (!f) throw new Error('details not found'); pkgCache[id] = f.data; }
+  const p = pkgCache[id];
+  const text = what === 'tags' ? (p.tags || []).join(', ') : String(p[what] || '');
+  await navigator.clipboard.writeText(text);
+}
 $('queueList').addEventListener('click', async (e) => {
+  const pc = e.target.closest('button.pcopy');
+  if (pc) {
+    e.stopPropagation();
+    try { await copyPkg(pc.dataset.id, pc.dataset.what); pc.textContent = 'Copied'; toast('Copied. Paste it in the YouTube app.'); }
+    catch (err) { toast('Could not copy: ' + err.message); }
+    return;
+  }
+  const pd = e.target.closest('button.pdone');
+  if (pd) {
+    e.stopPropagation(); pd.disabled = true;
+    try {
+      const f = await gh.getFile(`jobs/${pd.dataset.id}.json`);
+      await gh.putFile(`jobs/${pd.dataset.id}.json`, { ...f.data, status: 'posted', posted: new Date().toISOString() }, `Posted: ${f.data.topic.slice(0, 60)}`, f.sha);
+      toast('Marked as posted.'); loadQueue();
+    } catch (err) { toast('Could not save: ' + err.message); pd.disabled = false; }
+    return;
+  }
   const retry = e.target.closest('button.retry');
   if (retry) {
     e.stopPropagation(); retry.disabled = true; retry.textContent = 'Sending...';
@@ -399,9 +438,10 @@ async function reviewAct(kind) {
         if (job.title !== rv.job.title) { const r = await gh.putFile(`jobs/${job.id}.json`, job, 'Update title', rv.jobSha); rv.job = job; rv.jobSha = r.content.sha; }
         msg.className = 'msg ok'; msg.textContent = 'Saved.'; return;
       }
-      Object.assign(job, { status: 'approved', approved: new Date().toISOString() });
+      const auto = store.get('ytAuto', false);
+      Object.assign(job, { status: auto ? 'approved' : 'post_yourself', approved: new Date().toISOString() });
       await gh.putFile(`jobs/${job.id}.json`, job, `Approved: ${job.title.slice(0, 60)}`, rv.jobSha);
-      toast('Approved! It goes to YouTube as Private in a few minutes.');
+      toast(auto ? 'Approved! It goes to YouTube as Private in a few minutes.' : 'Approved! Open the Queue to post it on YouTube.');
     } else if (kind === 'regen') {
       const what = document.querySelector('input[name="regen"]:checked').value;
       const notes = $('rvNotes').value.trim();
@@ -470,6 +510,9 @@ const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.go
 function ytRedirect() { return location.origin + location.pathname.replace(/index\.html$/, ''); }
 function ytOut(html, cls) { const m = $('ytMsg'); m.className = 'msg ' + (cls || ''); m.innerHTML = html; }
 $('ytRedirect').textContent = ytRedirect();
+function paintAuto() { const on = store.get('ytAuto', false); $('ytAuto').textContent = on ? 'Automatic upload: ON (tap to turn off)' : 'Automatic upload: OFF (tap to turn on)'; }
+$('ytAuto').addEventListener('click', () => { store.set('ytAuto', !store.get('ytAuto', false)); paintAuto(); toast(store.get('ytAuto', false) ? 'Approved videos will upload automatically.' : 'You will post approved videos yourself.'); });
+paintAuto();
 $('ytConnect').addEventListener('click', () => {
   const id = $('ytClientId').value.trim(), secret = $('ytSecret').value.trim();
   if (!id.endsWith('.apps.googleusercontent.com')) return ytOut('The Client ID should end with .apps.googleusercontent.com', 'bad');
