@@ -1,7 +1,7 @@
 {
   "id": "20261121-084244-l3m5",
   "created": "2026-11-21T03:12:44.502Z",
-  "status": "scripting",
+  "status": "rendering",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -20,6 +20,7 @@
   "quote_voice": true,
   "series": "World History - WWII",
   "part": 1,
-  "updated": "2026-11-21T06:34:24+00:00",
-  "revision": 1
+  "updated": "2026-11-21T07:02:04+00:00",
+  "revision": 1,
+  "flags": 6
 }
