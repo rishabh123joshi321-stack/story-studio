@@ -1,4 +1,6 @@
 {
-  "connected": false,
-  "message": "The saved Google sign-in does not allow blog posts yet. Open Settings > Connect YouTube, sign in again, tick every box, and update YT_REFRESH_TOKEN."
+  "connected": true,
+  "message": "",
+  "blog_url": "https://emberinkstories.blogspot.com/",
+  "blog_name": "Ember&amp;Ink"
 }
