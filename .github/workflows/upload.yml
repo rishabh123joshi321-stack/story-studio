@@ -25,7 +25,12 @@ jobs:
       - name: Anything approved?
         id: check
         run: |
-          if grep -l -E '"status": "(approved|uploading)"' jobs/*.json >/dev/null 2>&1; then echo "go=yes" >> "$GITHUB_OUTPUT"; else echo "Nothing approved."; fi
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import glob, json
+          def want(j):
+              return j.get("status") in ("approved", "uploading") or (j.get("status") == "posted" and j.get("youtube_id") and not j.get("extras_done") and j.get("extras_tries", 0) < 3)
+          print("go=yes" if any(want(json.load(open(f))) for f in glob.glob("jobs/*.json")) else "go=no")
+          PY
       - uses: actions/setup-python@v5
         if: steps.check.outputs.go == 'yes'
         with: { python-version: '3.12' }

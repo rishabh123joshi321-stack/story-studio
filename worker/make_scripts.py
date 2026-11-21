@@ -113,7 +113,9 @@ Reference material (facts must come from here or be widely documented):
 Return JSON:
 {{
   "working_title": "honest, curiosity-driven title under 70 characters",
-  "hook": "the opening line, spoken in the first 5 seconds",
+  "hook_options": ["three different opening lines, each spoken in the first 5 seconds and each using a different approach (for example a question, a surprising fact, a vivid moment); honest, no clickbait"],
+  "best_hook": 0,
+  "hook_reason": "one short sentence: why that option will keep the most viewers watching past the first 5 seconds",
   "cast": [
     {{"id": "short_snake_case_id", "kind": "person | animal | object",
       "look": "full visual description so the artist draws it the same every time: age, build, face, hair, clothes and colours (or shape, material and colours for objects); historically accurate",
@@ -125,6 +127,7 @@ Return JSON:
   "why_it_matters": "one sentence on the value this video gives viewers",
   "uses_realistic_altered_content": false
 }}
+"best_hook" is the position (0, 1 or 2) of the strongest opening. If the owner's notes give an opening line, make it the first option and set "best_hook" to 0.
 Rules: at most {lim['cast']} cast members with 2 to {lim['poses']} poses each (objects may have 1 pose, e.g. "default");
 exactly {chapters} chapter{'s' if chapters > 1 else ''}.
 Typical cast: the key real people (no living people), an everyday person of the time, and moving things that matter
@@ -138,7 +141,21 @@ realistic depiction of a real event that viewers could mistake for real footage.
     if not isinstance(plan, dict) or not plan.get("chapters"):
         raise WorkerError("The AI returned an unusable plan. It will try again within the hour.", transient=True)
     plan["places"] = []  # each part creates its own backgrounds, matched to its narration
+    pick_hook(plan)
     return plan
+
+
+def pick_hook(plan):
+    """Growth tactic 1: the plan writes three openings and judges which keeps viewers longest."""
+    opts = [str(h).strip() for h in (plan.get("hook_options") or []) if str(h).strip()][:3]
+    if not opts and plan.get("hook"):
+        opts = [str(plan["hook"]).strip()]
+    try:
+        best = max(0, min(len(opts) - 1, int(plan.get("best_hook", 0))))
+    except (TypeError, ValueError):
+        best = 0
+    plan["hook_options"], plan["best_hook"] = opts, best
+    plan["hook"] = opts[best] if opts else plan.get("hook", "")
 
 
 def _cast_text(plan):
@@ -522,6 +539,9 @@ def write_script(job, sources):
     return {
         "working_title": plan.get("working_title", job["topic"]),
         "hook": plan.get("hook", ""),
+        "hook_options": plan.get("hook_options", []),
+        "best_hook": plan.get("best_hook", 0),
+        "hook_reason": str(plan.get("hook_reason", ""))[:200],
         "hook_style": "quiz" if job.get("kind") == "quiz" else hook_style,
         "structure": structure,
         "style": "stills" if stills else "animated-v2",

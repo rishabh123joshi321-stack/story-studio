@@ -148,6 +148,7 @@
       <button class="primary" id="askIdeas">Get fresh ideas</button>
       <p id="ideasMsg" class="msg"></p>
     </div>
+    <div id="weeklyBox"></div>
     <div class="seg qview" id="ideaView" style="margin-bottom:14px"><button type="button" data-v="swipe">Swipe cards</button><button type="button" data-v="list">List</button></div>
     <div id="ideasList"></div>
   </section>
@@ -162,6 +163,7 @@
     <div class="row"><h1>Review</h1><button id="refreshReview" class="ghost">Refresh</button></div>
     <p class="hint">Finished videos wait here for you. Nothing goes to YouTube until you tap <b>Approve</b>.</p>
     <div id="reviewList"></div>
+    <div id="commentsBox"></div>
   </section>
 
   <!-- REVIEW ONE VIDEO -->
@@ -357,6 +359,18 @@
       <input id="tShort" type="number" min="0" max="8" value="3">
       <button id="saveTargets">Save targets</button>
     </div>
+    <div class="card" id="growthCard">
+      <h2>Growth</h2>
+      <label for="postTime">My posting time (India time)</label>
+      <input id="postTime" type="time" value="18:00">
+      <p class="hint" id="postTimeHint"></p>
+      <button id="savePostTime">Save posting time</button>
+      <p class="hint" style="margin-top:14px">When you post yourself, the Queue tells you to schedule each video for this time. Once Google's review is done and Automatic upload is ON, uploads can go Public at this time by themselves:</p>
+      <button id="schedPub">Automatic uploads go Public at my posting time: OFF</button>
+      <p class="hint" style="margin-top:14px">Shorts you post are also shared as Instagram and Facebook Reels, once those are connected (see My to-dos on Home).</p>
+      <button id="igOn">Share Shorts to Instagram: ON</button>
+      <button id="fbOn">Share Shorts to Facebook: ON</button>
+    </div>
     <div class="card">
       <h2>Intro and end screen</h2>
       <p class="hint">Long videos start with a 3-second title card with your channel name, and end with a 10-second "Thanks for watching" screen. Add YouTube's end-screen boxes to it in Studio. Shorts never get them. Background sounds (fire, crowds, sea...) are added to every video automatically.</p>
@@ -401,5 +415,6 @@
 <div id="toast" class="toast" role="status"></div>
 <script src="app.js"></script>
 <script src="play.js"></script>
+<script src="grow.js"></script>
 </body>
 </html>

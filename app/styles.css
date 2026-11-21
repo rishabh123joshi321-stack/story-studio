@@ -358,3 +358,15 @@ details.goals { margin-top: 14px; } details.goals summary { cursor: pointer; fon
 .tdalways { padding-left: 20px; margin: 8px 0 0; } .tdalways li { margin: 8px 0; line-height: 1.5; color: var(--ink); font-size: 14.5px; }
 .remind { display: flex; gap: 12px; align-items: center; background: color-mix(in srgb, var(--warn) 14%, var(--card)); border: 1px solid var(--warn); border-radius: 16px; padding: 12px 14px; margin: 0 0 14px; }
 .remind > div { flex: 1; min-width: 0; line-height: 1.45; } .remind .rbell { font-size: 22px; } .remind .rgo { margin: 0; flex: none; }
+/* growth and reach helpers (grow.js) */
+.psteps { margin: 6px 0 4px; padding-left: 22px; font-size: 15px; color: var(--muted); } .psteps li { margin: 3px 0; } .psteps b { color: var(--ink); }
+.plabel { font-size: 14px; font-weight: 400; color: var(--muted); margin-top: 12px; } .plabel b { color: var(--ink); }
+.posthelp .plink { margin-top: 4px; }
+details.tcbox { margin-top: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px; }
+details.tcbox summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+details.tcbox h4 { margin: 12px 0 0; font-size: 15px; }
+.hookopt { border-top: 1px solid var(--line); padding: 8px 0; } .hookopt.on .hookline { color: var(--accent); }
+.hookopt:not(.on) .hookline { font-weight: 500; font-size: 17px; } .hookopt button { margin-top: 6px; padding: 8px 14px; }
+.cmt { border-top: 1px solid var(--line); padding: 12px 0 4px; } .ctext { margin: 6px 0 8px; white-space: pre-wrap; }
+.cmt .row button { margin-top: 8px; } .cmt .row button.primary { padding: 12px; }
+.widea { border-top: 1px solid var(--line); padding: 10px 0; } .widea button { margin-top: 6px; padding: 8px 14px; }

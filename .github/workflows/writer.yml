@@ -30,6 +30,8 @@ jobs:
           python worker/make_scripts.py
       - name: Refresh topic ideas if needed
         run: python worker/make_ideas.py --if-needed || echo "Ideas will be retried next hour."
+      - name: Weekly topic report if needed
+        run: python worker/topic_report.py --if-needed || echo "The topic report will be retried next hour."
       - name: Save results to the project
         run: |
           git config user.name "story-studio-bot"

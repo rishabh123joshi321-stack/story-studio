@@ -67,11 +67,35 @@ def _explain(e):
     return WorkerError(f"YouTube upload failed (error {e.code}). It will try again within the hour.", transient=True)
 
 
+IST = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+
+
+def next_post_time(cfg, after=None):
+    """Growth tactic 6: the next time slot at the owner's steady posting time (India time), at least an hour away."""
+    try:
+        hh, mm = (int(x) for x in str(cfg.get("post_time", "")).split(":")[:2])
+    except ValueError:
+        return None
+    t = (after or datetime.datetime.now(IST)).astimezone(IST)
+    slot = t.replace(hour=hh, minute=mm, second=0, microsecond=0)
+    while slot < t + datetime.timedelta(hours=1):
+        slot += datetime.timedelta(days=1)
+    return slot
+
+
+def trailer_line(job):
+    """Growth tactic 3: a Short cut from a long video points straight to it."""
+    parent = read_json(ROOT / "jobs" / f"{job.get('parent_id')}.json", {}) if job.get("parent_id") else {}
+    url = (parent or {}).get("youtube_url")
+    return f"Watch the full story: {url}\n\n" if url else ""
+
+
 def upload_video(token, path, pkg, job):
+    cfg = read_json(ROOT / "config" / "growth.json", {}) or {}
     meta = {
         "snippet": {
             "title": str(pkg.get("title") or job.get("title") or job["topic"])[:100],
-            "description": str(pkg.get("description", ""))[:5000],
+            "description": (trailer_line(job) + str(pkg.get("description", "")))[:5000],
             "tags": [str(t) for t in pkg.get("tags", [])],
             "categoryId": str(pkg.get("category_id", "27")),
             "defaultLanguage": "en",
@@ -84,6 +108,14 @@ def upload_video(token, path, pkg, job):
             "embeddable": True,
         },
     }
+    slot = next_post_time(cfg) if cfg.get("schedule_public") else None
+    if slot:  # two videos never go live at the same minute: later ones follow 2 hours apart
+        used = {(read_json(p, {}) or {}).get("scheduled_for") for p in (ROOT / "jobs").glob("*.json") if p.stem != job["id"]}
+        while slot.isoformat(timespec="minutes") in used:
+            slot += datetime.timedelta(hours=2)
+    if slot:  # stays Private until then, then YouTube makes it Public by itself
+        meta["status"]["publishAt"] = slot.astimezone(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        job["scheduled_for"] = slot.isoformat(timespec="minutes")
     size = path.stat().st_size
     url = "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status"
     try:
@@ -253,10 +285,68 @@ def process(path, token):
     return True
 
 
+def needs_extras(job):
+    """A video the owner posted from the YouTube app and whose link they pasted in the Queue."""
+    return job.get("status") == "posted" and job.get("youtube_id") and not job.get("extras_done") and job.get("extras_tries", 0) < 3
+
+
+def add_extras(path, token):
+    """Reach tactic 5 + growth tactics 2, 3, 4 for videos posted by hand: subtitles and translated
+    titles, the picked thumbnail, the series playlist and the full-story link on Shorts."""
+    sync()
+    job = read_json(path)
+    if not job or not needs_extras(job):
+        return
+    vid = job["youtube_id"]
+    pkg = read_json(ROOT / "packages" / f"{job['id']}.json") or {}
+    folder = WORK / job["id"]
+    folder.mkdir(parents=True, exist_ok=True)
+    log(f"=== Adding extras to {vid}: {pkg.get('title') or job['topic']}")
+    notes = []
+    try:
+        notes.append(add_languages(token, vid, pkg, job, folder))
+        if job.get("series"):
+            add_to_playlist(token, vid, job["series"])
+        if job["format"] == "long" and pkg.get("thumbnail"):
+            name = str(pkg["thumbnail"]).rsplit("/", 1)[-1]
+            thumb = fetch_asset(job, name, folder / name)
+            if thumb:
+                set_thumbnail(token, vid, thumb)
+        line = trailer_line(job)
+        if line:
+            try:
+                with _api(f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={vid}", token, timeout=60) as r:
+                    snip = json.loads(r.read())["items"][0]["snippet"]
+                if "Watch the full story:" not in snip.get("description", ""):
+                    snip["description"] = (line + snip.get("description", ""))[:5000]
+                    body = json.dumps({"id": vid, "snippet": {k: snip[k] for k in ("title", "description", "categoryId", "tags") if k in snip}}).encode()
+                    with _api("https://www.googleapis.com/youtube/v3/videos?part=snippet", token, body, "PUT",
+                              {"Content-Type": "application/json"}, timeout=60):
+                        log("  full-story link added")
+            except Exception as e:
+                log("  full-story link not added:", repr(e))
+        job["extras_done"] = now()
+        note = " ".join(n for n in notes if n)
+        if note:
+            job["note"] = note
+    except Exception as e:
+        log("  extras failed:", repr(e))
+        job["extras_tries"] = job.get("extras_tries", 0) + 1
+    write_json(path, job)
+    save(["jobs"], f"Extras added: {job['topic'][:60]}")
+
+
 def main():
-    waiting = [p for p in sorted((ROOT / "jobs").glob("*.json")) if (read_json(p, {}) or {}).get("status") in ("approved", "uploading")]
-    if not waiting:
+    jobs = {p: (read_json(p, {}) or {}) for p in sorted((ROOT / "jobs").glob("*.json"))}
+    waiting = [p for p, j in jobs.items() if j.get("status") in ("approved", "uploading")]
+    extras = [p for p, j in jobs.items() if needs_extras(j)]
+    if not waiting and not extras:
         log("Nothing approved to upload.")
+        return
+    if not waiting:
+        token = access_token()
+        for p in extras:
+            add_extras(p, token) if token else None
         return
     try:
         token = access_token()
@@ -277,6 +367,8 @@ def main():
         if process(p, token):
             done += 1
     log(f"Uploaded {done} video(s).")
+    for p in extras:
+        add_extras(p, token)
 
 
 if __name__ == "__main__":
