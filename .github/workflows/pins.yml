@@ -1,0 +1,28 @@
+name: Pins and prints
+# Makes Pinterest pins (app/pins.xml, picked up by Pinterest's Auto-publish) and print-size pictures for
+# Redbubble from each blog article. Fully automatic; turn either off in the app (Income tab).
+on:
+  schedule:
+    - cron: '51 */3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['worker/pins.py', '.github/workflows/pins.yml', 'config/pins.json', 'config/prints.json']
+permissions:
+  contents: write
+  actions: write
+concurrency: { group: pins, cancel-in-progress: false }
+jobs:
+  pins:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make pins and print files
+        run: |
+          pip install -q "pillow>=10"
+          git config user.name "story-studio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python3 worker/pins.py

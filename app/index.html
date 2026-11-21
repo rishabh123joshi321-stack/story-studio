@@ -216,6 +216,51 @@
         </ol>
       </details>
     </div>
+    <div class="card" id="pinCard">
+      <h2>Pinterest pins</h2>
+      <p class="hint">Every blog article becomes a few tall pins (your video's pictures with the story title on them). Pinterest picks them up by itself from the app's pin list and posts them to your board, a few a day. Each pin sends people to the blog article, where the video plays. Fully automatic once set up.</p>
+      <div id="pinStatus" class="msg"></div>
+      <label>Your pin list link (you paste this into Pinterest once)</label>
+      <div class="row" style="gap:8px;align-items:center"><code id="pinFeed" style="word-break:break-all;flex:1"></code><button type="button" id="pinCopy" style="margin:0;flex:none">Copy link</button></div>
+      <button id="pinToggle">Pinterest pins: ON (tap to turn off)</button>
+      <label for="pinPerDay">New pins per day</label>
+      <select id="pinPerDay"><option value="2">2</option><option value="3" selected>3 (recommended)</option><option value="5">5</option><option value="8">8</option></select>
+      <button class="primary" id="pinSave">Save pin settings</button>
+      <p id="pinMsg" class="msg"></p>
+      <details class="goals" id="pinSetup"><summary>Set up Pinterest (one time, about 15 minutes)</summary>
+        <ol class="setupsteps">
+          <li><b>Make a free business account.</b> In Chrome open <a href="https://business.pinterest.com" target="_blank" rel="noopener">business.pinterest.com</a> and tap <b>Sign up</b> (or <b>Log in</b> if you already use Pinterest, then tap your picture &gt; <b>Settings</b> &gt; <b>Account management</b> &gt; <b>Convert to a business account</b>). Use your channel name as the business name, and type <i>emberinkstories.blogspot.com</i> as your website. It is free and never asks for a card. Skip any step about ads.</li>
+          <li><b>Make a board.</b> Tap your profile picture, then <b>+</b> &gt; <b>Board</b>, name it <i>History Stories</i>, and tap <b>Create</b>.</li>
+          <li><b>Switch Chrome to desktop mode.</b> Pinterest only shows the next two settings on a computer screen. In Chrome tap the three dots at the top right and tick <b>Desktop site</b>.</li>
+          <li><b>Prove the blog is yours.</b> In Pinterest tap the arrow at the top right &gt; <b>Settings</b> &gt; <b>Claimed accounts</b>. Next to <b>Websites</b> tap <b>Claim</b>, type <i>https://emberinkstories.blogspot.com</i>, pick <b>Add HTML tag</b> and tap <b>Copy</b>. Keep that tab open. In a new tab open <a href="https://www.blogger.com" target="_blank" rel="noopener">blogger.com</a> &gt; menu (three lines) &gt; <b>Theme</b> &gt; the small arrow next to <b>Customize</b> &gt; <b>Edit HTML</b>. Tap just after <i>&lt;head&gt;</i> near the top, paste, and tap the save icon. Go back to the Pinterest tab and tap <b>Continue</b> &gt; <b>Submit</b>. Pinterest checks it within a day.</li>
+          <li><b>Connect the pin list</b> (once the box above says at least 1 pin is ready). Still in desktop mode: Pinterest &gt; <b>Settings</b> &gt; <b>Create Pins in bulk</b>. Under <b>Auto-publish</b> tap <b>Connect RSS feed</b>, paste the link (tap <b>Copy link</b> above first), under <b>Save Pins to</b> pick <i>History Stories</i>, and tap <b>Save</b>. New pins then appear by themselves within a day.</li>
+          <li>You can switch <b>Desktop site</b> off again afterwards. Then tick <i>Set up Pinterest</i> in My to-dos on Home.</li>
+        </ol>
+      </details>
+    </div>
+    <div class="card" id="printCard">
+      <h2>Art prints (Redbubble)</h2>
+      <p class="hint">Your best pictures from each video, enlarged to print size, with the title, tags and description written for you. Redbubble prints them on posters, mugs and more, ships them, and pays you per sale. Redbubble does not allow apps to upload for you, so you paste them in: about 2 minutes each.</p>
+      <button id="printToggle">Print files: ON (tap to turn off)</button>
+      <label for="printPerVideo">Pictures per video</label>
+      <select id="printPerVideo"><option value="1">1</option><option value="2" selected>2 (recommended)</option><option value="3">3</option><option value="4">4</option></select>
+      <button class="primary" id="printSave">Save print settings</button>
+      <p id="printMsg" class="msg"></p>
+      <a class="btnlink" href="https://www.redbubble.com/portfolio/images/new" target="_blank" rel="noopener">Open Redbubble upload page</a>
+      <h3 class="chartttl">Ready to upload</h3>
+      <div id="printList"><p class="hint">Loading...</p></div>
+      <details class="goals" id="printSetup"><summary>How to upload one picture (and one-time setup)</summary>
+        <ol class="setupsteps">
+          <li><b>One time: make a free account.</b> In Chrome open <a href="https://www.redbubble.com/signup" target="_blank" rel="noopener">redbubble.com/signup</a>, sign up with your email, and pick a shop name (your channel name works well). Then tap your picture &gt; <b>Account Settings</b> &gt; <b>Payment Details</b> and add PayPal (free) so sales reach you. Redbubble never asks for a card to sell.</li>
+          <li><b>Download.</b> Below, tap <b>Download picture</b>. It saves to your Downloads folder.</li>
+          <li><b>Upload.</b> Tap <b>Open Redbubble upload page</b> above, then <b>Upload new work</b> (or <b>Upload image</b>) and pick the picture from Downloads. If Redbubble shows a simpler mobile page, tick <b>Desktop site</b> in Chrome's three-dot menu.</li>
+          <li><b>Paste the words.</b> Tap <b>Copy title</b> here and paste into <b>Title</b>. Do the same for <b>Tags</b> and <b>Description</b>.</li>
+          <li><b>Pick products.</b> The first time, tap <b>Enable all products</b>. After that, use <b>Copy settings</b> at the top of the upload page and pick your previous work, which turns on the same products in one tap. Leave the price markup at 20% (higher markups get an extra Redbubble fee).</li>
+          <li><b>Finish.</b> Under <b>Content</b> choose <b>No</b> for mature content, tick the box that says you have the rights to sell it, and tap <b>Save work</b>. Then tap <b>I uploaded it</b> here.</li>
+        </ol>
+        <p class="hint">Money: signing up and uploading are free, and Redbubble never bills you. On new shops Redbubble keeps a fee from each sale's profit, so you get roughly half of it. Pictures are made by AI from your videos, which Redbubble allows as long as they do not copy anyone's art, brands or famous photos.</p>
+      </details>
+    </div>
     <div class="card">
       <h2>Sponsor pitch email</h2>
       <p class="hint">Type a brand and the app writes a short, polite email with your latest numbers and media-kit link. You send it yourself from your email app.</p>

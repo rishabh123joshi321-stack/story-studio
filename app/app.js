@@ -93,7 +93,7 @@ function showTab(name) {
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
   if (name === 'create') { loadSeries(); updatePreview(); }
-  if (name === 'money') { loadMoney(); loadGoals(); loadBlog(); }
+  if (name === 'money') { loadMoney(); loadGoals(); loadBlog(); loadPins(); loadPrints(); }
   if (name === 'settings') loadPron();
 }
 function chapterAt(s, i) {
@@ -916,6 +916,81 @@ $('blogSave').addEventListener('click', async () => {
   if (tag && !/^[A-Za-z0-9._-]+-\d{2}$/.test(tag)) { msg.className = 'msg bad'; msg.textContent = 'A tracking ID looks like yourname-21 (letters, then a dash and two numbers).'; return; }
   blog.cfg = { ...blog.cfg, amazon_tag: tag, amazon_store: $('blogStore').value, per_day: Number($('blogPerDay').value) || 1 };
   try { await saveBlog('Blog settings saved.'); msg.className = 'msg ok'; msg.textContent = 'Saved. New articles will use these settings.'; }
+  catch (err) { msg.className = 'msg bad'; msg.textContent = err.status === 409 ? 'Changed elsewhere. Open the Income tab again.' : 'Could not save: ' + err.message; }
+});
+
+// ---------- Pinterest pins ----------
+const pinCfg = { cfg: { enabled: true, per_day: 3, per_article: 5 }, sha: null };
+function paintPinToggle() { $('pinToggle').textContent = pinCfg.cfg.enabled !== false ? 'Pinterest pins: ON (tap to turn off)' : 'Pinterest pins: OFF (tap to turn on)'; }
+async function savePins(note) { const r = await gh.putFile('config/pins.json', pinCfg.cfg, 'Update Pinterest settings', pinCfg.sha); pinCfg.sha = r.content.sha; toast(note); }
+async function loadPins() {
+  $('pinFeed').textContent = new URL('pins.xml', location.href).href;
+  if (mode() !== 'github') { $('pinStatus').textContent = 'Connect your GitHub project in Settings first.'; return; }
+  try {
+    const c = await gh.getFile('config/pins.json'); pinCfg.cfg = { ...pinCfg.cfg, ...((c && c.data) || {}) }; pinCfg.sha = c && c.sha;
+    $('pinPerDay').value = String(pinCfg.cfg.per_day || 3); paintPinToggle();
+    const st = (await gh.getFile('pins/status.json') || {}).data || {};
+    const s = $('pinStatus');
+    if (st.made) { s.className = 'msg ok'; s.textContent = `${st.live || 0} pin${st.live === 1 ? '' : 's'} ready on your pin list, ${st.waiting || 0} more waiting (${st.per_day || 3} added a day).`; }
+    else { s.className = 'msg'; s.textContent = 'No pins yet. The first pins are made once your first blog article is published. You can do setup steps 1 to 4 now.'; }
+    if (!store.get('todosDone', {}).pinterest) $('pinSetup').open = true;
+  } catch (err) { $('pinStatus').className = 'msg bad'; $('pinStatus').textContent = 'Could not load: ' + err.message; }
+}
+$('pinCopy').addEventListener('click', async () => { try { await navigator.clipboard.writeText($('pinFeed').textContent); toast('Pin list link copied. Paste it into Pinterest.'); } catch { toast('Could not copy. Long-press the link instead.'); } });
+$('pinToggle').addEventListener('click', async () => {
+  pinCfg.cfg.enabled = pinCfg.cfg.enabled === false; paintPinToggle();
+  try { await savePins(pinCfg.cfg.enabled ? 'Pinterest pins are on.' : 'Pinterest pins are off. No new pins will be added.'); }
+  catch (err) { pinCfg.cfg.enabled = !pinCfg.cfg.enabled; paintPinToggle(); toast('Could not save: ' + err.message); }
+});
+$('pinSave').addEventListener('click', async () => {
+  const msg = $('pinMsg'); pinCfg.cfg = { ...pinCfg.cfg, per_day: Number($('pinPerDay').value) || 3 };
+  try { await savePins('Pin settings saved.'); msg.className = 'msg ok'; msg.textContent = 'Saved.'; }
+  catch (err) { msg.className = 'msg bad'; msg.textContent = err.status === 409 ? 'Changed elsewhere. Open the Income tab again.' : 'Could not save: ' + err.message; }
+});
+
+// ---------- Redbubble art prints ----------
+const printCfg = { cfg: { enabled: true, per_video: 2 }, sha: null, designs: {} };
+function paintPrintToggle() { $('printToggle').textContent = printCfg.cfg.enabled !== false ? 'Print files: ON (tap to turn off)' : 'Print files: OFF (tap to turn on)'; }
+async function savePrints(note) { const r = await gh.putFile('config/prints.json', printCfg.cfg, 'Update print settings', printCfg.sha); printCfg.sha = r.content.sha; toast(note); }
+async function loadPrints() {
+  if (mode() !== 'github') { $('printList').innerHTML = '<p class="hint">Connect your GitHub project in Settings first.</p>'; return; }
+  try {
+    const c = await gh.getFile('config/prints.json'); printCfg.cfg = { ...printCfg.cfg, ...((c && c.data) || {}) }; printCfg.sha = c && c.sha;
+    $('printPerVideo').value = String(printCfg.cfg.per_video || 2); paintPrintToggle();
+    let files = [];
+    try { files = (await gh.call('/contents/prints')).filter((f) => /\.json$/.test(f.name)).sort((a, b) => b.name.localeCompare(a.name)).slice(0, 12); } catch (e) { if (e.status !== 404) throw e; }
+    const sets = (await Promise.all(files.map((f) => gh.call(`/contents/prints/${encodeURIComponent(f.name)}`, { accept: 'application/vnd.github.raw+json' }).then(JSON.parse).catch(() => null)))).filter(Boolean);
+    const done = store.get('printsDone', {});
+    printCfg.designs = {};
+    const rows = [];
+    for (const s of sets) for (const d of s.designs || []) {
+      const key = d.file; printCfg.designs[key] = d; const up = !!done[key];
+      rows.push(`<div class="affrow printrow${up ? ' done' : ''}" style="align-items:flex-start"><img src="${esc(d.preview)}" alt="" loading="lazy" style="width:84px;height:84px;object-fit:cover;border-radius:10px;flex:none">
+        <div style="flex:1;min-width:0"><b>${esc(d.title)}</b><div class="meta">${up ? '<span class="okline">Uploaded</span>' : 'Ready to upload'}</div>
+        <div class="posthelp"><a class="btnlink" href="${esc(d.url)}" target="_blank" rel="noopener">Download picture</a><button type="button" class="prcopy" data-k="${esc(key)}" data-what="title">Copy title</button><button type="button" class="prcopy" data-k="${esc(key)}" data-what="tags">Copy tags</button><button type="button" class="prcopy" data-k="${esc(key)}" data-what="description">Copy description</button><button type="button" class="prdone" data-k="${esc(key)}">${up ? 'Not uploaded yet' : 'I uploaded it'}</button></div></div></div>`);
+    }
+    const open = rows.filter((r) => !r.includes('printrow done')), fin = rows.filter((r) => r.includes('printrow done'));
+    $('printList').innerHTML = rows.length ? open.join('') + (fin.length ? `<details class="rweek"><summary>Uploaded (${fin.length})</summary>${fin.join('')}</details>` : '')
+      : '<p class="hint">No print files yet. They are made a few hours after each blog article is written.</p>';
+    if (!store.get('todosDone', {}).redbubble) $('printSetup').open = true;
+  } catch (err) { $('printList').innerHTML = `<p class="msg bad">Could not load: ${esc(err.message)}</p>`; }
+}
+$('printList').addEventListener('click', async (e) => {
+  const c = e.target.closest('.prcopy');
+  if (c) { const d = printCfg.designs[c.dataset.k]; try { await navigator.clipboard.writeText(d[c.dataset.what]); toast(`${c.textContent.replace('Copy ', '')} copied. Paste it on Redbubble.`.replace(/^./, (x) => x.toUpperCase())); } catch { toast('Could not copy.'); } return; }
+  const b = e.target.closest('.prdone'); if (!b) return;
+  const done = store.get('printsDone', {});
+  if (done[b.dataset.k]) delete done[b.dataset.k]; else { done[b.dataset.k] = new Date().toISOString(); toast('Nice! One more product in your shop.'); }
+  store.set('printsDone', done); loadPrints();
+});
+$('printToggle').addEventListener('click', async () => {
+  printCfg.cfg.enabled = printCfg.cfg.enabled === false; paintPrintToggle();
+  try { await savePrints(printCfg.cfg.enabled ? 'Print files are on.' : 'Print files are off.'); }
+  catch (err) { printCfg.cfg.enabled = !printCfg.cfg.enabled; paintPrintToggle(); toast('Could not save: ' + err.message); }
+});
+$('printSave').addEventListener('click', async () => {
+  const msg = $('printMsg'); printCfg.cfg = { ...printCfg.cfg, per_video: Number($('printPerVideo').value) || 2 };
+  try { await savePrints('Print settings saved.'); msg.className = 'msg ok'; msg.textContent = 'Saved. New videos will use this.'; }
   catch (err) { msg.className = 'msg bad'; msg.textContent = err.status === 409 ? 'Changed elsewhere. Open the Income tab again.' : 'Could not save: ' + err.message; }
 });
 
