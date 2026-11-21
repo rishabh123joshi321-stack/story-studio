@@ -351,3 +351,4 @@ details.goals { margin-top: 14px; } details.goals summary { cursor: pointer; fon
 .rmin { font-size: 12px; color: var(--muted); background: var(--bg); border: 1px solid var(--line); border-radius: 99px; padding: 1px 8px; margin-left: 4px; }
 .rgo { margin: 8px 0 0; padding: 6px 14px; font-size: 14px; }
 .rweek { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; } .rweek summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+.setupsteps { padding-left: 20px; } .setupsteps li { margin: 10px 0; line-height: 1.5; }

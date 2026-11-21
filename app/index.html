@@ -190,6 +190,32 @@
         <label for="mGoalB">Big goal (₹)</label><input id="mGoalB" type="number" inputmode="numeric" min="1">
         <button id="mGoalSave">Save goals</button></details>
     </div>
+    <div class="card" id="blogCard">
+      <h2>Blog</h2>
+      <p class="hint">Every long video becomes a full article (key facts, timeline, who's who, myths, FAQ, book picks) on your free Blogger blog. It posts by itself once the video is Public on YouTube, one article a day. Blog visitors earn through AdSense ads and book links, and many go on to watch your videos.</p>
+      <div id="blogStatus" class="msg"></div>
+      <button id="blogToggle">Automatic blog: ON (tap to turn off)</button>
+      <label for="blogTag">Amazon Associates tracking ID (optional)</label>
+      <input id="blogTag" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="yourname-21">
+      <label for="blogStore">Amazon store for book links</label>
+      <select id="blogStore"><option value="amazon.com">amazon.com (USA, most readers worldwide)</option><option value="amazon.in">amazon.in (India)</option><option value="amazon.co.uk">amazon.co.uk (UK)</option></select>
+      <label for="blogPerDay">Articles per day (at most)</label>
+      <select id="blogPerDay"><option value="1">1 (recommended)</option><option value="2">2</option></select>
+      <button class="primary" id="blogSave">Save blog settings</button>
+      <p id="blogMsg" class="msg"></p>
+      <h3 class="chartttl">Articles</h3>
+      <div id="blogList"><p class="hint">Loading...</p></div>
+      <details class="goals" id="blogSetup"><summary>Set up the blog (one time, about 10 minutes)</summary>
+        <ol class="setupsteps">
+          <li><b>Make the blog.</b> In Chrome open <a href="https://www.blogger.com" target="_blank" rel="noopener">blogger.com</a>, tap <b>Create your blog</b>, pick the same Google account as your channel, and type the blog name (your channel name works well). For the address, try your channel name too, for example <i>emberandink</i>.blogspot.com. Tap <b>Save</b>. Skip any step about a custom domain (those cost money).</li>
+          <li><b>Turn on the Blogger API.</b> Open <a href="https://console.cloud.google.com/apis/library/blogger.googleapis.com" target="_blank" rel="noopener">the Blogger API page</a> (same Google account, same project as your YouTube connection) and tap <b>Enable</b>. It is free.</li>
+          <li><b>Sign in again.</b> Go to <b>Settings &gt; Connect YouTube</b>, tap <b>Sign in with Google</b>, tick every box (one now says <i>Manage your Blogger account</i>), then tap <b>Copy</b> next to YT_REFRESH_TOKEN and paste it into the <b>YT_REFRESH_TOKEN</b> secret on GitHub (open the secret, tap the pencil, paste, <b>Update secret</b>).</li>
+          <li><b>Wait for an hour.</b> This box then says <i>Connected</i>. Articles start appearing after your next long video is Public.</li>
+          <li><b>Ads, later.</b> When the blog has about 20 articles, open Blogger, tap the menu, then <b>Earnings</b> &gt; <b>Sign up for AdSense</b>. It is free and never needs a card. Google checks the blog, which can take a few weeks.</li>
+          <li><b>Book links (optional).</b> Join Amazon Associates (free), then paste your tracking ID above. You need 3 sales within 180 days or the account closes, so it is fine to wait until the blog has visitors.</li>
+        </ol>
+      </details>
+    </div>
     <div class="card">
       <h2>Sponsor pitch email</h2>
       <p class="hint">Type a brand and the app writes a short, polite email with your latest numbers and media-kit link. You send it yourself from your email app.</p>

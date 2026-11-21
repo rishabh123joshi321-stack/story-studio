@@ -15,4 +15,5 @@ Nothing is ever uploaded to YouTube without the owner tapping **Approve** in the
 - Voice: [Kokoro](https://github.com/hexgrad/kokoro), an open-source voice (Apache 2.0).
 - Music: original music generated fresh for each video (`worker/music.py`), so there are no copyright claims. You can drop your own copyright-safe MP3s into `music/` instead.
 - Captions font: Anton (SIL Open Font License).
+- Blog: each long video also becomes a full article on the owner's free Blogger blog (`worker/blog.py`), posted automatically once the video is Public.
 - Finished videos are stored as GitHub releases until they are approved and uploaded.

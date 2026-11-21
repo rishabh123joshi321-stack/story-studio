@@ -1,5 +1,5 @@
 // Caches the app screens so it opens fast. GitHub data is always fetched fresh.
-const CACHE = 'story-studio-v31';
+const CACHE = 'story-studio-v32';
 const FILES = ['./', 'index.html', 'styles.css', 'app.js', 'play.js', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-192.png', 'icons/maskable-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k))))); self.clients.claim(); });

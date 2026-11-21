@@ -1,0 +1,41 @@
+name: Blog articles
+# Writes a blog article for each finished long video and posts it to your free Blogger blog
+# once the video is Public on YouTube. Fully automatic; turn it off in the app (Income > Blog).
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['worker/blog.py', '.github/workflows/blog.yml', 'config/blog.json']
+permissions:
+  contents: write
+  actions: write
+concurrency: { group: blog, cancel-in-progress: false }
+jobs:
+  blog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Anything to do?
+        id: check
+        run: |
+          if grep -q '"enabled": false' config/blog.json 2>/dev/null; then echo "Blog is off."; exit 0; fi
+          if grep -l -E '"status": "written"' blog/*.json >/dev/null 2>&1 \
+             || ! grep -q '"connected": true' blog/status.json 2>/dev/null \
+             || grep -l '"format": "long"' jobs/*.json 2>/dev/null | while read f; do id=$(basename "$f" .json); [ -f "blog/$id.json" ] || grep -L '"parent_id"' "$f"; done | grep -q .; then
+            echo "go=yes" >> "$GITHUB_OUTPUT"
+          else echo "Nothing to do."; fi
+      - name: Write and post articles
+        if: steps.check.outputs.go == 'yes'
+        run: |
+          git config user.name "story-studio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python3 worker/blog.py
