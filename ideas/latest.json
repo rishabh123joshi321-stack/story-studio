@@ -1,156 +1,171 @@
 {
-  "created": "2026-11-20T08:57:52+00:00",
+  "created": "2026-11-21T08:18:28+00:00",
   "focus": "",
   "ideas": [
     {
-      "topic": "Grand Theft Auto franchise history",
-      "title": "How a Bug Turned Into a Billion-Dollar Crime",
-      "angle": "We explore how a programming glitch in a cancelled race game spawned the most controversial and successful franchise in video game history.",
-      "kind": "trending",
+      "topic": "Stanislav Petrov nuclear false alarm",
+      "title": "The Man Who Disobeyed Orders and Saved the World",
+      "angle": "The harrowing twenty minutes in 1983 when a Soviet bunker commander trusted his gut over blaring computer sensors and averted total nuclear catastrophe.",
+      "kind": "evergreen",
       "format": "long",
       "score": 96,
-      "signal": "519,632 Wikipedia reads yesterday for Grand Theft Auto VI",
-      "publish_by": ""
+      "signal": "Evergreen Cold War history staple with massive global appeal",
+      "publish_by": "",
+      "years_ago": 0
     },
     {
-      "topic": "D.B. Cooper hijacking",
-      "title": "The Man Who Vanished Into the Sky With $200,000",
-      "angle": "Revisiting the audacious 1971 hijacking where an unassuming passenger parachuted into the dark Pacific Northwest wilderness and vanished forever.",
+      "topic": "D.B. Cooper skyjacking",
+      "title": "The Impossible Heist of D.B. Cooper",
+      "angle": "How an unassuming man in a business suit extorted $200,000, parachuted off a jet airliner into the pitch-black Pacific Northwest wilderness, and vanished forever.",
       "kind": "anniversary",
       "format": "long",
       "score": 94,
-      "signal": "Anniversary on Nov 24, 1971",
-      "publish_by": "2026-11-24"
+      "signal": "Anniversary on Nov 24",
+      "publish_by": "2026-11-24",
+      "years_ago": 55
     },
     {
-      "topic": "Ansel Adams photography",
-      "title": "The Photographer Who Saved America's Wild Places",
-      "angle": "The inspiring life of Ansel Adams, whose stark black-and-white prints of Yosemite helped forge the American environmental movement.",
+      "topic": "London Beer Flood of 1814",
+      "title": "The Day a Tsunami of Beer Smashed London",
+      "angle": "How a colossal wooden brewing vat rupture unleashed a deadly 15-foot wave of fermented porter through the impoverished streets of Victorian London.",
+      "kind": "evergreen",
+      "format": "long",
+      "score": 93,
+      "signal": "Searched year-round for bizarre history stories",
+      "publish_by": "",
+      "years_ago": 0
+    },
+    {
+      "topic": "The glitch origin of Grand Theft Auto",
+      "title": "How a Broken Glitch Accidentally Created GTA",
+      "angle": "How Scottish game developers making a tame driving simulator accidentally broke their police car AI into murderous berserkers, inventing an entertainment empire.",
       "kind": "trending",
       "format": "long",
       "score": 92,
-      "signal": "74,358 Wikipedia reads yesterday for Ansel Adams",
-      "publish_by": ""
+      "signal": "Grand Theft Auto VI had 750,227 Wikipedia reads yesterday",
+      "publish_by": "",
+      "years_ago": 0
     },
     {
-      "topic": "Discovery of Pulsars Jocelyn Bell Burnell",
-      "title": "The Strange 'Little Green Men' Signals From Space",
-      "angle": "How a graduate student's sharp eyes spotted tiny anomalies in radio telescope data, leading to the groundbreaking discovery of pulsars.",
+      "topic": "Max Headroom signal intrusion",
+      "title": "The Unsolved TV Piracy of Max Headroom",
+      "angle": "How an unknown hacker hijacked two Chicago broadcast signals with a rubber mask and flyswatter spankings, baffling the FCC and FBI for decades.",
       "kind": "anniversary",
+      "format": "long",
+      "score": 91,
+      "signal": "Anniversary on Nov 22",
+      "publish_by": "2026-11-22",
+      "years_ago": 39
+    },
+    {
+      "topic": "Tarrare's medical condition",
+      "title": "History's Most Insatiable Human Being",
+      "angle": "The bewildering and tragic medical case of an 18th-century French soldier who consumed baskets of live animals, stones, and garbage without ever satisfying his hunger.",
+      "kind": "evergreen",
       "format": "long",
       "score": 90,
-      "signal": "Anniversary on Nov 28, 1967",
-      "publish_by": "2026-11-28"
+      "signal": "Perennially popular medical history enigma",
+      "publish_by": "",
+      "years_ago": 0
     },
     {
-      "topic": "Microsoft Windows 1.0 release",
-      "title": "When Microsoft First Bet on Windows",
-      "angle": "Looking back at the clunky, tile-based 1985 release of Windows 1.0 that was mocked by critics but quietly launched a computing revolution.",
+      "topic": "The murder of Ken McElroy in Skidmore",
+      "title": "The Town That Agreed to See Nothing",
+      "angle": "How an entire Missouri farming town banded together to eliminate a notorious town bully in broad daylight, leaving investigators facing 46 silent witnesses.",
+      "kind": "trending",
+      "format": "long",
+      "score": 89,
+      "signal": "Ken McElroy had 172,820 Wikipedia reads yesterday",
+      "publish_by": "",
+      "years_ago": 0
+    },
+    {
+      "topic": "Ann Hodges meteorite strike",
+      "title": "The Woman Struck by a Falling Meteorite",
+      "angle": "The incredible story of Ann Hodges surviving an eight-pound space rock crashing through her ceiling, followed by a bitter national custody fight over the meteorite.",
       "kind": "anniversary",
       "format": "short",
-      "score": 89,
-      "signal": "Anniversary on Nov 20, 1985",
-      "publish_by": "2026-11-20"
-    },
-    {
-      "topic": "Alcatraz Native American occupation",
-      "title": "The 19-Month Native Occupation of Alcatraz",
-      "angle": "The untold story of the Indigenous activists who claimed the abandoned island prison in 1969 to demand land rights and justice.",
-      "kind": "anniversary",
-      "format": "long",
       "score": 88,
-      "signal": "Anniversary on Nov 20, 1969",
-      "publish_by": "2026-11-20"
+      "signal": "Anniversary on Nov 30",
+      "publish_by": "2026-11-30",
+      "years_ago": 72
     },
     {
-      "topic": "Release of Toy Story 1995",
-      "title": "The Risky CGI Gamble That Built Pixar",
-      "angle": "How an unproven technology and a struggling studio risked everything to make the world's first fully computer-animated feature film.",
+      "topic": "Alan Turing's universal computer paper",
+      "title": "The Paper That Invented the Modern Computer",
+      "angle": "How a quiet 24-year-old mathematician resolved a century-old logic paradox by conceptualizing a paper-tape reader that laid the theoretical groundwork for every computer.",
       "kind": "anniversary",
       "format": "long",
       "score": 87,
-      "signal": "Anniversary on Nov 22, 1995",
-      "publish_by": "2026-11-22"
+      "signal": "90th Anniversary on Nov 30",
+      "publish_by": "2026-11-30",
+      "years_ago": 90
     },
     {
-      "topic": "Elizabeth Holmes Theranos rise and fall",
-      "title": "The Rise and Fall of Silicon Valley's Biggest Bluff",
-      "angle": "The psychological and corporate mechanisms that allowed a charismatic college dropout to convince the world she had invented miraculous blood-testing tech.",
-      "kind": "trending",
-      "format": "long",
-      "score": 86,
-      "signal": "58,677 Wikipedia reads yesterday for Elizabeth Holmes",
-      "publish_by": ""
-    },
-    {
-      "topic": "The Voynich Manuscript",
-      "title": "The Unreadable 600-Year-Old Manuscript No One Can Decode",
-      "angle": "A deep dive into the bizarre, illustrated medieval codex written in an unknown alphabet that continues to baffle the world's top cryptographers.",
-      "kind": "evergreen",
-      "format": "long",
-      "score": 85,
-      "signal": "Searched continuously by history and mystery enthusiasts globally",
-      "publish_by": ""
-    },
-    {
-      "topic": "History of the Rosetta Stone",
-      "title": "The Accidental Discovery That Decoded Ancient Egypt",
-      "angle": "How a French soldier unearthing a dusty slab of rock in a fortress wall unlocked thousands of years of silent hieroglyphics.",
-      "kind": "evergreen",
-      "format": "long",
-      "score": 84,
-      "signal": "Perennial high-interest historical mystery topic",
-      "publish_by": ""
-    },
-    {
-      "topic": "Antikythera mechanism history",
-      "title": "The 2,000-Year-Old Greek Computer Found in a Shipwreck",
-      "angle": "The astonishing true story of the ancient bronze gear system that baffled archaeologists and rewrote our understanding of ancient technology.",
-      "kind": "evergreen",
-      "format": "long",
-      "score": 83,
-      "signal": "High search volume and evergreen curiosity across science channels",
-      "publish_by": ""
-    },
-    {
-      "topic": "The Dancing Plague of 1518",
-      "title": "The Town That Literally Danced Itself to Death",
-      "angle": "Investigating the strange summer in Alsace where hundreds of citizens were gripped by an unstoppable urge to dance for days on end.",
-      "kind": "evergreen",
-      "format": "short",
-      "score": 82,
-      "signal": "Extremely high shareability and evergreen historical intrigue",
-      "publish_by": ""
-    },
-    {
-      "topic": "History of Pompeii preservation",
-      "title": "The Last Hours of Pompeii's Forgotten Streets",
-      "angle": "A vivid, minute-by-minute reconstruction of the catastrophic Vesuvius eruption that preserved an entire Roman city in volcanic ash.",
-      "kind": "evergreen",
-      "format": "long",
-      "score": 81,
-      "signal": "Consistently high global search and watch time performance",
-      "publish_by": ""
-    },
-    {
-      "topic": "Brink's-Mat robbery 1983",
-      "title": "The Accidental Heist That Stole London's Gold",
-      "angle": "How six petty thieves broke into a routine warehouse looking for cash and walked out with three tons of pure gold bullion.",
+      "topic": "Brink's-Mat robbery",
+      "title": "How London's Biggest Gold Heist Melted into History",
+      "angle": "How a gang expecting a small haul of cash stumbled upon three tons of solid gold bullion at Heathrow Airport, permanently changing the global gold trade.",
       "kind": "anniversary",
       "format": "long",
-      "score": 80,
-      "signal": "Anniversary on Nov 26, 1983",
-      "publish_by": "2026-11-26"
+      "score": 86,
+      "signal": "Anniversary on Nov 26",
+      "publish_by": "2026-11-26",
+      "years_ago": 43
     },
     {
-      "topic": "Jensen Huang and NVIDIA history",
-      "title": "The Restaurant Pitch That Built a Trillion-Dollar Chip Empire",
-      "angle": "The improbable journey of Jensen Huang, who co-founded NVIDIA at a Denny's booth and quietly powered the modern AI revolution.",
+      "topic": "Dusko Popov real James Bond",
+      "title": "The Playboy Spy Who Actually Inspired James Bond",
+      "angle": "How Serbian double agent Duško Popov used high-stakes gambling, charm, and audacity to deceive German intelligence while feeding critical secrets to MI6.",
       "kind": "trending",
       "format": "long",
-      "score": 79,
-      "signal": "109,002 Wikipedia reads yesterday for Jensen Huang",
-      "publish_by": ""
+      "score": 85,
+      "signal": "List of James Bond films had 53,294 Wikipedia reads yesterday",
+      "publish_by": "",
+      "years_ago": 0
+    },
+    {
+      "topic": "Heinrich Schliemann finding Troy",
+      "title": "The Obsessed Amateur Who Dynamited Ancient Troy",
+      "angle": "How an eccentric merchant used Homer's epic verses as an archaeological field map and accidentally blasted through the historic city of Troy with dynamite.",
+      "kind": "trending",
+      "format": "long",
+      "score": 84,
+      "signal": "The Odyssey trending with 60,629 Wikipedia reads yesterday",
+      "publish_by": "",
+      "years_ago": 0
+    },
+    {
+      "topic": "Jocelyn Bell Burnell pulsar discovery",
+      "title": "The Cosmic Signal Scientists Thought Were Aliens",
+      "angle": "How a graduate student meticulously reviewing miles of radio telescope chart paper discovered dead stars spinning hundreds of times per second.",
+      "kind": "anniversary",
+      "format": "long",
+      "score": 83,
+      "signal": "Anniversary on Nov 28",
+      "publish_by": "2026-11-28",
+      "years_ago": 59
+    },
+    {
+      "topic": "Edward Jenner and smallpox vaccination",
+      "title": "How Cow Sores Defeated History's Deadliest Virus",
+      "angle": "How an English country doctor turned a rural myth about dairymaids into a risky human trial that produced the world's very first vaccine.",
+      "kind": "evergreen",
+      "format": "short",
+      "score": 81,
+      "signal": "Fundamental milestone in human science and history",
+      "publish_by": "",
+      "years_ago": 0
+    },
+    {
+      "topic": "Iron Gate of Antioch flood engineering",
+      "title": "How the Romans Tamed a Mountain Flash Flood",
+      "angle": "How Roman and Byzantine stone masons built a towering wall across a deep gorge to save one of antiquity's greatest metropolises from sudden drowning.",
+      "kind": "trending",
+      "format": "short",
+      "score": 76,
+      "signal": "Iron Gate (Antioch) had 69,354 Wikipedia reads yesterday",
+      "publish_by": "",
+      "years_ago": 0
     }
   ],
   "signals": {
