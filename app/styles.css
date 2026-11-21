@@ -343,3 +343,11 @@ details.goals { margin-top: 14px; } details.goals summary { cursor: pointer; fon
 .fixrow .meta { color: var(--muted); font-size: 14px; } .fixrow button { margin: 0; flex: none; } .fixrow.fixed b { text-decoration: line-through; opacity: .6; }
 .fixrow.fixed button { color: var(--ok); } .oklist { margin-top: 12px; color: var(--ok); font-size: 14px; }
 #fixCard > button:not(.primary) { display: block; width: 100%; text-align: left; }
+/* daily routine */
+.rtask { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); } .rtask:first-of-type { border-top: none; }
+.rtick { flex: none; width: 30px; height: 30px; padding: 0; margin: 0; border-radius: 50%; border: 2px solid var(--line); background: var(--card); color: #fff; font-weight: 800; font-size: 15px; }
+.rtask.done .rtick { background: var(--ok); border-color: var(--ok); } .rtask.done .rbody b { text-decoration: line-through; opacity: .55; }
+.rbody { flex: 1; min-width: 0; } .rbody .meta { color: var(--muted); font-size: 14px; line-height: 1.5; margin-top: 2px; }
+.rmin { font-size: 12px; color: var(--muted); background: var(--bg); border: 1px solid var(--line); border-radius: 99px; padding: 1px 8px; margin-left: 4px; }
+.rgo { margin: 8px 0 0; padding: 6px 14px; font-size: 14px; }
+.rweek { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; } .rweek summary { cursor: pointer; font-weight: 600; color: var(--accent); }
