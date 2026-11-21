@@ -130,6 +130,7 @@ async function loadHome(quiet) {
     </div>`;
   paintHealth(jobs);
   paintTodos();
+  if (typeof paintPostBanner === 'function') paintPostBanner(jobs);
 }
 $('homeView').addEventListener('click', (e) => {
   const b = e.target.closest('[data-go],[data-day]'); if (!b) return;
@@ -146,7 +147,9 @@ $('homeView').addEventListener('click', (e) => {
   else if (g === 'pins') { showTab('money'); setTimeout(() => $('pinCard').scrollIntoView(), 300); }
   else if (g === 'prints') { showTab('money'); setTimeout(() => $('printCard').scrollIntoView(), 300); }
   else if (g === 'health') $('healthCard').scrollIntoView();
-  else if (['post', 'work', 'failed'].includes(g)) { store.set('qFilter', g === 'post' ? 'ready' : g); store.set('qView', 'list'); showTab('queue'); }
+  else if (g === 'comments') { showTab('review'); setTimeout(() => $('commentsBox').scrollIntoView({ behavior: 'smooth' }), 600); }
+  else if (g === 'growth') { showTab('settings'); setTimeout(() => $('growthCard').scrollIntoView({ block: 'center' }), 50); }
+  else if (['post', 'work', 'failed', 'done'].includes(g)) { store.set('qFilter', g === 'post' ? 'ready' : g); store.set('qView', 'list'); showTab('queue'); }
   else showTab(g);
 });
 
@@ -572,12 +575,15 @@ const ROUTINE = {
   daily: [
     ['health', 'Glance at the Health card', 'Anything red or orange? Tap Check and fix problems.', 'fix', '1 min'],
     ['review', 'Review finished videos', 'Watch at 1.5x or 2x, check flagged facts, pick a thumbnail, then Approve, Regenerate or Reject.', 'review', '15 min'],
-    ['post', 'Post approved videos', 'Queue > Needs you: Download video, Copy title, description and tags, post in the YouTube app, tap I posted it. Paste and pin the pinned comment.', 'post', '8 min'],
+    ['post', 'Post approved videos', 'Queue > Needs you: follow the numbered steps. Schedule each one for your posting time, pick the Related video on Shorts, then paste the link and tap I posted it. On long videos, also set up Test & compare.', 'post', '10 min'],
     ['plan', "Plan tomorrow's videos", 'Swipe through Ideas or tap Surprise me, then Start making it. Watch the picture meter.', 'ideas', '4 min'],
-    ['reply', 'Reply to a few comments', 'In the YouTube Studio app: heart and answer early comments. It helps new videos get shown.', '', '2 min'],
+    ['reply', 'Approve comment replies', 'Review > Comment replies: read each AI draft, change it if you like, tap Send reply or Skip. Hearting comments in the YouTube Studio app helps too.', 'comments', '3 min'],
+    ['share', 'Share one video on Reddit or Quora', 'Queue > Done: open Share it on Reddit and Quora under a posted video, copy the draft and post it by hand. One a day is plenty.', 'done', '3 min'],
   ],
   weekly: [
     ['report', 'Read your weekly report card', 'Dashboard: grade, star video, what is working and the best time to post.', 'stats', '3 min'],
+    ['topics', 'Read the weekly topic report', 'Ideas tab, top card: topics like the videos that kept viewers watching, plus a series idea. Tap Use this on one or two.', 'ideas', '3 min'],
+    ['test', 'Check Test & compare winners', 'Chrome, studio.youtube.com (Desktop site) > Content: open last week\'s long videos and see which thumbnail won.', '', '3 min'],
     ['week', 'Plan the whole week', 'New video > Plan the week. Put anniversaries on their exact day.', 'week', '10 min'],
     ['money', 'Update money and sponsors', 'Income: log any payouts, and send one sponsor email.', 'money', '5 min'],
   ],
@@ -660,8 +666,17 @@ function todoList(d) {
       { k: 'greatfire', t: 'Delete the old Great Fire Short on YouTube', d: 'YouTube Studio app > <b>Content</b> > <b>Shorts</b> > tap the three dots next to the private Great Fire Short > <b>Delete forever</b>.' },
       { k: 'blog', t: 'Connect the blog', d: 'Done when the Blog box in Income says Connected.', go: 'blog', btn: 'Open Blog', auto: !!d.blog.connected },
       { k: 'pinterest', t: 'Set up Pinterest (15 minutes, once)', d: 'Make a free Pinterest business account, make a <i>History Stories</i> board and prove the blog is yours. Then, once the Pinterest box says a pin is ready, paste your pin list link under <b>Settings</b> &gt; <b>Create Pins in bulk</b> &gt; <b>Connect RSS feed</b>. Exact steps are in Income &gt; Pinterest pins &gt; <b>Set up Pinterest</b>. After that, pins post by themselves.', go: 'pins', btn: 'Open Pinterest steps' },
+      { k: 'posttime', t: 'Pick your daily posting time', d: 'Settings > Growth > <b>My posting time</b>: pick a time (6:00 PM is a good start), then tap <b>Save posting time</b>. The Queue then tells you to schedule every video for that time.', go: 'growth', btn: 'Open Growth', auto: !!store.get('postTime', '') },
+      { k: 'verify', t: 'Verify your channel with your phone (free, 2 minutes)', d: 'In Chrome open <b>youtube.com/verify</b>, pick <b>India</b>, choose <b>Text me the verification code</b>, type your number, then enter the code. This unlocks custom thumbnails and <b>Test &amp; compare</b> (testing 3 thumbnails and titles).' },
     ],
     later: [
+      { k: 'meta', t: 'Connect Instagram and Facebook so Shorts post there by themselves (optional, about 30 minutes)',
+        d: 'Free, but has several steps. Until then, each posted Short in the Queue has <b>Download video</b> and <b>Copy Reels caption</b> for posting by hand.<ol class="psteps">'
+          + '<li>Instagram app: Profile &gt; <b>☰</b> &gt; <b>Account type and tools</b> &gt; <b>Switch to professional account</b> &gt; <b>Creator</b>.</li>'
+          + '<li>Facebook app: <b>Menu</b> &gt; <b>Pages</b> &gt; <b>Create</b> a Page called Ember &amp; Ink. In the Page\'s settings tap <b>Linked accounts</b> &gt; <b>Instagram</b> &gt; <b>Connect</b>.</li>'
+          + '<li>In Chrome (tap <b>⋮</b> &gt; tick <b>Desktop site</b>) open <b>developers.facebook.com</b> &gt; <b>Get started</b>, then <b>My Apps</b> &gt; <b>Create app</b> named Story Studio (no card needed; it stays in development mode, which is enough for your own accounts).</li>'
+          + '<li>Then ask Claude in the project chat: "walk me through the Meta token". You will add three GitHub secrets: <b>META_PAGE_TOKEN</b>, <b>FB_PAGE_ID</b> and <b>IG_USER_ID</b>.</li></ol>',
+        auto: (typeof queueJobs !== 'undefined' && queueJobs || []).some((j) => j.social && /^ok/.test(String(j.social.instagram || j.social.facebook || ''))) },
       { k: 'audit', t: 'When Google\'s audit email arrives', d: 'Tap <b>Google approved it</b> on the Health card, then Settings > tap <b>Automatic upload</b> so it says ON. Until then, post each video yourself from the Queue.', go: 'health', btn: 'Go to Health card', auto: store.get('auditOk', false) && store.get('ytAuto', false) },
       { k: 'adsense', t: pub >= 20 ? 'Apply for AdSense now: your blog has 20 articles' : `Apply for AdSense at 20 blog articles (${pub} of 20 published)`,
         d: 'On blogger.com tap the menu (three lines) > <b>Earnings</b> > <b>Sign up for AdSense</b>, pick your Google account, and follow the steps (country India, your name and address as on your ID). Free, never asks for a card. Google checks the blog, which can take 2 to 4 weeks. When the email says approved, tick this.',
@@ -684,6 +699,8 @@ function todoList(d) {
       'If the Health card says the YouTube sign-in stopped, or the Blog box is not connected: Settings > Connect YouTube > <b>Sign in with Google</b>, tick every box, then update <b>YT_REFRESH_TOKEN</b> on GitHub.',
       'Answer Google\'s emails about your YouTube API project (for example the yearly check) before their deadline. Forward them to Claude if unsure.',
       'Never add a card anywhere. If a site asks for one, stop and tell Claude.',
+      'Reddit and Quora: the app only drafts posts, you post them by hand. Read each community\'s rules, share where it really helps, and never post the same link in many places at once.',
+      'Paste the video link when you tap <b>I posted it</b>. The app then adds subtitles, translated titles, the playlist and the thumbnail by itself.',
       'Keep the Pinterest tag in your Blogger theme. If you change the blog theme, paste the tag again or the pins stop.',
       'When a video has a paid sponsor, tick <b>Includes paid promotion</b> for it in YouTube Studio.',
     ],

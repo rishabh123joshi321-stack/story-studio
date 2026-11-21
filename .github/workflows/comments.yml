@@ -1,0 +1,32 @@
+name: Comment replies
+# Reads new comments and drafts replies for you to approve (every 3 hours),
+# and sends the replies you approved in the app (right after you tap Send).
+on:
+  push:
+    branches: [main]
+    paths: ['comments/approved/**', 'worker/comments.py', '.github/workflows/comments.yml']
+  schedule:
+    - cron: '23 */3 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: comments, cancel-in-progress: false }
+jobs:
+  comments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Send approved replies and draft new ones
+        run: |
+          git config user.name "story-studio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "${{ github.event_name }}" = "push" ]; then python worker/comments.py --send-only; else python worker/comments.py; fi

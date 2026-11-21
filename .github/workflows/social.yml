@@ -1,0 +1,27 @@
+name: Share Shorts to Instagram and Facebook
+# Every hour: Shorts you have posted on YouTube are also shared as Instagram and
+# Facebook Reels. Does nothing until the Meta secrets are added (see My to-dos in the app).
+on:
+  schedule:
+    - cron: '47 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: { group: social, cancel-in-progress: false }
+jobs:
+  share:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+      FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Share new Shorts
+        run: |
+          git config user.name "story-studio-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python worker/social.py

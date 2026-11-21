@@ -91,6 +91,17 @@ def affiliate_links(job, title_guess="", text=""):
     return picked[:3]
 
 
+def _clean_dict(d, keys):
+    """Drafts for posting elsewhere (Reddit, Quora): kept only if the AI returned them properly."""
+    if not isinstance(d, dict):
+        return {}
+    out = {}
+    for k in keys:
+        v = d.get(k)
+        out[k] = [str(x).strip()[:60] for x in v][:3] if isinstance(v, list) else str(v or "").strip()[:3000]
+    return out
+
+
 def write_package(job, script):
     short = job["format"] == "short"
     starts = scene_starts(job, script)
@@ -116,7 +127,12 @@ Return JSON:
   "thumbnail_text": "2 to 4 punchy words for the thumbnail, not the same as the title",
   "thumbnail_visual": "one striking, simple illustration idea for the thumbnail, with one clear focal subject and space on the left for text",
   "thumbnail_options": [{{"text": "2 to 4 punchy words", "visual": "a different striking illustration idea"}}, {{"text": "...", "visual": "..."}}],
-  "pinned_comment": "one friendly question for viewers to answer in the comments, under 150 characters, that makes them share an opinion about this story (no links, no emojis)"
+  "pinned_comment": "one friendly question for viewers to answer in the comments, under 150 characters, that makes them share an opinion about this story (no links, no emojis)",
+  "social_caption": "a caption for Instagram and Facebook Reels: 1 or 2 inviting sentences about the story, then 'Full story on YouTube: Ember & Ink', then 5 relevant hashtags",
+  "reddit": {{"title": "a plain, informative Reddit post title stating an interesting true fact from this story (no clickbait, no 'you won't believe')",
+              "body": "a genuinely useful Reddit text post of 120 to 200 words that tells the most interesting part of the story with 1 or 2 sources named, written like a history fan sharing, not an advert; it must stand on its own without the video",
+              "subreddits": ["2 or 3 subreddits where this fits and self-made content is allowed, e.g. r/history, r/HistoryAnecdotes, r/todayilearned (TIL titles must start with 'TIL')"]}},
+  "quora": {{"question": "a question people really ask on Quora that this story answers", "answer": "a helpful, accurate answer of 120 to 200 words, written in first person as a history storyteller, that fully answers the question on its own"}}
 }}
 {"For a Short, return an empty chapters list." if short else "Give 4 to 8 chapters that follow the story, starting with scene 1."}"""
     pkg = gemini_json(prompt, SYSTEM, temperature=0.7)
@@ -132,6 +148,9 @@ Return JSON:
     if job.get("series"):
         parts[0] = f"Part {job.get('part', 1)} of the \"{job['series']}\" series.\n\n" + parts[0]
     links = affiliate_links(job, title_guess=str(pkg.get("title", "")), text=parts[0])
+    blog = (read_json(ROOT / "blog" / "status.json", {}) or {}).get("blog_url")
+    if blog:  # reach tactic 4: every video points to the blog (and from there, Pinterest)
+        parts.append(f"Read the story and more on our blog: {blog}")
     if links:
         parts.append("Recommended\n" + "\n".join(f"- {l['name']}: {l['url']}" for l in links) + "\n" + AFFILIATE_NOTE)
     if chapters:
@@ -160,6 +179,9 @@ Return JSON:
         "thumbnail_alts": [{"text": str(o.get("text", "")).strip()[:40], "visual": str(o.get("visual", "")).strip()}
                            for o in (pkg.get("thumbnail_options") or []) if isinstance(o, dict) and o.get("visual")][:2],
         "pinned_comment": str(pkg.get("pinned_comment", "")).strip()[:300],
+        "social_caption": str(pkg.get("social_caption", "")).strip()[:2000],
+        "reddit": _clean_dict(pkg.get("reddit"), ("title", "body", "subreddits")),
+        "quora": _clean_dict(pkg.get("quora"), ("question", "answer")),
         "category_id": "27",  # Education
         "made_for_kids": False,
         "ai_disclosure": bool(script.get("uses_realistic_altered_content")),

@@ -94,7 +94,7 @@ function showTab(name) {
   if (name === 'stats') loadStats();
   if (name === 'create') { loadSeries(); updatePreview(); }
   if (name === 'money') { loadMoney(); loadGoals(); loadBlog(); loadPins(); }
-  if (name === 'settings') loadPron();
+  if (name === 'settings') { loadPron(); if (typeof loadGrowth === 'function') loadGrowth(); }
 }
 function chapterAt(s, i) {
   const c = (s.chapters || []).find((x) => x.scene === i + 1);
@@ -340,7 +340,7 @@ async function loadQueue(quiet) {
     else if (j.status === 'video_ready') extra = `<div class="meta okline">Video made${j.video_seconds ? ` (${Math.floor(j.video_seconds / 60)}:${String(Math.round(j.video_seconds % 60)).padStart(2, '0')})` : ''}. Tap to watch.</div>`;
     else if (j.status === 'uploaded') extra = `<div class="meta okline">On YouTube as Private. <a href="${esc(j.youtube_studio || j.youtube_url)}" target="_blank" rel="noopener">Open in YouTube Studio</a> to make it Public or schedule it.</div>${j.note ? `<div class="meta">${esc(j.note)}</div>` : ''}`;
     else if (j.status === 'post_yourself') extra = '<div class="meta okline">Approved. Post it from the YouTube app:</div>';
-    else if (j.status === 'posted') extra = '<div class="meta okline">Posted on YouTube.</div>';
+    else if (j.status === 'posted') extra = `<div class="meta okline">Posted on YouTube.${j.youtube_url ? ` <a href="${esc(j.youtube_url)}" target="_blank" rel="noopener">Open it</a>` : ''}</div>${typeof shareHelper === 'function' && mode() === 'github' ? shareHelper(j) : ''}`;
     else if (j.status === 'approved' && j.error) extra = `<div class="meta flagnote">Upload waiting: ${esc(j.error)}</div>`;
     else if (j.status === 'approved') extra = '<div class="meta">Approved. It will be uploaded to YouTube (as Private) within a few minutes.</div>';
     else if (j.status === 'uploading') extra = '<div class="meta">Sending to YouTube now. Long videos can take 10 to 20 minutes.</div>';
@@ -385,7 +385,7 @@ async function paintToday(jobs) {
 // so the owner posts them from the YouTube app with these buttons.
 function postHelper(j) {
   return `<div class="posthelp">
-    ${j.status === 'post_yourself' ? '<p class="meta">1. Download the video. 2. In the YouTube app tap + then Upload a video and pick it. 3. Paste the title and description, and add the tags under Add tags (or Show more). 4. Tap I posted it.</p>' : '<p class="meta">This copy is locked Private by Google. To publish now, download it and post it from the YouTube app, then delete the locked copy in Studio.</p>'}
+    ${j.status === 'post_yourself' ? postSteps(j) : '<p class="meta">This copy is locked Private by Google. To publish now, download it and post it from the YouTube app, then delete the locked copy in Studio.</p>'}
     ${j.video ? `<a class="btnlink" href="${esc(j.video)}" download>Download video</a>` : ''}
     <button class="pcopy" data-id="${esc(j.id)}" data-what="title">Copy title</button>
     <button class="pcopy" data-id="${esc(j.id)}" data-what="description">Copy description</button>
@@ -393,14 +393,17 @@ function postHelper(j) {
     <button class="pcopy" data-id="${esc(j.id)}" data-what="pinned_comment">Copy pinned comment</button>
     <span class="sublinks" data-id="${esc(j.id)}"></span>
     ${j.format === 'long' ? `<a class="btnlink thlink" data-id="${esc(j.id)}" href="#" target="_blank" rel="noopener" hidden>Thumbnail</a>` : ''}
-    ${j.status === 'post_yourself' ? `<button class="pdone primary" data-id="${esc(j.id)}">I posted it</button>` : ''}
+    ${typeof growHelper === 'function' ? growHelper(j) : ''}
+    ${j.status === 'post_yourself' ? `<label class="plabel" for="plink-${esc(j.id)}">After posting: in the YouTube app tap <b>Share</b> &gt; <b>Copy link</b> and paste it here (lets the app add subtitles, translations, playlist and thumbnail by itself)</label>
+      <input class="plink" id="plink-${esc(j.id)}" placeholder="https://youtu.be/..." autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="pdone primary" data-id="${esc(j.id)}">I posted it</button>` : ''}
   </div>`;
 }
 const pkgCache = {};
 async function copyPkg(id, what) {
   if (!pkgCache[id]) { const f = await gh.getFile(`packages/${id}.json`); if (!f) throw new Error('details not found'); pkgCache[id] = f.data; }
   const p = pkgCache[id];
-  const text = what === 'tags' ? (p.tags || []).join(', ') : String(p[what] || '');
+  const text = typeof growText === 'function' && growText(id, p, what) !== null ? growText(id, p, what) : what === 'tags' ? (p.tags || []).join(', ') : String(p[what] || '');
   await navigator.clipboard.writeText(text);
 }
 $('qFilters').addEventListener('click', (e) => { const b = e.target.closest('button[data-f]'); if (b) { store.set('qFilter', b.dataset.f); loadQueue(); } });
@@ -417,8 +420,12 @@ $('queueList').addEventListener('click', async (e) => {
     e.stopPropagation(); pd.disabled = true;
     try {
       const f = await gh.getFile(`jobs/${pd.dataset.id}.json`);
-      await gh.putFile(`jobs/${pd.dataset.id}.json`, { ...f.data, status: 'posted', posted: new Date().toISOString() }, `Posted: ${f.data.topic.slice(0, 60)}`, f.sha);
-      toast('Marked as posted.'); loadQueue();
+      const box = document.getElementById('plink-' + pd.dataset.id), raw = box ? box.value.trim() : '';
+      const vid = ytIdFrom(raw);
+      if (raw && !vid) { toast('That does not look like a YouTube link. Copy it again from Share > Copy link, or leave the box empty.'); pd.disabled = false; return; }
+      const extra = vid ? { youtube_id: vid, youtube_url: `https://youtu.be/${vid}`, youtube_studio: `https://studio.youtube.com/video/${vid}/edit` } : {};
+      await gh.putFile(`jobs/${pd.dataset.id}.json`, { ...f.data, ...extra, status: 'posted', posted: new Date().toISOString() }, `Posted: ${f.data.topic.slice(0, 60)}`, f.sha);
+      toast(vid ? 'Marked as posted. Subtitles, translations and playlist get added in a few minutes.' : 'Marked as posted.'); loadQueue();
     } catch (err) { toast('Could not save: ' + err.message); pd.disabled = false; }
     return;
   }
@@ -503,6 +510,7 @@ $('backToQueue').addEventListener('click', () => showTab('queue'));
 // ---------- ideas ----------
 let ideaCache = [];
 async function loadIdeas() {
+  if (typeof paintWeekly === 'function') paintWeekly();
   const list = $('ideasList');
   if (mode() !== 'github') { list.innerHTML = '<div class="card empty">Connect your GitHub project in Settings to get ideas.</div>'; return; }
   list.innerHTML = '<div class="card empty">Loading ideas...</div>';
@@ -574,6 +582,7 @@ async function loadReview() {
     </div><span class="status ready">Review</span></div>`).join('')
     : '<div class="card empty">Nothing to review right now.</div>')
     + (waiting ? `<p class="hint">${waiting} more video${waiting > 1 ? 's are' : ' is'} being made. See the Queue tab.</p>` : '');
+  if (typeof paintComments === 'function') paintComments();
 }
 $('reviewList').addEventListener('click', (e) => {
   const card = e.target.closest('.job.tap'); if (!card) return;
@@ -603,6 +612,7 @@ async function openReview(id) {
     ${pkg.thumbnail ? `<div class="card"><h2>Thumbnail</h2>${(pkg.thumbnail_options || []).length > 1
       ? `<p class="hint">Tap the one you like best.</p><div class="thumbs">${pkg.thumbnail_options.map((u) => `<button type="button" class="thpick${u === pkg.thumbnail ? ' on' : ''}" data-u="${esc(u)}"><img src="${esc(u)}" alt="Thumbnail choice" loading="lazy"></button>`).join('')}</div>`
       : `<img class="thumb" src="${esc(pkg.thumbnail)}" alt="Thumbnail">`}</div>` : ''}
+    ${typeof hookCard === 'function' ? hookCard(script) : ''}
     ${scoreCard(script, true)}
     ${flagged.length ? `<div class="card"><h2>Facts to check</h2>${flagged.map((c) => `<div class="fact ${c.verdict === 'wrong' ? 'wrong' : ''}"><b>Scene ${esc(c.scene)}: ${c.verdict === 'wrong' ? 'Probably wrong' : 'Not certain'}</b>${esc(c.claim)}${c.note ? `<div class="meta">${esc(c.note)}</div>` : ''}</div>`).join('')}
       <p class="hint">If something is wrong, tap <b>Regenerate</b> and choose "Rewrite the script", telling it what to fix.</p></div>` : ''}
