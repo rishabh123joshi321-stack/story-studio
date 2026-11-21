@@ -106,6 +106,7 @@ async function loadHome(quiet) {
       ${st.n && !st.today ? '<div class="hnote">Plan a video today to keep your streak going.</div>' : ''}
       ${since}
     </div>
+    <div id="remindBanner">${$('remindBanner') ? $('remindBanner').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>Today's mission</h2><span class="meta">${nL + nS} of ${tL + tS} planned</span></div>
       <div class="rings">${ring(tL ? nL / tL : 1, `${nL}/${tL}`, 'Long videos')}${ring(tS ? nS / tS : 1, `${nS}/${tS}`, 'Shorts', 'var(--ok)')}</div>
       ${nL < tL || nS < tS ? `<div class="hacts"><button type="button" data-go="short" class="cchip">+ New Short</button><button type="button" data-go="long" class="cchip">+ New long video</button><button type="button" data-go="dice" class="cchip">Surprise me</button></div>` : '<p class="okline" style="margin:8px 0 0">Today is fully planned. Nice work!</p>'}
@@ -637,11 +638,18 @@ async function todoData() {
     const [st, cfg, dir] = await Promise.all([gh.getFile('blog/status.json'), gh.getFile('config/blog.json'), gh.call('/contents/blog').catch(() => [])]);
     info.blog = (st && st.data) || {}; info.amazonTag = ((cfg && cfg.data) || {}).amazon_tag || '';
     info.articles = (dir || []).filter((f) => /^\d.*\.json$/.test(f.name)).length;  // written or published
+    info.published = Number(info.blog.published || 0);
   } catch { /* shown as not known yet */ }
   todoInfo = info; return info;
 }
 function todoList(d) {
-  const pub = d.articles;
+  const pub = d.published || 0;
+  const ch = (homeStats && homeStats.channel) || {}, ypp = (homeStats && homeStats.ypp) || {};
+  const subs = ch.subscribers || 0, views = ch.views || 0, hours = Math.round(ypp.long_watch_hours_365 || 0), sv = ypp.shorts_views_90 || 0;
+  // Amazon: worth joining once people are actually seeing the links (3 sales are needed within 180 days of joining)
+  const amzReady = pub >= 10 || subs >= 100 || views >= 5000;
+  const amzJoined = store.get('amazonJoined', '');
+  const amzLeft = amzJoined ? daysTo(new Date(new Date(amzJoined + 'T12:00').getTime() + 180 * 864e5)) : null;
   return {
     now: [
       { k: 'checkup', t: 'Run the check-up once', d: 'Settings > Fix problems > <b>Run a check-up</b>, then tap <b>Fix everything</b> (the Run it now button below does the first part for you). This removes leftover files from the videos you deleted.', go: 'fix', btn: 'Run it now' },
@@ -652,9 +660,20 @@ function todoList(d) {
     ],
     later: [
       { k: 'audit', t: 'When Google\'s audit email arrives', d: 'Tap <b>Google approved it</b> on the Health card, then Settings > tap <b>Automatic upload</b> so it says ON. Until then, post each video yourself from the Queue.', go: 'health', btn: 'Go to Health card', auto: store.get('auditOk', false) && store.get('ytAuto', false) },
-      { k: 'adsense', t: `Apply for AdSense at 20 blog articles (${Math.min(pub, 20)} of 20 so far)`, d: 'Blogger app or blogger.com > menu > <b>Earnings</b> > <b>Sign up for AdSense</b>. Free, no card. Google takes a few weeks to check the blog.', ready: pub >= 20 },
-      { k: 'amazon', t: 'Join Amazon Associates (optional)', d: 'Sign up free, then paste your tracking ID in Income > Blog and add your join date on the Health card. You need 3 sales within 180 days, so it is fine to wait until the blog has visitors.', go: 'blog', btn: 'Open Blog', auto: !!d.amazonTag && !!store.get('amazonJoined', '') },
-      { k: 'ypp', t: 'Apply for the YouTube Partner Program', d: 'When the Dashboard shows 1,000 subscribers and 4,000 watch hours (or 10 million Shorts views in 90 days): YouTube Studio > <b>Earn</b> > <b>Apply</b>.', go: 'stats', btn: 'Open Dashboard' },
+      { k: 'adsense', t: pub >= 20 ? 'Apply for AdSense now: your blog has 20 articles' : `Apply for AdSense at 20 blog articles (${pub} of 20 published)`,
+        d: 'On blogger.com tap the menu (three lines) > <b>Earnings</b> > <b>Sign up for AdSense</b>, pick your Google account, and follow the steps (country India, your name and address as on your ID). Free, never asks for a card. Google checks the blog, which can take 2 to 4 weeks. When the email says approved, tick this.',
+        ready: pub >= 20, remind: 'Your blog has 20 articles. Time to apply for AdSense (free).' },
+      amzJoined && amzLeft !== null && d.amazonTag
+        ? { k: 'amazon3', t: `Amazon: 3 sales needed by ${fmtDay(new Date(new Date(amzJoined + 'T12:00').getTime() + 180 * 864e5))} (${Math.max(0, amzLeft)} days left)`,
+          d: 'Check Amazon Associates > <b>Reports</b>. If you are short of 3 sales, add your best book links in Income > Affiliate links so they appear in video descriptions too. If the account closes, you can simply join again later.',
+          ready: amzLeft <= 30, remind: `Only ${Math.max(0, amzLeft)} days left to get 3 Amazon sales. Check your Amazon report.` }
+        : { k: 'amazon', t: amzReady ? 'Join Amazon Associates now: people are seeing your links' : 'Join Amazon Associates (the app tells you when)',
+          d: `Wait until the blog has 10 articles, or 100 subscribers, or 5,000 views${amzReady ? '. You are there now.' : ` (now ${pub} articles, ${fmtN(subs)} subscribers, ${fmtN(views)} views)`}, because you need 3 sales within 180 days of joining. Then on Chrome open <b>affiliate-program.amazon.com</b> > <b>Sign up</b>, add your blog and channel addresses as your websites, and copy your tracking ID (it ends in -20). Paste it in Income > Blog > <b>Save blog settings</b>, and add today's date on the Health card under Amazon Associates.`,
+          go: 'blog', btn: 'Open Blog', ready: amzReady, auto: !!d.amazonTag && !!amzJoined, remind: 'Your blog and channel now get enough visitors. Time to join Amazon Associates (free).' },
+      { k: 'ypp', t: subs >= 1000 && (hours >= 4000 || sv >= 10e6) ? 'Apply for the YouTube Partner Program now' : `YouTube Partner Program (${fmtN(subs)} of 1,000 subscribers, ${fmtN(hours)} of 4,000 watch hours)`,
+        d: 'Needs 1,000 subscribers and 4,000 watch hours in a year (or 10 million Shorts views in 90 days). Then in the YouTube Studio app: <b>Earn</b> > <b>Apply now</b>, accept the terms, and link AdSense (the same AdSense account as your blog).',
+        go: 'stats', btn: 'Open Dashboard', ready: subs >= 1000 && (hours >= 4000 || sv >= 10e6), remind: 'You qualify for the YouTube Partner Program. Apply in YouTube Studio > Earn.' },
+      { k: 'yppearly', t: 'YouTube fan funding (early access)', d: 'At 500 subscribers and 3,000 watch hours (or 3 million Shorts views), YouTube Studio > <b>Earn</b> lets you turn on Super Thanks and memberships.', ready: subs >= 500 && (hours >= 3000 || sv >= 3e6), remind: 'You qualify for YouTube fan funding (Super Thanks). Have a look in YouTube Studio > Earn.' },
     ],
     always: [
       'Make every posted video <b>Public</b>. The blog only posts an article once its video is Public.',
@@ -680,6 +699,11 @@ async function paintTodos() {
   const nowOpen = L.now.filter((i) => !isDone(i)), laterOpen = L.later.filter((i) => !isDone(i));
   const finished = [...L.now, ...L.later].filter(isDone);
   const urgent = nowOpen.length + laterOpen.filter((i) => i.ready).length;
+  const due = laterOpen.filter((i) => i.ready && i.remind);
+  const bn = $('remindBanner');
+  if (bn) bn.innerHTML = due.map((i) => `<div class="remind"><span class="rbell">🔔</span><div><b>Reminder</b><div>${esc(i.remind)}</div></div><button type="button" class="rgo rshow">Show me how</button></div>`).join('');
+  const seen = store.get('remindSeen', []), fresh = due.filter((i) => !seen.includes(i.k));
+  if (fresh.length) { store.set('remindSeen', [...seen, ...fresh.map((i) => i.k)]); toast('🔔 ' + fresh[0].remind); }
   el.innerHTML = `<div class="card routine todos"><div class="row"><h2>My to-dos</h2><span class="hsum ${urgent ? 'warn' : 'ok'}">${urgent ? `${urgent} to do now` : 'Nothing urgent'}</span></div>
     ${nowOpen.length ? `<h3 class="tdhead">Do now</h3>${nowOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
     ${laterOpen.length ? `<h3 class="tdhead">Later, when it happens</h3>${laterOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
@@ -687,6 +711,7 @@ async function paintTodos() {
     ${finished.length ? `<details class="rweek"><summary>Done (${finished.length})</summary>${finished.map((i) => todoRow(i, ticked)).join('')}</details>` : ''}</div>`;
 }
 $('homeView').addEventListener('click', (e) => {
+  if (e.target.closest('.rshow')) { $('todoCard').scrollIntoView({ behavior: 'smooth' }); return; }
   const t = e.target.closest('.tdtick'); if (!t) return;
   const ticked = store.get('todosDone', {});
   if (ticked[t.dataset.tk]) delete ticked[t.dataset.tk]; else ticked[t.dataset.tk] = new Date().toISOString();
