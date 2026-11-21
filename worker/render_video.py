@@ -486,6 +486,11 @@ def render(job, script, out_dir):
         raise WorkerError(f"Only {len(place_pic)} of {wanted} backgrounds could be drawn (the free picture service may be "
                           "busy). It will try again within the hour.", transient=True)
     place_ids = list(places)
+    if not vertical:
+        try:  # a few of the best pictures are kept for the blog article (never fatal)
+            save_blog_stills(scenes, places, place_pic, out_dir)
+        except Exception as e:
+            log(f"Blog pictures skipped: {e!r}")
 
     def nearest_place(pid):
         if pid in place_pic:
@@ -595,7 +600,40 @@ def render(job, script, out_dir):
     return out, total, [round(x, 2) for x in starts]
 
 
-def publish(job, video):
+def save_blog_stills(scenes, places, place_pic, out_dir, most=8):
+    """Keep up to 8 pictures for the blog: the first new picture of each chapter, then fill in evenly.
+    Saved as blog-01.jpg... plus blog-stills.json (which chapter each belongs to, and what it shows)."""
+    from PIL import Image
+
+    used = []  # (chapter, place id) in order of first use
+    for sc in scenes:
+        for sh in sc.get("shots", []):
+            pid = sh.get("place")
+            if pid in place_pic and pid not in [u[1] for u in used]:
+                used.append((int(sc.get("chapter", 0) or 0), pid))
+    if not used:
+        return []
+    picks = []
+    for ch in sorted({c for c, _ in used}):
+        picks.append(next(u for u in used if u[0] == ch))
+    rest = [u for u in used if u not in picks]
+    while len(picks) < most and rest:
+        picks.append(rest.pop(len(rest) // 2))
+    picks = sorted(picks[:most], key=used.index)
+    info = []
+    for n, (ch, pid) in enumerate(picks, start=1):
+        im = Image.open(place_pic[pid]).convert("RGB")
+        if im.width > 1200:
+            im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+        name = f"blog-{n:02d}.jpg"
+        im.save(out_dir / name, "JPEG", quality=82, optimize=True, progressive=True)
+        info.append({"file": name, "chapter": ch, "shows": str(places.get(pid, {}).get("look", ""))[:400]})
+    (out_dir / "blog-stills.json").write_text(json.dumps(info, indent=1), encoding="utf-8")
+    log(f"  kept {len(info)} pictures for the blog")
+    return info
+
+
+def publish(job, video, extras=()):
     """Upload to a GitHub release (free storage, up to 2 GB per file)."""
     repo = os.environ.get("GITHUB_REPOSITORY")
     if not repo:
@@ -603,7 +641,7 @@ def publish(job, video):
         return str(video)
     tag = f"video-{job['id']}"
     subprocess.run(["gh", "release", "delete", tag, "--yes", "--cleanup-tag"], capture_output=True)
-    run(["gh", "release", "create", tag, str(video), "--title", f"Video: {job['topic'][:80]}",
+    run(["gh", "release", "create", tag, str(video), *[str(x) for x in extras], "--title", f"Video: {job['topic'][:80]}",
          "--notes", "Made by Story Studio. Not uploaded to YouTube until approved in the app.",
          "--prerelease", "--latest=false"])
     return f"https://github.com/{repo}/releases/download/{tag}/video.mp4"
@@ -637,7 +675,7 @@ def process(path):
     started = time.time()
     try:
         video, secs, starts = render(job, script, out_dir)
-        url = publish(job, video)
+        url = publish(job, video, sorted(out_dir.glob("blog-*")))
         job.update(status="video_ready", video=url, video_seconds=round(secs, 1), scene_starts=starts,
                    render_minutes=round((time.time() - started) / 60, 1))
         job.pop("render_attempts", None)

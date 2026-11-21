@@ -93,7 +93,7 @@ function showTab(name) {
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
   if (name === 'create') { loadSeries(); updatePreview(); }
-  if (name === 'money') { loadMoney(); loadGoals(); }
+  if (name === 'money') { loadMoney(); loadGoals(); loadBlog(); }
   if (name === 'settings') loadPron();
 }
 function chapterAt(s, i) {
@@ -877,6 +877,48 @@ $('kitCopy').addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(new URL('kit.html', location.href).href); toast('Media kit link copied.'); } catch { toast('Could not copy.'); }
 });
 
+// ---------- blog ----------
+const blog = { cfg: { enabled: true, per_day: 1, amazon_tag: '', amazon_store: 'amazon.com' }, sha: null };
+function paintBlogToggle() { $('blogToggle').textContent = blog.cfg.enabled !== false ? 'Automatic blog: ON (tap to turn off)' : 'Automatic blog: OFF (tap to turn on)'; }
+async function saveBlog(note) {
+  const r = await gh.putFile('config/blog.json', blog.cfg, 'Update blog settings', blog.sha);
+  blog.sha = r.content.sha; toast(note);
+}
+async function loadBlog() {
+  if (mode() !== 'github') { $('blogList').innerHTML = '<p class="hint">Connect your GitHub project in Settings first.</p>'; return; }
+  try {
+    const c = await gh.getFile('config/blog.json'); blog.cfg = { ...blog.cfg, ...((c && c.data) || {}) }; blog.sha = c && c.sha;
+    $('blogTag').value = blog.cfg.amazon_tag || ''; $('blogStore').value = blog.cfg.amazon_store || 'amazon.com'; $('blogPerDay').value = String(blog.cfg.per_day || 1);
+    paintBlogToggle();
+    const st = (await gh.getFile('blog/status.json') || {}).data || {};
+    const s = $('blogStatus');
+    if (st.connected) { s.className = 'msg ok'; s.innerHTML = `Connected to <a href="${esc(st.blog_url)}" target="_blank" rel="noopener">${esc(st.blog_name || st.blog_url)}</a>.${st.message ? ' ' + esc(st.message) : ''}`; }
+    else { s.className = 'msg bad'; s.textContent = (st.message || 'Not set up yet.') + ' Open "Set up the blog" below.'; $('blogSetup').open = true; }
+    let files = [];
+    try { files = (await gh.call('/contents/blog')).filter((f) => /^\d.*\.json$/.test(f.name)).sort((a, b) => b.name.localeCompare(a.name)).slice(0, 15); } catch (e) { if (e.status !== 404) throw e; }
+    const items = (await Promise.all(files.map((f) => gh.call(`/contents/blog/${encodeURIComponent(f.name)}`, { accept: 'application/vnd.github.raw+json' }).then(JSON.parse).catch(() => null)))).filter(Boolean);
+    $('blogList').innerHTML = items.length ? items.map((a) => {
+      const title = (a.article && a.article.title) || a.topic;
+      const line = a.status === 'published' ? `<span class="okline">Published</span> · <a href="${esc(a.url)}" target="_blank" rel="noopener">Open article</a>${a.youtube_id ? '' : ' (no video player: the video was not Public)'}`
+        : a.status === 'written' ? `Written (${a.article ? a.article.word_count : '?'} words). ${a.error ? esc(a.error) : 'Posts when the video is Public on YouTube.'}`
+        : `Skipped: ${esc(a.error || 'could not be written')}`;
+      return `<div class="affrow"><div><b>${esc(title)}</b><div class="meta">${line}</div></div></div>`;
+    }).join('') : '<p class="hint">No articles yet. The first one is written after your next long video is made.</p>';
+  } catch (err) { $('blogList').innerHTML = `<p class="msg bad">Could not load: ${esc(err.message)}</p>`; }
+}
+$('blogToggle').addEventListener('click', async () => {
+  blog.cfg.enabled = blog.cfg.enabled === false; paintBlogToggle();
+  try { await saveBlog(blog.cfg.enabled ? 'Automatic blog is on.' : 'Automatic blog is off. Nothing new will be posted.'); }
+  catch (err) { blog.cfg.enabled = !blog.cfg.enabled; paintBlogToggle(); toast('Could not save: ' + err.message); }
+});
+$('blogSave').addEventListener('click', async () => {
+  const msg = $('blogMsg'); const tag = $('blogTag').value.trim();
+  if (tag && !/^[A-Za-z0-9._-]+-\d{2}$/.test(tag)) { msg.className = 'msg bad'; msg.textContent = 'A tracking ID looks like yourname-21 (letters, then a dash and two numbers).'; return; }
+  blog.cfg = { ...blog.cfg, amazon_tag: tag, amazon_store: $('blogStore').value, per_day: Number($('blogPerDay').value) || 1 };
+  try { await saveBlog('Blog settings saved.'); msg.className = 'msg ok'; msg.textContent = 'Saved. New articles will use these settings.'; }
+  catch (err) { msg.className = 'msg bad'; msg.textContent = err.status === 409 ? 'Changed elsewhere. Open the Income tab again.' : 'Could not save: ' + err.message; }
+});
+
 // ---------- settings ----------
 $('saveConn').addEventListener('click', async () => {
   const msg = $('connMsg'); msg.className = 'msg'; msg.textContent = 'Testing...';
@@ -972,7 +1014,7 @@ $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken'
 // ---------- YouTube sign-in ----------
 // Google sends you back to this page with a one-time code. The app swaps it for a long-lasting
 // "refresh token", which you save as a GitHub secret so the cloud can upload for you.
-const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/youtube.force-ssl';
+const YT_SCOPES = 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/blogger';
 function ytRedirect() { return location.origin + location.pathname.replace(/index\.html$/, ''); }
 function ytOut(html, cls) { const m = $('ytMsg'); m.className = 'msg ' + (cls || ''); m.innerHTML = html; }
 $('ytRedirect').textContent = ytRedirect();
@@ -1004,11 +1046,14 @@ async function ytFinish() {
     if (!res.ok) throw new Error(data.error_description || data.error || res.status);
     if (!data.refresh_token) throw new Error('Google did not send a refresh token. Tap Sign in with Google again.');
     if (!String(data.scope || '').includes('youtube.upload')) throw new Error('The box allowing uploads was not ticked. Sign in again and tick every box.');
+    const noBlog = !String(data.scope || '').includes('blogger');
     ytOut(`<b>Signed in.</b> Now add three secrets in GitHub (Settings &gt; Secrets and variables &gt; Actions &gt; New repository secret):
       <span class="ytrow"><b>YT_CLIENT_ID</b><button data-copy="id">Copy</button></span>
       <span class="ytrow"><b>YT_CLIENT_SECRET</b><button data-copy="secret">Copy</button></span>
       <span class="ytrow"><b>YT_REFRESH_TOKEN</b><button data-copy="refresh">Copy</button></span>
-      Tap Copy, then paste it into the Secret box of the secret with that name. Never paste these in chat.`, 'ok');
+      Tap Copy, then paste it into the Secret box of the secret with that name. Never paste these in chat.
+      If the first two secrets are already there, only YT_REFRESH_TOKEN needs updating (open it, tap the pencil, paste, Update secret).
+      ${noBlog ? '<br><b>Note:</b> the Blogger box was not ticked, so the blog cannot post. Sign in again and tick every box.' : ''}`, 'ok');
     ytFinish.vals = { id: store.get('ytClientId', ''), secret: store.get('ytSecret', ''), refresh: data.refresh_token };
   } catch (err) { ytOut('Sign-in did not finish: ' + esc(err.message), 'bad'); }
   return true;
