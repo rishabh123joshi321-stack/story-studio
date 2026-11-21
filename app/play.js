@@ -116,6 +116,7 @@ async function loadHome(quiet) {
       <button type="button" class="ntile" data-go="work"><b>${making}</b><span>being made</span></button>
       <button type="button" class="ntile${problems ? ' bad' : ''}" data-go="failed"><b>${problems}</b><span>need${problems === 1 ? 's' : ''} attention</span></button>
     </div>
+    <div id="todoCard">${$('todoCard') ? $('todoCard').innerHTML : ''}</div>
     ${routineHTML()}
     <div id="healthCard">${$('healthCard') ? $('healthCard').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>This week</h2><span class="meta"><i class="dotL"></i> long <i class="dotS"></i> Short</span></div>
@@ -127,6 +128,7 @@ async function loadHome(quiet) {
       <button type="button" data-go="ideas">Browse ideas</button><button type="button" data-go="stats">Dashboard</button><button type="button" data-go="money">Income</button>
     </div>`;
   paintHealth(jobs);
+  paintTodos();
 }
 $('homeView').addEventListener('click', (e) => {
   const b = e.target.closest('[data-go],[data-day]'); if (!b) return;
@@ -137,6 +139,10 @@ $('homeView').addEventListener('click', (e) => {
   else if (g === 'week') { showTab('create'); $('modeSeg').querySelector('[data-v="week"]').click(); }
   else if (g === 'fix') { showTab('settings'); window.scrollTo(0, 0); runCheckup(); }
   else if (g === 'review') showTab('review');
+  else if (g === 'targets') { showTab('settings'); setTimeout(() => $('tLong').scrollIntoView({ block: 'center' }), 50); }
+  else if (g === 'yt') { showTab('settings'); setTimeout(() => $('ytCard').scrollIntoView(), 50); }
+  else if (g === 'blog') { showTab('money'); setTimeout(() => $('blogCard').scrollIntoView(), 300); }
+  else if (g === 'health') $('healthCard').scrollIntoView();
   else if (['post', 'work', 'failed'].includes(g)) { store.set('qFilter', g === 'post' ? 'ready' : g); store.set('qView', 'list'); showTab('queue'); }
   else showTab(g);
 });
@@ -592,7 +598,7 @@ function routineHTML() {
     <details class="rweek"${sunday ? ' open' : ''}><summary>Once a week${sunday ? ' (today is a good day)' : ''} · ${(st.weekly || []).length} of ${ROUTINE.weekly.length} done</summary>${ROUTINE.weekly.map(item('weekly')).join('')}</details></div>`;
 }
 $('homeView').addEventListener('click', (e) => {
-  const t = e.target.closest('.rtick'); if (!t) return;
+  const t = e.target.closest('.rtick[data-rk]'); if (!t) return;
   const [kind, k] = t.dataset.rk.split(':'); const st = routineState();
   st[kind] = (st[kind] || []).includes(k) ? st[kind].filter((x) => x !== k) : [...(st[kind] || []), k];
   store.set('routine', st);
@@ -620,3 +626,70 @@ async function deleteVideo(id) {
   catch (e) { if (e.status !== 403) throw e; toast('Deleted. The big video file stays on GitHub (your key cannot remove it).'); }
   if (gh._jc) ids.forEach((x) => delete gh._jc[x + '.json']);
 }
+
+// ---------- HOME: my to-dos (one-time jobs, future jobs, and things to always keep in mind) ----------
+// Items tick themselves when the app can see they are done; the rest you tick by hand.
+let todoInfo = { at: 0, blog: {}, articles: 0, amazonTag: '' };
+async function todoData() {
+  if (Date.now() - todoInfo.at < 10 * 60000 || mode() !== 'github') return todoInfo;
+  const info = { at: Date.now(), blog: {}, articles: 0, amazonTag: '' };
+  try {
+    const [st, cfg, dir] = await Promise.all([gh.getFile('blog/status.json'), gh.getFile('config/blog.json'), gh.call('/contents/blog').catch(() => [])]);
+    info.blog = (st && st.data) || {}; info.amazonTag = ((cfg && cfg.data) || {}).amazon_tag || '';
+    info.articles = (dir || []).filter((f) => /^\d.*\.json$/.test(f.name)).length;  // written or published
+  } catch { /* shown as not known yet */ }
+  todoInfo = info; return info;
+}
+function todoList(d) {
+  const pub = d.articles;
+  return {
+    now: [
+      { k: 'checkup', t: 'Run the check-up once', d: 'Settings > Fix problems > <b>Run a check-up</b>, then tap <b>Fix everything</b> (the Run it now button below does the first part for you). This removes leftover files from the videos you deleted.', go: 'fix', btn: 'Run it now' },
+      { k: 'pat', t: 'Add your GitHub key\'s expiry date', d: 'On the Health card, tap <b>Add expiry date</b>. The app then warns you 10 days before the key stops working.', go: 'health', btn: 'Go to Health card', auto: !!store.get('patExpiry', '') },
+      { k: 'target', t: 'Set your daily target', d: 'Settings > <b>Long videos per day</b>: 1, <b>Shorts per day</b>: 3, then tap <b>Save targets</b>. That fits the free pictures each day.', go: 'targets', btn: 'Open targets', auto: !!store.get('targetsSaved', false) },
+      { k: 'greatfire', t: 'Delete the old Great Fire Short on YouTube', d: 'YouTube Studio app > <b>Content</b> > <b>Shorts</b> > tap the three dots next to the private Great Fire Short > <b>Delete forever</b>.' },
+      { k: 'blog', t: 'Connect the blog', d: 'Done when the Blog box in Income says Connected.', go: 'blog', btn: 'Open Blog', auto: !!d.blog.connected },
+    ],
+    later: [
+      { k: 'audit', t: 'When Google\'s audit email arrives', d: 'Tap <b>Google approved it</b> on the Health card, then Settings > tap <b>Automatic upload</b> so it says ON. Until then, post each video yourself from the Queue.', go: 'health', btn: 'Go to Health card', auto: store.get('auditOk', false) && store.get('ytAuto', false) },
+      { k: 'adsense', t: `Apply for AdSense at 20 blog articles (${Math.min(pub, 20)} of 20 so far)`, d: 'Blogger app or blogger.com > menu > <b>Earnings</b> > <b>Sign up for AdSense</b>. Free, no card. Google takes a few weeks to check the blog.', ready: pub >= 20 },
+      { k: 'amazon', t: 'Join Amazon Associates (optional)', d: 'Sign up free, then paste your tracking ID in Income > Blog and add your join date on the Health card. You need 3 sales within 180 days, so it is fine to wait until the blog has visitors.', go: 'blog', btn: 'Open Blog', auto: !!d.amazonTag && !!store.get('amazonJoined', '') },
+      { k: 'ypp', t: 'Apply for the YouTube Partner Program', d: 'When the Dashboard shows 1,000 subscribers and 4,000 watch hours (or 10 million Shorts views in 90 days): YouTube Studio > <b>Earn</b> > <b>Apply</b>.', go: 'stats', btn: 'Open Dashboard' },
+    ],
+    always: [
+      'Make every posted video <b>Public</b>. The blog only posts an article once its video is Public.',
+      'Renew the GitHub key before it expires. The Health card turns orange 10 days before.',
+      'If the Health card says the YouTube sign-in stopped, or the Blog box is not connected: Settings > Connect YouTube > <b>Sign in with Google</b>, tick every box, then update <b>YT_REFRESH_TOKEN</b> on GitHub.',
+      'Answer Google\'s emails about your YouTube API project (for example the yearly check) before their deadline. Forward them to Claude if unsure.',
+      'Never add a card or payment details anywhere. If a site asks, stop and tell Claude.',
+      'When a video has a paid sponsor, tick <b>Includes paid promotion</b> for it in YouTube Studio.',
+    ],
+  };
+}
+function todoRow(i, ticked) {
+  const done = i.auto || !!ticked[i.k];
+  const tick = i.auto !== undefined && i.auto ? `<span class="rtick" aria-label="Done">✓</span>` : `<button type="button" class="rtick tdtick" data-tk="${i.k}" aria-label="${done ? 'Mark not done' : 'Mark done'}">${done ? '✓' : ''}</button>`;
+  return `<div class="rtask${done ? ' done' : ''}${i.ready && !done ? ' tdready' : ''}">${tick}<div class="rbody"><b>${i.t}</b>${i.auto ? ' <span class="rmin">done automatically</span>' : i.ready && !done ? ' <span class="rmin tdnow">do it now</span>' : ''}
+    ${done ? '' : `<div class="meta">${i.d}</div>${i.go ? `<button type="button" class="rgo" data-go="${i.go}">${i.btn || 'Open'}</button>` : ''}`}</div></div>`;
+}
+async function paintTodos() {
+  const el = $('todoCard'); if (!el) return;
+  if (mode() !== 'github') { el.innerHTML = ''; return; }
+  const d = await todoData(), L = todoList(d), ticked = store.get('todosDone', {});
+  const isDone = (i) => i.auto || !!ticked[i.k];
+  const nowOpen = L.now.filter((i) => !isDone(i)), laterOpen = L.later.filter((i) => !isDone(i));
+  const finished = [...L.now, ...L.later].filter(isDone);
+  const urgent = nowOpen.length + laterOpen.filter((i) => i.ready).length;
+  el.innerHTML = `<div class="card routine todos"><div class="row"><h2>My to-dos</h2><span class="hsum ${urgent ? 'warn' : 'ok'}">${urgent ? `${urgent} to do now` : 'Nothing urgent'}</span></div>
+    ${nowOpen.length ? `<h3 class="tdhead">Do now</h3>${nowOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
+    ${laterOpen.length ? `<h3 class="tdhead">Later, when it happens</h3>${laterOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
+    <details class="rweek"><summary>Always keep in mind (${L.always.length})</summary><ul class="tdalways">${L.always.map((x) => `<li>${x}</li>`).join('')}</ul></details>
+    ${finished.length ? `<details class="rweek"><summary>Done (${finished.length})</summary>${finished.map((i) => todoRow(i, ticked)).join('')}</details>` : ''}</div>`;
+}
+$('homeView').addEventListener('click', (e) => {
+  const t = e.target.closest('.tdtick'); if (!t) return;
+  const ticked = store.get('todosDone', {});
+  if (ticked[t.dataset.tk]) delete ticked[t.dataset.tk]; else ticked[t.dataset.tk] = new Date().toISOString();
+  store.set('todosDone', ticked); paintTodos();
+  if (ticked[t.dataset.tk]) toast('Ticked off. Nice!');
+});

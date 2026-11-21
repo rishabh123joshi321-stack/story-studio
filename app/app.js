@@ -1007,7 +1007,7 @@ $('fontList').addEventListener('change', (e) => {
   store.set('captionFont', e.target.value); paintFonts(); toast('Caption font saved. New videos will use it.');
 });
 paintFonts();
-$('saveTargets').addEventListener('click', () => { store.set('tLong', Number($('tLong').value) || 0); store.set('tShort', Number($('tShort').value) || 0); toast('Targets saved'); });
+$('saveTargets').addEventListener('click', () => { store.set('tLong', Number($('tLong').value) || 0); store.set('tShort', Number($('tShort').value) || 0); store.set('targetsSaved', true); toast('Targets saved'); });
 $('demoBtn').addEventListener('click', () => { const on = !demo.on(); store.set('demo', on); $('demoBtn').textContent = on ? 'Turn off demo mode' : 'Turn on demo mode'; paintConn(); toast(on ? 'Demo mode on' : 'Demo mode off'); });
 $('forgetBtn').addEventListener('click', () => { store.del('token'); $('ghToken').placeholder = 'github_pat_...'; paintConn(); toast('Access key removed from this tablet'); });
 
