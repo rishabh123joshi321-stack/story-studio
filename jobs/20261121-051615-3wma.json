@@ -1,7 +1,7 @@
 {
   "id": "20261121-051615-3wma",
   "created": "2026-11-20T23:46:15.669Z",
-  "status": "video_ready",
+  "status": "failed",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -18,7 +18,7 @@
   ],
   "intro": true,
   "quote_voice": true,
-  "updated": "2026-11-21T00:19:40+00:00",
+  "updated": "2026-11-21T00:33:16+00:00",
   "flags": 0,
   "intro_seconds": 3.0,
   "video": "https://github.com/rishabh123joshi321-stack/story-studio/releases/download/video-20261121-051615-3wma/video.mp4",
@@ -75,6 +75,7 @@
     670.15
   ],
   "render_minutes": 21.0,
-  "package_attempts": 2,
-  "error": "Today's free pictures are used up. The video continues automatically after 5:30 AM India time."
+  "package_attempts": 3,
+  "error": "Today's free pictures are used up. The video continues automatically after 5:30 AM India time. Tap Try again in the Queue.",
+  "failed_step": "package"
 }
