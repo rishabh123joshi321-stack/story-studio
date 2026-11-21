@@ -686,7 +686,7 @@ def process(path):
             job["render_attempts"] = job.get("render_attempts", 0) + 1
         transient = getattr(e, "transient", not isinstance(e, WorkerError))
         msg = str(e) if isinstance(e, WorkerError) else f"Something went wrong making the video ({type(e).__name__})."
-        if transient and job["render_attempts"] < 3:
+        if transient and job.get("render_attempts", 0) < 3:
             job["status"] = "script_ready"
             job["error"] = msg
         else:
