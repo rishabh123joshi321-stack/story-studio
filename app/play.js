@@ -520,6 +520,12 @@ async function runCheckup() {
     else fixes.push({ t: `Video file missing: ${j.title || j.topic}`, d: 'The video file is gone. Make the video again from the same script (uses free pictures).', run: () => editJob(j.id, { status: 'script_ready', revision: (j.revision || 0) + 1 }, `Repair: remake video ${j.topic.slice(0, 50)}`) });
   }
   if (withVideo.length) ok.push(`Checked ${withVideo.length} video files`);
+  try {  // video files left behind by videos deleted earlier
+    const names = new Set((gh.names || []).map((n) => n.replace(/\.json$/, '')));
+    const rels = await gh.call('/releases?per_page=100');
+    const left = rels.filter((r) => /^(video|work)-/.test(r.tag_name) && !names.has(r.tag_name.replace(/^(video|work)-/, '').replace(/-r\d+$/, '')));
+    if (left.length) fixes.push({ t: `${left.length} leftover video file${left.length > 1 ? 's' : ''}`, d: 'From videos you deleted. Remove them to keep your project tidy.', run: () => deleteReleases((t) => left.some((r) => r.tag_name === t)) });
+  } catch { /* skip */ }
   jobs.filter((j) => j.error && ['video_ready', 'ready', 'post_yourself', 'posted', 'uploaded'].includes(j.status)).forEach((j) => fixes.push({ t: `Old warning on: ${j.title || j.topic}`, d: `"${esc(j.error)}" is out of date. Clear it.`, run: () => editJob(j.id, {}, `Clear old warning: ${j.topic.slice(0, 50)}`) }));
   const waiting = jobs.filter((j) => ['requested', 'script_ready', 'video_ready'].includes(j.status) && ago(j) > 6 && !(j.plan_date && j.plan_date > isoDay(new Date())));
   if (waiting.length) fixes.push({ t: `${waiting.length} video${waiting.length > 1 ? 's' : ''} waiting a long time`, d: 'Wake up the cloud workers now instead of waiting for their hourly run. (If free pictures ran out, they continue after 5:30 AM.)', run: () => nudge() });
@@ -594,3 +600,23 @@ $('homeView').addEventListener('click', (e) => {
   card.outerHTML = routineHTML(); if (open) document.querySelector('.routine details').open = true;
   if (kind === 'daily' && st.daily.length === ROUTINE.daily.length) { confetti(); toast('Daily routine done. See you tomorrow!'); }
 });
+
+// ---------- delete a video for good (files in the project + its video files) ----------
+async function deleteFile(path, message) {
+  let f; try { f = await gh.call(`/contents/${path}`); } catch (e) { if (e.status === 404) return; throw e; }
+  await gh.call(`/contents/${path}`, { method: 'DELETE', body: JSON.stringify({ message, sha: f.sha }) });
+}
+async function deleteReleases(match) {
+  const rels = await gh.call('/releases?per_page=100');
+  for (const r of rels.filter((x) => match(x.tag_name))) {
+    await gh.call(`/releases/${r.id}`, { method: 'DELETE' });
+    try { await gh.call(`/git/refs/tags/${encodeURIComponent(r.tag_name)}`, { method: 'DELETE' }); } catch { /* tag already gone */ }
+  }
+}
+async function deleteVideo(id) {
+  const ids = [id, ...queueJobs.filter((j) => j.parent_id === id).map((j) => j.id)];  // its cut-down Shorts too
+  for (const x of ids) for (const dir of ['jobs', 'scripts', 'packages']) await deleteFile(`${dir}/${x}.json`, `Delete video ${x}`);
+  try { await deleteReleases((t) => ids.some((x) => t === `video-${x}` || t.startsWith(`work-${x}-`))); }
+  catch (e) { if (e.status !== 403) throw e; toast('Deleted. The big video file stays on GitHub (your key cannot remove it).'); }
+  if (gh._jc) ids.forEach((x) => delete gh._jc[x + '.json']);
+}
