@@ -18,7 +18,7 @@
   ],
   "intro": true,
   "quote_voice": true,
-  "updated": "2026-11-21T05:10:52+00:00",
+  "updated": "2026-11-21T05:24:03+00:00",
   "flags": 0,
   "intro_seconds": 3,
   "video": "https://github.com/rishabh123joshi321-stack/story-studio/releases/download/video-20261121-051615-3wma/video.mp4",
@@ -75,6 +75,6 @@
     670.15
   ],
   "render_minutes": 21,
-  "package_attempts": 1,
+  "package_attempts": 2,
   "error": "Today's free pictures are used up. The video continues automatically after 5:30 AM India time."
 }
