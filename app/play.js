@@ -6,7 +6,7 @@
 const PICS_PER_DAY = 170;  // free Cloudflare picture allowance
 function picsFor(j) {  // about one picture per scene (see make_scripts.py)
   if (j.parent_id) return 0;  // clips reuse the long video
-  return j.format === 'long' ? Math.round((Number(j.length) || 40) * 150 / 37) + 3 : Math.max(3, Math.round((Number(j.length) || 45) * 2.5 / 12));
+  return j.format === 'long' ? Math.round((Number(j.length) || 40) * 150 / ({ often: 16, medium: 25, calm: 37 }[j.pic_pace || (j.created && j.created < '2026-11-21T05:40' ? 'calm' : store.get('picPace', 'often'))] || 16)) + 3 : Math.max(3, Math.round((Number(j.length) || 45) * 2.5 / 12));
 }
 const dayOf = (j) => j.plan_date || (/^\d{8}/.test(j.id || '') ? `${j.id.slice(0, 4)}-${j.id.slice(4, 6)}-${j.id.slice(6, 8)}` : isoDay(new Date(j.created)));
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
@@ -194,7 +194,7 @@ async function paintBudget() {
   if (mode() === 'github' && Date.now() - budgetAt > 120000) { budgetAt = Date.now(); try { budgetJobs = await gh.listJobs(); } catch { /* keep old */ } }
   const jobs = mode() === 'github' ? (budgetJobs || []) : demo.list();
   const waiting = jobs.filter((j) => ['requested', 'scripting', 'script_ready', 'rendering'].includes(j.status)).reduce((n, j) => n + picsFor(j), 0);
-  const mine = picsFor({ format, length: $('length').value });
+  const mine = picsFor({ format, length: $('length').value, pic_pace: store.get('picPace', 'often') });
   const days = Math.max(1, Math.ceil((waiting + mine) / PICS_PER_DAY));
   const pctW = Math.min(100, (waiting / PICS_PER_DAY) * 100), pctM = Math.min(100 - pctW, (mine / PICS_PER_DAY) * 100);
   el.innerHTML = `<div class="mrow"><span>Free pictures</span><b>${fmtN(waiting + mine)} needed · ${PICS_PER_DAY} a day</b></div>

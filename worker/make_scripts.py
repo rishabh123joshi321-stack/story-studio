@@ -342,6 +342,12 @@ def tidy(plan, scenes, short):
     return clean, cast_out, [places[p] for p in place_ids if p in used_places], guide and "guide" in used
 
 
+# How often the picture changes in long videos: words of narration per picture (about 2.5 words a second).
+PIC_PACE = {
+    "often": (16, "one sentence of 12 to 18 words, about 6 seconds; the next scene continues the story with a NEW picture"),
+    "medium": (25, "one or two sentences, about 10 seconds"),
+    "calm": (37, "two or three sentences, about 15 seconds"),
+}
 SFX_TAGS = ("fire", "crowd", "sea", "wind", "rain", "battle", "bells", "thunder", "birds", "none")
 STILLS_RULES = """Each scene is narration plus ONE detailed picture that shows exactly what that narration describes.
 Scene fields:
@@ -371,9 +377,9 @@ def write_chapter_stills(job, plan, sources, index, words, previous):
     total = len(plan["chapters"])
     ch = plan["chapters"][index]
     first, last = index == 0, index == total - 1
-    rules = STILLS_RULES.replace("SCENE_LENGTH", "one short sentence of 10 to 14 words, about 5 seconds" if short
-                                 else "two or three sentences, about 15 seconds")
-    n_scenes = max(3, round(words / (12 if short else 37)))
+    pace = PIC_PACE.get(job.get("pic_pace") or "often", PIC_PACE["often"])
+    rules = STILLS_RULES.replace("SCENE_LENGTH", "one short sentence of 10 to 14 words, about 5 seconds" if short else pace[1])
+    n_scenes = max(3, round(words / (12 if short else pace[0])))
     cast = "\n".join(f"- {str(c.get('id', '')).replace('_', ' ')}: {c.get('look')}" for c in plan.get("cast", [])) or "(none)"
     prompt = f"""Write {'the script' if short else f'chapter {index + 1} of {total}'} of a {'YouTube Short' if short else 'long YouTube video'} about "{job['topic']}".
 {'' if short else f'Chapter title: {ch.get("title")}' + chr(10)}What it covers: {ch.get('covers')}

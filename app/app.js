@@ -153,7 +153,7 @@ $('jobForm').addEventListener('submit', async (e) => {
     format, length: Number($('length').value), lengthUnit: format === 'short' ? 'seconds' : 'minutes',
     topic: $('topic').value.trim(), theme: $('theme').value.trim(), tone: $('tone').value,
     audience: $('audience').value, voice: $('voice').value, notes: $('notes').value.trim(),
-    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true),
+    captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true), pic_pace: store.get('picPace', 'often'),
   };
   if (!job.topic) { msg.className = 'msg bad'; msg.textContent = 'Please type a topic.'; return; }
   if (format === 'short' && kind === 'quiz') job.kind = 'quiz';
@@ -288,7 +288,7 @@ $('wkSave').addEventListener('click', async () => {
       const job = { id: newId(), created: new Date().toISOString(), status: 'requested', plan_date: inp.dataset.day,
         format: fmt, length: fmt === 'long' ? Number(wkLen) : 58, lengthUnit: fmt === 'short' ? 'seconds' : 'minutes',
         topic: inp.value.trim(), theme: inp.dataset.angle || '', tone: $('tone').value, audience: $('audience').value, voice: $('voice').value,
-        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true) };
+        notes: '', captionFont: store.get('captionFont', 'Anton'), subtitle_langs: store.get('subLangs', ['hi', 'es']), intro: store.get('intro', true), quote_voice: store.get('quoteVoice', true), pic_pace: store.get('picPace', 'often') };
       if (mode() === 'github') await gh.saveJob(job); else demo.save(job);
       n++; await new Promise((r) => setTimeout(r, 1100));
     }
@@ -904,6 +904,14 @@ paintIntro();
 function paintQV() { $('qvBtn').textContent = store.get('quoteVoice', true) ? 'Second voice for quotes: ON (tap to turn off)' : 'Second voice for quotes: OFF (tap to turn on)'; }
 $('qvBtn').addEventListener('click', () => { store.set('quoteVoice', !store.get('quoteVoice', true)); paintQV(); toast('Saved for new videos.'); });
 paintQV();
+const PACES = [['often', 'Often', 'new picture about every 6 seconds'], ['medium', 'Medium', 'about every 10 seconds'], ['calm', 'Calm', 'about every 15 seconds']];
+function paintPace() {
+  const v = store.get('picPace', 'often');
+  $('paceChips').innerHTML = PACES.map(([k, n]) => `<button type="button" class="cchip${k === v ? ' on' : ''}" data-p="${k}">${n}</button>`).join('');
+  const p = PACES.find((x) => x[0] === v), pics = picsFor({ format: 'long', length: 40, pic_pace: v });
+  $('paceNote').textContent = `${p[2][0].toUpperCase() + p[2].slice(1)}. A 40-minute video needs about ${pics} pictures, which takes about ${Math.ceil(pics / PICS_PER_DAY)} day${pics > PICS_PER_DAY ? 's' : ''} of free pictures. Shorts always change about every 5 seconds.`;
+}
+$('paceChips').addEventListener('click', (e) => { const b = e.target.closest('[data-p]'); if (!b) return; store.set('picPace', b.dataset.p); paintPace(); toast('Saved for new videos.'); });
 // ---------- pronunciation list ----------
 const pron = { words: [], sha: null };
 function paintPron() {
@@ -1013,6 +1021,7 @@ window.addEventListener('DOMContentLoaded', function init() {  // after play.js 
   fillLengths(); ['tone', 'audience', 'voice'].forEach(chipify); paintPresets(); paintConn();
   $('ytClientId').value = store.get('ytClientId', ''); if (store.get('ytSecret', '')) $('ytSecret').placeholder = 'Saved on this tablet';
   showTab(mode() === 'none' ? 'settings' : store.get('homeV', 0) ? store.get('tab', 'home') : 'home'); store.set('homeV', 1);
+  paintPace();
   ytFinish();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 });
