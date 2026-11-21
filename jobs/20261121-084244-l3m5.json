@@ -1,9 +1,9 @@
 {
   "id": "20261121-084244-l3m5",
   "created": "2026-11-21T03:12:44.502Z",
-  "status": "rendering",
+  "status": "requested",
   "format": "long",
-  "length": 30,
+  "length": 10,
   "lengthUnit": "minutes",
   "topic": "Operation Mincemeat",
   "theme": "The dead man that fooled Hitler",
@@ -20,6 +20,6 @@
   "quote_voice": true,
   "series": "World History - WWII",
   "part": 1,
-  "updated": "2026-11-21T04:11:59+00:00",
-  "flags": 1
+  "updated": "2026-11-21T06:33:58+00:00",
+  "revision": 1
 }
