@@ -352,6 +352,7 @@ async function loadQueue(quiet) {
     else if (j.error) extra = `<div class="meta" style="color:var(--bad)">${esc(j.error)}</div>`;
     if (['post_yourself', 'uploaded'].includes(j.status) && mode() === 'github') extra += postHelper(j);
     if (j.status === 'failed' && mode() === 'github') extra += `<button class="retry" data-id="${esc(j.id)}">Try again</button>`;
+    if (mode() === 'github') extra += `<button class="vdel danger" data-id="${esc(j.id)}">Delete video</button>`;
     return `<div class="card job${tap ? ' tap' : ''}" data-id="${esc(j.id)}"><div class="jmain">${stepper(j.status)}<h3>${esc(j.topic)}</h3><div class="meta">${j.series ? `<span class="kind">${esc(j.series)} · Part ${esc(j.part || 1)}</span>` : ''}${j.format === 'short' ? 'Short' : 'Long video'} · ${j.length} ${esc(j.lengthUnit)} · ${esc(j.tone)} · ${when}</div>${extra}</div><span class="status ${cls}">${esc(STATUS_TEXT[j.status] || j.status)}</span></div>`;
   }).join('');
 }
@@ -419,6 +420,15 @@ $('queueList').addEventListener('click', async (e) => {
       await gh.putFile(`jobs/${pd.dataset.id}.json`, { ...f.data, status: 'posted', posted: new Date().toISOString() }, `Posted: ${f.data.topic.slice(0, 60)}`, f.sha);
       toast('Marked as posted.'); loadQueue();
     } catch (err) { toast('Could not save: ' + err.message); pd.disabled = false; }
+    return;
+  }
+  const del = e.target.closest('button.vdel');
+  if (del) {
+    e.stopPropagation();
+    if (!del.dataset.sure) { del.dataset.sure = '1'; del.textContent = 'Tap again to delete for good'; del.classList.add('danger-bg'); setTimeout(() => { if (del.isConnected) { delete del.dataset.sure; del.textContent = 'Delete video'; del.classList.remove('danger-bg'); } }, 5000); return; }
+    del.disabled = true; del.textContent = 'Deleting...';
+    try { await deleteVideo(del.dataset.id); toast('Deleted from the app. A copy already on YouTube stays there.'); loadQueue(); }
+    catch (err) { toast('Could not delete: ' + err.message); del.disabled = false; del.textContent = 'Delete video'; }
     return;
   }
   const retry = e.target.closest('button.retry');
