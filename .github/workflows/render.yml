@@ -48,6 +48,12 @@ jobs:
         run: |
           which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg)
           pip install -q -r worker/requirements.txt
+      - name: Repair video file names
+        if: steps.check.outputs.go == 'yes'
+        run: |
+          for id in $(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" -q '.[] | select(([.assets[].name] | index("video.mp4")) == null) | .assets[] | select(.name == "video_wrapped.mp4") | .id'); do
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/releases/assets/$id" -f name=video.mp4 -q .name || true
+          done
       - name: Make videos
         if: steps.check.outputs.go == 'yes'
         run: |

@@ -116,6 +116,10 @@ def main():
         token = access_token()
     except WorkerError as e:
         log(e)
+        old = read_json(ROOT / "stats" / "latest.json", {}) or {}  # tell the app's health card
+        old.update(error=str(e), sign_in_failed=datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"))
+        write_json(ROOT / "stats" / "latest.json", old)
+        save(["stats"], "Note YouTube sign-in problem")
         return
     if not token:
         log("YouTube is not connected yet.")
