@@ -116,6 +116,7 @@ async function loadHome(quiet) {
       <button type="button" class="ntile" data-go="work"><b>${making}</b><span>being made</span></button>
       <button type="button" class="ntile${problems ? ' bad' : ''}" data-go="failed"><b>${problems}</b><span>need${problems === 1 ? 's' : ''} attention</span></button>
     </div>
+    <div id="healthCard">${$('healthCard') ? $('healthCard').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>This week</h2><span class="meta"><i class="dotL"></i> long <i class="dotS"></i> Short</span></div>
       <div class="week">${week}</div>
       <button type="button" class="ghostlink" data-go="week">Plan the rest of the week</button></div>
@@ -124,6 +125,7 @@ async function loadHome(quiet) {
     <div class="shortcuts">
       <button type="button" data-go="ideas">Browse ideas</button><button type="button" data-go="stats">Dashboard</button><button type="button" data-go="money">Income</button>
     </div>`;
+  paintHealth(jobs);
 }
 $('homeView').addEventListener('click', (e) => {
   const b = e.target.closest('[data-go],[data-day]'); if (!b) return;
@@ -409,3 +411,141 @@ $('spMake').addEventListener('click', async () => {
   $('spMsg').textContent = subs < 1000 ? 'Tip: big brands usually want 1,000+ subscribers. Small book shops, authors and history apps are great first sponsors.' : '';
 });
 $('spCopy').addEventListener('click', async () => { if (!$('spText').value) $('spMake').click(); try { await navigator.clipboard.writeText($('spText').value); toast('Email copied'); } catch { toast('Could not copy. Long-press the text instead.'); } });
+
+// ---------- HOME: health card (expiry dates and deadlines) ----------
+const AUDIT_SENT = '2026-11-21';
+let healthCache = { at: 0, runs: {}, repo: null };
+const fmtDay = (d) => new Date(d).toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
+const daysTo = (d) => Math.ceil((new Date(d) - new Date()) / 864e5);
+async function healthData() {
+  if (Date.now() - healthCache.at < 30 * 60000) return healthCache;
+  const c = gh.conf(), runs = {};
+  await Promise.all(['writer', 'render', 'upload', 'stats'].map(async (w) => {
+    try {  // public project: readable without the key, so this works even if the key lacks Actions access
+      const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(c.user)}/${encodeURIComponent(c.repo)}/actions/workflows/${w}.yml/runs?per_page=1&status=completed`, { cache: 'no-store' });
+      if (r.ok) { const d = await r.json(); runs[w] = (d.workflow_runs || [])[0] || null; }
+    } catch { /* offline */ }
+  }));
+  let repo = null; try { repo = await gh.test(); } catch { /* key problem shows below */ }
+  healthCache = { at: Date.now(), runs, repo };
+  return healthCache;
+}
+function hRow(level, title, detail, action) {
+  return `<div class="hrowi ${level}"><span class="hdot"></span><div class="hmain"><b>${title}</b><div class="meta">${detail}</div>${action || ''}</div></div>`;
+}
+async function paintHealth(jobs) {
+  const el = $('healthCard'); if (!el || mode() !== 'github') { if (el) el.innerHTML = ''; return; }
+  const h = await healthData(), s = homeStats || {}, rows = [];
+  // 1. GitHub access key
+  const pat = store.get('patExpiry', '');
+  const patHelp = '<div class="hhelp" hidden>Find the date on GitHub: your photo &gt; Settings &gt; Developer settings &gt; Personal access tokens &gt; Fine-grained tokens. It is shown next to your key.<input type="date" class="hdate" data-k="patExpiry"></div>';
+  if (!h.repo) rows.push(hRow('bad', 'GitHub access key', 'GitHub refused the key. It has probably expired. On GitHub, open your key and tap <b>Regenerate token</b>, then paste the new key in Settings.', ''));
+  else if (!pat) rows.push(hRow('warn', 'GitHub access key', 'Working. Add its expiry date so the app can warn you in time.', `<button type="button" class="hset">Add expiry date</button>${patHelp}`));
+  else { const n = daysTo(pat + 'T23:59'); rows.push(hRow(n <= 10 ? (n < 0 ? 'bad' : 'warn') : 'ok', 'GitHub access key', `${n < 0 ? 'Expired on' : 'Expires on'} <b>${fmtDay(pat)}</b>${n >= 0 ? ` · ${n} day${n === 1 ? '' : 's'} left` : ''}. ${n <= 10 ? 'Regenerate it on GitHub now and paste the new key in Settings.' : ''}`, `<button type="button" class="hset">Change date</button>${patHelp}`)); }
+  // 2. YouTube sign-in
+  const upd = s.updated ? new Date(s.updated) : null, age = upd ? (Date.now() - upd) / 36e5 : null;
+  if (!upd && !s.error) rows.push(hRow('warn', 'YouTube sign-in', 'No check yet. It is checked every morning at 7 AM.'));
+  else if (s.sign_in_failed || s.error) rows.push(hRow('bad', 'YouTube sign-in', `${esc(s.error || 'Stopped working.')} Then update the YT_REFRESH_TOKEN secret on GitHub.`));
+  else if (age > 36) rows.push(hRow('warn', 'YouTube sign-in', `Last checked ${fmtDay(upd)}. The morning check has not run since. Tell Claude if this stays.`));
+  else rows.push(hRow('ok', 'YouTube sign-in', `Working · checked ${upd.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}. No expiry date: it stays active as long as it is used, and it is used every day.`));
+  // 3. YouTube audit
+  if (store.get('auditOk', false)) rows.push(hRow(store.get('ytAuto', false) ? 'ok' : 'warn', 'YouTube audit', store.get('ytAuto', false) ? 'Approved, and Automatic upload is on.' : 'Approved. Turn on <b>Automatic upload</b> in Settings so approved videos go straight to YouTube.'));
+  else { const wait = -daysTo(AUDIT_SENT); rows.push(hRow('wait', 'YouTube audit', `Sent on ${fmtDay(AUDIT_SENT)} · waiting ${wait} day${wait === 1 ? '' : 's'} for Google's email. Until then, post videos yourself from the Queue.`, '<button type="button" class="haudit">Google approved it</button>')); }
+  // 4. Cloud workers
+  const names = { writer: 'Scripts', render: 'Videos', upload: 'Uploads', stats: 'Stats' };
+  const known = Object.entries(h.runs).filter(([, r]) => r);
+  const broken = known.filter(([, r]) => r.conclusion === 'failure');
+  if (!known.length) rows.push(hRow('wait', 'Cloud workers', 'Could not check right now.'));
+  else rows.push(hRow(broken.length ? 'bad' : 'ok', 'Cloud workers', broken.length ? `Last run failed: ${broken.map(([w]) => names[w]).join(', ')}. It usually fixes itself on the next run; tell Claude if it stays red.` : `All working · ${known.map(([w, r]) => `${names[w]} ${new Date(r.updated_at || r.created_at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`).join(' · ')}`));
+  // 5. GitHub's 60-day pause of scheduled jobs
+  if (h.repo && h.repo.pushed_at) { const until = new Date(new Date(h.repo.pushed_at).getTime() + 60 * 864e5); rows.push(hRow(daysTo(until) < 14 ? 'warn' : 'ok', 'Daily schedule', `Stays switched on until at least ${fmtDay(until)}. The date moves forward every time the app saves something, so it never runs out while you use it.`)); }
+  // 6. Free AI limits
+  const limitHits = jobs.filter((j) => j.status === 'failed' || j.error).filter((j) => /quota|limit|429|busy|exhaust/i.test(j.error || '')).length;
+  rows.push(hRow(limitHits ? 'warn' : 'ok', 'Free AI allowances', limitHits ? `${limitHits} video${limitHits > 1 ? 's are' : ' is'} waiting for the free daily allowance to reset (scripts at 1:30 PM, pictures at 5:30 AM India time). Tell Claude if this keeps happening.` : 'Within the free limits. No expiry dates.'));
+  // 7. Amazon Associates (optional)
+  const amz = store.get('amazonJoined', '');
+  const amzHelp = '<div class="hhelp" hidden>The date you were accepted into Amazon Associates.<input type="date" class="hdate" data-k="amazonJoined"></div>';
+  if (amz) { const until = new Date(new Date(amz + 'T12:00').getTime() + 180 * 864e5), n = daysTo(until); rows.push(hRow(n < 30 ? 'warn' : 'wait', 'Amazon Associates', `Needs 3 sales by <b>${fmtDay(until)}</b> (${Math.max(0, n)} days left), or the account closes. You can join again afterwards.`, `<button type="button" class="hset">Change date</button>${amzHelp}`)); }
+  else rows.push(hRow('none', 'Amazon Associates', 'Not joined yet. When you join, add the date and the app tracks the 180-day deadline.', `<button type="button" class="hset">Add join date</button>${amzHelp}`));
+  const nBad = rows.filter((r) => r.includes('hrowi bad')).length, nWarn = rows.filter((r) => r.includes('hrowi warn')).length;
+  el.innerHTML = `<div class="card health"><div class="row"><h2>Health</h2><span class="hsum ${nBad ? 'bad' : nWarn ? 'warn' : 'ok'}">${nBad ? `${nBad} need${nBad > 1 ? '' : 's'} you now` : nWarn ? `${nWarn} to look at` : 'All good'}</span></div>${rows.join('')}<button type="button" class="hfix">Check and fix problems</button></div>`;
+}
+$('homeView').addEventListener('click', (e) => {
+  const set = e.target.closest('.hset');
+  if (set) { const help = set.nextElementSibling; help.hidden = !help.hidden; if (!help.hidden) { const i = help.querySelector('input'); i.value = store.get(i.dataset.k, ''); i.focus(); } return; }
+  if (e.target.closest('.hfix')) { showTab('settings'); window.scrollTo(0, 0); runCheckup(); return; }
+  if (e.target.closest('.haudit')) { store.set('auditOk', true); confetti(); toast('Great news! Now turn on Automatic upload in Settings.'); paintHealth(queueJobs); }
+});
+$('homeView').addEventListener('change', (e) => {
+  const i = e.target.closest('.hdate'); if (!i || !i.value) return;
+  store.set(i.dataset.k, i.value); toast('Date saved'); paintHealth(queueJobs);
+});
+
+// ---------- Settings: check-up and repair ----------
+const STUCK_BACK = { scripting: 'requested', rendering: 'script_ready', uploading: 'approved' };
+const ago = (j) => { const t = j.updated || j.started || j.claimed || j.created; return t ? (Date.now() - new Date(t)) / 36e5 : 0; };
+async function releaseAssets(id) {
+  const c = gh.conf();
+  const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(c.user)}/${encodeURIComponent(c.repo)}/releases/tags/video-${encodeURIComponent(id)}`, { cache: 'no-store' });
+  if (r.status === 404) return [];
+  if (!r.ok) return null;  // unknown (rate limit): skip
+  return ((await r.json()).assets || []).map((a) => a.name);
+}
+async function editJob(id, change, message) {
+  const f = await gh.getFile(`jobs/${id}.json`); if (!f) throw new Error('not found');
+  const job = { ...f.data, ...change };
+  ['error', 'attempts', 'render_attempts', 'package_attempts', 'upload_attempts', 'failed_step'].forEach((k) => { if (!(k in change)) delete job[k]; });
+  await gh.putFile(`jobs/${id}.json`, job, message, f.sha);
+}
+let fixes = [];
+async function runCheckup() {
+  const out = $('fixList'); const btn = $('fixRun');
+  if (mode() !== 'github') { out.innerHTML = '<p class="hint">Connect your GitHub project first.</p>'; return; }
+  btn.disabled = true; btn.textContent = 'Checking...'; out.innerHTML = '<p class="hint">Looking at every part of the app. This takes about 20 seconds.</p>';
+  fixes = []; const ok = [];
+  try { await gh.test(); ok.push('GitHub access key works'); }
+  catch (e) { fixes.push({ t: 'GitHub refused your access key', d: 'Make a new key on GitHub (Regenerate token) and paste it in the box at the top of Settings.', manual: true }); }
+  let jobs = [];
+  try { gh._jc = {}; jobs = await gh.listJobs(); ok.push(`Read ${jobs.length} videos`); } catch { /* covered above */ }
+  jobs.filter((j) => STUCK_BACK[j.status] && ago(j) > (j.status === 'rendering' && j.format === 'long' ? 7 : 3)).forEach((j) => fixes.push({ t: `Stuck: ${j.title || j.topic}`, d: `"${STATUS_TEXT[j.status]}" for much longer than usual. Start that step again.`,
+    run: () => editJob(j.id, { status: STUCK_BACK[j.status] }, `Repair stuck job: ${j.topic.slice(0, 50)}`) }));
+  jobs.filter((j) => j.status === 'failed').forEach((j) => fixes.push({ t: `Failed: ${j.title || j.topic}`, d: esc(j.error || 'Something went wrong').replace(/\.?$/, '.') + ' Try it again.',
+    run: () => editJob(j.id, { status: { video: 'script_ready', package: 'video_ready', upload: 'approved' }[j.failed_step] || 'requested' }, `Repair: try again ${j.topic.slice(0, 50)}`) }));
+  const withVideo = jobs.filter((j) => j.video && ['video_ready', 'ready', 'approved', 'post_yourself'].includes(j.status)).slice(0, 12);
+  for (const j of withVideo) {
+    const names = await releaseAssets(j.id); if (names === null || names.includes('video.mp4')) continue;
+    if (names.includes('video_wrapped.mp4')) fixes.push({ t: `Video won't open: ${j.title || j.topic}`, d: 'The file was saved under the wrong name. The cloud renames it on its next run (within the hour), no pictures needed.', run: () => nudge() });
+    else fixes.push({ t: `Video file missing: ${j.title || j.topic}`, d: 'The video file is gone. Make the video again from the same script (uses free pictures).', run: () => editJob(j.id, { status: 'script_ready', revision: (j.revision || 0) + 1 }, `Repair: remake video ${j.topic.slice(0, 50)}`) });
+  }
+  if (withVideo.length) ok.push(`Checked ${withVideo.length} video files`);
+  jobs.filter((j) => j.error && ['video_ready', 'ready', 'post_yourself', 'posted', 'uploaded'].includes(j.status)).forEach((j) => fixes.push({ t: `Old warning on: ${j.title || j.topic}`, d: `"${esc(j.error)}" is out of date. Clear it.`, run: () => editJob(j.id, {}, `Clear old warning: ${j.topic.slice(0, 50)}`) }));
+  const waiting = jobs.filter((j) => ['requested', 'script_ready', 'video_ready'].includes(j.status) && ago(j) > 6 && !(j.plan_date && j.plan_date > isoDay(new Date())));
+  if (waiting.length) fixes.push({ t: `${waiting.length} video${waiting.length > 1 ? 's' : ''} waiting a long time`, d: 'Wake up the cloud workers now instead of waiting for their hourly run. (If free pictures ran out, they continue after 5:30 AM.)', run: () => nudge() });
+  try { const s = await gh.getFile('stats/latest.json'); if (s && s.data && (s.data.error || s.data.sign_in_failed)) fixes.push({ t: 'YouTube sign-in stopped working', d: 'Tap Sign in with Google in Settings, then update the YT_REFRESH_TOKEN secret on GitHub.', manual: true }); else if (s) ok.push('YouTube sign-in works'); } catch { /* ignore */ }
+  btn.disabled = false; btn.textContent = 'Run the check-up again';
+  out.innerHTML = (fixes.length ? `<p class="flagnote">${fixes.length} problem${fixes.length > 1 ? 's' : ''} found</p>${fixes.map((f, k) => `<div class="fixrow" data-k="${k}"><div><b>${esc(f.t)}</b><div class="meta">${f.d}</div></div>${f.manual ? '<span class="meta">You need to do this</span>' : `<button type="button" class="fixone" data-k="${k}">Fix</button>`}</div>`).join('')}
+    ${fixes.some((f) => !f.manual) ? '<button class="primary" id="fixAll">Fix everything</button>' : ''}` : '<p class="okline">No problems found.</p>')
+    + `<ul class="tips oklist">${ok.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>`;
+}
+async function nudge() {
+  const old = await gh.getFile('requests/nudge.json');
+  await gh.putFile('requests/nudge.json', { at: new Date().toISOString() }, 'Wake up the cloud workers', old && old.sha);
+}
+async function doFix(k) {
+  const f = fixes[k]; if (!f || f.done || !f.run) return;
+  const row = document.querySelector(`.fixrow[data-k="${k}"]`), b = row && row.querySelector('button');
+  if (b) { b.disabled = true; b.textContent = 'Fixing...'; }
+  try { if (f.run === nudge && fixes.some((x) => x.done && x.run === nudge)) { /* already woken */ } else await f.run(); f.done = true; if (b) { b.textContent = 'Fixed'; row.classList.add('fixed'); } }
+  catch (e) { if (b) { b.disabled = false; b.textContent = 'Try again'; } toast('Could not fix: ' + e.message); }
+}
+$('fixRun').addEventListener('click', runCheckup);
+$('fixApp').addEventListener('click', async () => {
+  try { if ('serviceWorker' in navigator) { const rs = await navigator.serviceWorker.getRegistrations(); await Promise.all(rs.map((r) => r.unregister())); }
+    if (window.caches) { const ks = await caches.keys(); await Promise.all(ks.map((k) => caches.delete(k))); } } catch { /* reload anyway */ }
+  toast('Loading the newest version...'); setTimeout(() => location.reload(), 600);
+});
+$('fixNudge').addEventListener('click', async () => { try { await nudge(); toast('Cloud workers woken up. Check the Queue in a few minutes.'); } catch (e) { toast('Could not reach GitHub: ' + e.message); } });
+$('fixList').addEventListener('click', async (e) => {
+  const one = e.target.closest('.fixone'); if (one) { await doFix(Number(one.dataset.k)); return; }
+  if (e.target.id === 'fixAll') { e.target.disabled = true; for (let k = 0; k < fixes.length; k += 1) await doFix(k); e.target.textContent = 'All fixed'; confetti(); toast('Repairs sent. The cloud picks them up in a few minutes.'); }
+});

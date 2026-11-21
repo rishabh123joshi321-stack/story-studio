@@ -145,4 +145,5 @@ def wrap(video, W, H, cache, out_dir):
                         "-filter_complex", "[0:v][0:a][1:v][1:a][2:v][2:a]concat=n=3:v=1:a=1[v][a]", "-map", "[v]", "-map", "[a]",
                         "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
                         "-ar", "48000", "-movflags", "+faststart", str(out)], check=True)
-    return out, 3.0, 13.0
+    out.replace(video)  # keep the name video.mp4: the app and YouTube upload look for that file
+    return video, 3.0, 13.0

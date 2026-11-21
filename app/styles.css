@@ -329,3 +329,17 @@ details.goals { margin-top: 14px; } details.goals summary { cursor: pointer; fon
 .confetti i { position: absolute; top: -12px; width: 8px; height: 14px; border-radius: 2px; animation: fall linear forwards; }
 @keyframes fall { to { top: 105%; transform: translateX(40px) rotate(720deg); } }
 @media (prefers-reduced-motion: reduce) { .ring .rfg, .flame.lit svg, .live i, .pulse { animation: none; } }
+/* health card */
+.hsum { font-size: 13px; font-weight: 700; padding: 4px 11px; border-radius: 99px; }
+.hsum.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 12%, var(--card)); } .hsum.warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, var(--card)); } .hsum.bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 12%, var(--card)); }
+.hrowi { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); } .hrowi:first-of-type { border-top: none; }
+.hdot { flex: none; width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; background: var(--line); }
+.hrowi.ok .hdot { background: var(--ok); } .hrowi.warn .hdot { background: var(--warn); box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 20%, transparent); }
+.hrowi.bad .hdot { background: var(--bad); box-shadow: 0 0 0 4px color-mix(in srgb, var(--bad) 22%, transparent); animation: livep 1.6s infinite; } .hrowi.wait .hdot { background: #2d6a8a; }
+.hmain { flex: 1; min-width: 0; } .hmain b { font-size: 15px; } .hmain .meta { color: var(--muted); font-size: 14px; line-height: 1.5; margin-top: 2px; }
+.hmain button { margin: 8px 0 0; padding: 7px 14px; font-size: 14px; } .hhelp { margin-top: 8px; font-size: 13.5px; color: var(--muted); } .hhelp input { margin-top: 8px; max-width: 240px; }
+.hhelp input { display: block; } .hfix { width: 100%; margin: 12px 0 0; }
+.fixrow { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); } .fixrow > div { flex: 1; min-width: 0; }
+.fixrow .meta { color: var(--muted); font-size: 14px; } .fixrow button { margin: 0; flex: none; } .fixrow.fixed b { text-decoration: line-through; opacity: .6; }
+.fixrow.fixed button { color: var(--ok); } .oklist { margin-top: 12px; color: var(--ok); font-size: 14px; }
+#fixCard > button:not(.primary) { display: block; width: 100%; text-align: left; }
