@@ -391,7 +391,10 @@ def publish_phase(cfg):
     waiting = [(p, e) for p, e in entries if e.get("status") == "written"]
     today = now().date().isoformat()
     sent_today = sum(1 for _, e in entries if e.get("status") == "published" and str(e.get("published", ""))[:10] == today)
+    status["published"] = sum(1 for _, e in entries if e.get("status") == "published")  # the app's AdSense reminder uses this
     if not waiting and old.get("connected"):
+        if status != old:
+            write_json(BLOG / "status.json", status)
         return  # nothing to post, and the blog is known to be connected
     try:
         token = access_token()
@@ -445,6 +448,7 @@ def publish_phase(cfg):
         entry.pop("error", None)
         write_json(path, entry)
         sent_today += 1
+        status["published"] = status.get("published", 0) + 1
         log(f"Published: {entry['url']}")
     if status != old:
         write_json(BLOG / "status.json", status)

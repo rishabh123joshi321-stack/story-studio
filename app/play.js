@@ -106,6 +106,7 @@ async function loadHome(quiet) {
       ${st.n && !st.today ? '<div class="hnote">Plan a video today to keep your streak going.</div>' : ''}
       ${since}
     </div>
+    <div id="remindBanner">${$('remindBanner') ? $('remindBanner').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>Today's mission</h2><span class="meta">${nL + nS} of ${tL + tS} planned</span></div>
       <div class="rings">${ring(tL ? nL / tL : 1, `${nL}/${tL}`, 'Long videos')}${ring(tS ? nS / tS : 1, `${nS}/${tS}`, 'Shorts', 'var(--ok)')}</div>
       ${nL < tL || nS < tS ? `<div class="hacts"><button type="button" data-go="short" class="cchip">+ New Short</button><button type="button" data-go="long" class="cchip">+ New long video</button><button type="button" data-go="dice" class="cchip">Surprise me</button></div>` : '<p class="okline" style="margin:8px 0 0">Today is fully planned. Nice work!</p>'}
@@ -116,6 +117,7 @@ async function loadHome(quiet) {
       <button type="button" class="ntile" data-go="work"><b>${making}</b><span>being made</span></button>
       <button type="button" class="ntile${problems ? ' bad' : ''}" data-go="failed"><b>${problems}</b><span>need${problems === 1 ? 's' : ''} attention</span></button>
     </div>
+    <div id="todoCard">${$('todoCard') ? $('todoCard').innerHTML : ''}</div>
     ${routineHTML()}
     <div id="healthCard">${$('healthCard') ? $('healthCard').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>This week</h2><span class="meta"><i class="dotL"></i> long <i class="dotS"></i> Short</span></div>
@@ -127,6 +129,7 @@ async function loadHome(quiet) {
       <button type="button" data-go="ideas">Browse ideas</button><button type="button" data-go="stats">Dashboard</button><button type="button" data-go="money">Income</button>
     </div>`;
   paintHealth(jobs);
+  paintTodos();
 }
 $('homeView').addEventListener('click', (e) => {
   const b = e.target.closest('[data-go],[data-day]'); if (!b) return;
@@ -137,6 +140,10 @@ $('homeView').addEventListener('click', (e) => {
   else if (g === 'week') { showTab('create'); $('modeSeg').querySelector('[data-v="week"]').click(); }
   else if (g === 'fix') { showTab('settings'); window.scrollTo(0, 0); runCheckup(); }
   else if (g === 'review') showTab('review');
+  else if (g === 'targets') { showTab('settings'); setTimeout(() => $('tLong').scrollIntoView({ block: 'center' }), 50); }
+  else if (g === 'yt') { showTab('settings'); setTimeout(() => $('ytCard').scrollIntoView(), 50); }
+  else if (g === 'blog') { showTab('money'); setTimeout(() => $('blogCard').scrollIntoView(), 300); }
+  else if (g === 'health') $('healthCard').scrollIntoView();
   else if (['post', 'work', 'failed'].includes(g)) { store.set('qFilter', g === 'post' ? 'ready' : g); store.set('qView', 'list'); showTab('queue'); }
   else showTab(g);
 });
@@ -592,7 +599,7 @@ function routineHTML() {
     <details class="rweek"${sunday ? ' open' : ''}><summary>Once a week${sunday ? ' (today is a good day)' : ''} · ${(st.weekly || []).length} of ${ROUTINE.weekly.length} done</summary>${ROUTINE.weekly.map(item('weekly')).join('')}</details></div>`;
 }
 $('homeView').addEventListener('click', (e) => {
-  const t = e.target.closest('.rtick'); if (!t) return;
+  const t = e.target.closest('.rtick[data-rk]'); if (!t) return;
   const [kind, k] = t.dataset.rk.split(':'); const st = routineState();
   st[kind] = (st[kind] || []).includes(k) ? st[kind].filter((x) => x !== k) : [...(st[kind] || []), k];
   store.set('routine', st);
@@ -620,3 +627,94 @@ async function deleteVideo(id) {
   catch (e) { if (e.status !== 403) throw e; toast('Deleted. The big video file stays on GitHub (your key cannot remove it).'); }
   if (gh._jc) ids.forEach((x) => delete gh._jc[x + '.json']);
 }
+
+// ---------- HOME: my to-dos (one-time jobs, future jobs, and things to always keep in mind) ----------
+// Items tick themselves when the app can see they are done; the rest you tick by hand.
+let todoInfo = { at: 0, blog: {}, articles: 0, amazonTag: '' };
+async function todoData() {
+  if (Date.now() - todoInfo.at < 10 * 60000 || mode() !== 'github') return todoInfo;
+  const info = { at: Date.now(), blog: {}, articles: 0, amazonTag: '' };
+  try {
+    const [st, cfg, dir] = await Promise.all([gh.getFile('blog/status.json'), gh.getFile('config/blog.json'), gh.call('/contents/blog').catch(() => [])]);
+    info.blog = (st && st.data) || {}; info.amazonTag = ((cfg && cfg.data) || {}).amazon_tag || '';
+    info.articles = (dir || []).filter((f) => /^\d.*\.json$/.test(f.name)).length;  // written or published
+    info.published = Number(info.blog.published || 0);
+  } catch { /* shown as not known yet */ }
+  todoInfo = info; return info;
+}
+function todoList(d) {
+  const pub = d.published || 0;
+  const ch = (homeStats && homeStats.channel) || {}, ypp = (homeStats && homeStats.ypp) || {};
+  const subs = ch.subscribers || 0, views = ch.views || 0, hours = Math.round(ypp.long_watch_hours_365 || 0), sv = ypp.shorts_views_90 || 0;
+  // Amazon: worth joining once people are actually seeing the links (3 sales are needed within 180 days of joining)
+  const amzReady = pub >= 10 || subs >= 100 || views >= 5000;
+  const amzJoined = store.get('amazonJoined', '');
+  const amzLeft = amzJoined ? daysTo(new Date(new Date(amzJoined + 'T12:00').getTime() + 180 * 864e5)) : null;
+  return {
+    now: [
+      { k: 'checkup', t: 'Run the check-up once', d: 'Settings > Fix problems > <b>Run a check-up</b>, then tap <b>Fix everything</b> (the Run it now button below does the first part for you). This removes leftover files from the videos you deleted.', go: 'fix', btn: 'Run it now' },
+      { k: 'pat', t: 'Add your GitHub key\'s expiry date', d: 'On the Health card, tap <b>Add expiry date</b>. The app then warns you 10 days before the key stops working.', go: 'health', btn: 'Go to Health card', auto: !!store.get('patExpiry', '') },
+      { k: 'target', t: 'Set your daily target', d: 'Settings > <b>Long videos per day</b>: 1, <b>Shorts per day</b>: 3, then tap <b>Save targets</b>. That fits the free pictures each day.', go: 'targets', btn: 'Open targets', auto: !!store.get('targetsSaved', false) },
+      { k: 'greatfire', t: 'Delete the old Great Fire Short on YouTube', d: 'YouTube Studio app > <b>Content</b> > <b>Shorts</b> > tap the three dots next to the private Great Fire Short > <b>Delete forever</b>.' },
+      { k: 'blog', t: 'Connect the blog', d: 'Done when the Blog box in Income says Connected.', go: 'blog', btn: 'Open Blog', auto: !!d.blog.connected },
+    ],
+    later: [
+      { k: 'audit', t: 'When Google\'s audit email arrives', d: 'Tap <b>Google approved it</b> on the Health card, then Settings > tap <b>Automatic upload</b> so it says ON. Until then, post each video yourself from the Queue.', go: 'health', btn: 'Go to Health card', auto: store.get('auditOk', false) && store.get('ytAuto', false) },
+      { k: 'adsense', t: pub >= 20 ? 'Apply for AdSense now: your blog has 20 articles' : `Apply for AdSense at 20 blog articles (${pub} of 20 published)`,
+        d: 'On blogger.com tap the menu (three lines) > <b>Earnings</b> > <b>Sign up for AdSense</b>, pick your Google account, and follow the steps (country India, your name and address as on your ID). Free, never asks for a card. Google checks the blog, which can take 2 to 4 weeks. When the email says approved, tick this.',
+        ready: pub >= 20, remind: 'Your blog has 20 articles. Time to apply for AdSense (free).' },
+      amzJoined && amzLeft !== null && d.amazonTag
+        ? { k: 'amazon3', t: `Amazon: 3 sales needed by ${fmtDay(new Date(new Date(amzJoined + 'T12:00').getTime() + 180 * 864e5))} (${Math.max(0, amzLeft)} days left)`,
+          d: 'Check Amazon Associates > <b>Reports</b>. If you are short of 3 sales, add your best book links in Income > Affiliate links so they appear in video descriptions too. If the account closes, you can simply join again later.',
+          ready: amzLeft <= 30, remind: `Only ${Math.max(0, amzLeft)} days left to get 3 Amazon sales. Check your Amazon report.` }
+        : { k: 'amazon', t: amzReady ? 'Join Amazon Associates now: people are seeing your links' : 'Join Amazon Associates (the app tells you when)',
+          d: `Wait until the blog has 10 articles, or 100 subscribers, or 5,000 views${amzReady ? '. You are there now.' : ` (now ${pub} articles, ${fmtN(subs)} subscribers, ${fmtN(views)} views)`}, because you need 3 sales within 180 days of joining. Then on Chrome open <b>affiliate-program.amazon.com</b> > <b>Sign up</b>, add your blog and channel addresses as your websites, and copy your tracking ID (it ends in -20). Paste it in Income > Blog > <b>Save blog settings</b>, and add today's date on the Health card under Amazon Associates.`,
+          go: 'blog', btn: 'Open Blog', ready: amzReady, auto: !!d.amazonTag && !!amzJoined, remind: 'Your blog and channel now get enough visitors. Time to join Amazon Associates (free).' },
+      { k: 'ypp', t: subs >= 1000 && (hours >= 4000 || sv >= 10e6) ? 'Apply for the YouTube Partner Program now' : `YouTube Partner Program (${fmtN(subs)} of 1,000 subscribers, ${fmtN(hours)} of 4,000 watch hours)`,
+        d: 'Needs 1,000 subscribers and 4,000 watch hours in a year (or 10 million Shorts views in 90 days). Then in the YouTube Studio app: <b>Earn</b> > <b>Apply now</b>, accept the terms, and link AdSense (the same AdSense account as your blog).',
+        go: 'stats', btn: 'Open Dashboard', ready: subs >= 1000 && (hours >= 4000 || sv >= 10e6), remind: 'You qualify for the YouTube Partner Program. Apply in YouTube Studio > Earn.' },
+      { k: 'yppearly', t: 'YouTube fan funding (early access)', d: 'At 500 subscribers and 3,000 watch hours (or 3 million Shorts views), YouTube Studio > <b>Earn</b> lets you turn on Super Thanks and memberships.', ready: subs >= 500 && (hours >= 3000 || sv >= 3e6), remind: 'You qualify for YouTube fan funding (Super Thanks). Have a look in YouTube Studio > Earn.' },
+    ],
+    always: [
+      'Make every posted video <b>Public</b>. The blog only posts an article once its video is Public.',
+      'Renew the GitHub key before it expires. The Health card turns orange 10 days before.',
+      'If the Health card says the YouTube sign-in stopped, or the Blog box is not connected: Settings > Connect YouTube > <b>Sign in with Google</b>, tick every box, then update <b>YT_REFRESH_TOKEN</b> on GitHub.',
+      'Answer Google\'s emails about your YouTube API project (for example the yearly check) before their deadline. Forward them to Claude if unsure.',
+      'Never add a card or payment details anywhere. If a site asks, stop and tell Claude.',
+      'When a video has a paid sponsor, tick <b>Includes paid promotion</b> for it in YouTube Studio.',
+    ],
+  };
+}
+function todoRow(i, ticked) {
+  const done = i.auto || !!ticked[i.k];
+  const tick = i.auto !== undefined && i.auto ? `<span class="rtick" aria-label="Done">✓</span>` : `<button type="button" class="rtick tdtick" data-tk="${i.k}" aria-label="${done ? 'Mark not done' : 'Mark done'}">${done ? '✓' : ''}</button>`;
+  return `<div class="rtask${done ? ' done' : ''}${i.ready && !done ? ' tdready' : ''}">${tick}<div class="rbody"><b>${i.t}</b>${i.auto ? ' <span class="rmin">done automatically</span>' : i.ready && !done ? ' <span class="rmin tdnow">do it now</span>' : ''}
+    ${done ? '' : `<div class="meta">${i.d}</div>${i.go ? `<button type="button" class="rgo" data-go="${i.go}">${i.btn || 'Open'}</button>` : ''}`}</div></div>`;
+}
+async function paintTodos() {
+  const el = $('todoCard'); if (!el) return;
+  if (mode() !== 'github') { el.innerHTML = ''; return; }
+  const d = await todoData(), L = todoList(d), ticked = store.get('todosDone', {});
+  const isDone = (i) => i.auto || !!ticked[i.k];
+  const nowOpen = L.now.filter((i) => !isDone(i)), laterOpen = L.later.filter((i) => !isDone(i));
+  const finished = [...L.now, ...L.later].filter(isDone);
+  const urgent = nowOpen.length + laterOpen.filter((i) => i.ready).length;
+  const due = laterOpen.filter((i) => i.ready && i.remind);
+  const bn = $('remindBanner');
+  if (bn) bn.innerHTML = due.map((i) => `<div class="remind"><span class="rbell">🔔</span><div><b>Reminder</b><div>${esc(i.remind)}</div></div><button type="button" class="rgo rshow">Show me how</button></div>`).join('');
+  const seen = store.get('remindSeen', []), fresh = due.filter((i) => !seen.includes(i.k));
+  if (fresh.length) { store.set('remindSeen', [...seen, ...fresh.map((i) => i.k)]); toast('🔔 ' + fresh[0].remind); }
+  el.innerHTML = `<div class="card routine todos"><div class="row"><h2>My to-dos</h2><span class="hsum ${urgent ? 'warn' : 'ok'}">${urgent ? `${urgent} to do now` : 'Nothing urgent'}</span></div>
+    ${nowOpen.length ? `<h3 class="tdhead">Do now</h3>${nowOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
+    ${laterOpen.length ? `<h3 class="tdhead">Later, when it happens</h3>${laterOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
+    <details class="rweek"><summary>Always keep in mind (${L.always.length})</summary><ul class="tdalways">${L.always.map((x) => `<li>${x}</li>`).join('')}</ul></details>
+    ${finished.length ? `<details class="rweek"><summary>Done (${finished.length})</summary>${finished.map((i) => todoRow(i, ticked)).join('')}</details>` : ''}</div>`;
+}
+$('homeView').addEventListener('click', (e) => {
+  if (e.target.closest('.rshow')) { $('todoCard').scrollIntoView({ behavior: 'smooth' }); return; }
+  const t = e.target.closest('.tdtick'); if (!t) return;
+  const ticked = store.get('todosDone', {});
+  if (ticked[t.dataset.tk]) delete ticked[t.dataset.tk]; else ticked[t.dataset.tk] = new Date().toISOString();
+  store.set('todosDone', ticked); paintTodos();
+  if (ticked[t.dataset.tk]) toast('Ticked off. Nice!');
+});

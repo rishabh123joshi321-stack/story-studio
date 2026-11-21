@@ -352,3 +352,9 @@ details.goals { margin-top: 14px; } details.goals summary { cursor: pointer; fon
 .rgo { margin: 8px 0 0; padding: 6px 14px; font-size: 14px; }
 .rweek { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; } .rweek summary { cursor: pointer; font-weight: 600; color: var(--accent); }
 .setupsteps { padding-left: 20px; } .setupsteps li { margin: 10px 0; line-height: 1.5; }
+.tdhead { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 14px 0 2px; }
+.todos span.rtick { display: inline-flex; align-items: center; justify-content: center; background: var(--ok); border-color: var(--ok); }
+.tdready .rtick { border-color: var(--warn); } .rmin.tdnow { color: var(--warn); border-color: var(--warn); }
+.tdalways { padding-left: 20px; margin: 8px 0 0; } .tdalways li { margin: 8px 0; line-height: 1.5; color: var(--ink); font-size: 14.5px; }
+.remind { display: flex; gap: 12px; align-items: center; background: color-mix(in srgb, var(--warn) 14%, var(--card)); border: 1px solid var(--warn); border-radius: 16px; padding: 12px 14px; margin: 0 0 14px; }
+.remind > div { flex: 1; min-width: 0; line-height: 1.45; } .remind .rbell { font-size: 22px; } .remind .rgo { margin: 0; flex: none; }
