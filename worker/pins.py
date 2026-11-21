@@ -36,7 +36,7 @@ PINS = ROOT / "pins"
 PRINTS = ROOT / "prints"
 CACHE = ROOT / ".cache"
 PIN_DEFAULTS = {"enabled": True, "per_day": 3, "per_article": 5}
-PRINT_DEFAULTS = {"enabled": True, "per_video": 2}
+PRINT_DEFAULTS = {"enabled": False, "per_video": 2}  # Redbubble paused by the owner (2026-11-21); set True to bring it back
 FONTS = {  # SIL Open Font License
     "LibreBaskerville-Bold.ttf": "https://github.com/google/fonts/raw/main/ofl/librebaskerville/LibreBaskerville-Bold.ttf",
     "Inter.ttf": "https://github.com/google/fonts/raw/main/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf",
@@ -358,7 +358,7 @@ def main():
         })
     else:
         log("Pinterest pins are OFF in the app.")
-    if rc.get("enabled", True):
+    if rc.get("enabled", False):
         try:
             make_prints(entries, rc, status)
         except Exception as e:

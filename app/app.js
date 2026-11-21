@@ -93,7 +93,7 @@ function showTab(name) {
   if (name === 'review') loadReview();
   if (name === 'stats') loadStats();
   if (name === 'create') { loadSeries(); updatePreview(); }
-  if (name === 'money') { loadMoney(); loadGoals(); loadBlog(); loadPins(); loadPrints(); }
+  if (name === 'money') { loadMoney(); loadGoals(); loadBlog(); loadPins(); }
   if (name === 'settings') loadPron();
 }
 function chapterAt(s, i) {
