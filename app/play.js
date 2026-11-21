@@ -95,7 +95,7 @@ async function loadHome(quiet) {
     ['A video with 1,000 views', maxViews >= 1000, `${fmtN(Math.min(maxViews, 1000))}/1,000`, '★'],
   ];
   const earned = badges.filter((b) => b[1]).length;
-  v.innerHTML = `
+  v.innerHTML = `<div class="hgrid"><div class="hcol hc1">
     <div class="hhero">
       <div class="hk">${hello}</div>
       <h1>${esc(c.title || 'Your studio')}</h1>
@@ -117,9 +117,6 @@ async function loadHome(quiet) {
       <button type="button" class="ntile" data-go="work"><b>${making}</b><span>being made</span></button>
       <button type="button" class="ntile${problems ? ' bad' : ''}" data-go="failed"><b>${problems}</b><span>need${problems === 1 ? 's' : ''} attention</span></button>
     </div>
-    <div id="todoCard">${$('todoCard') ? $('todoCard').innerHTML : ''}</div>
-    ${routineHTML()}
-    <div id="healthCard">${$('healthCard') ? $('healthCard').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>This week</h2><span class="meta"><i class="dotL"></i> long <i class="dotS"></i> Short</span></div>
       <div class="week">${week}</div>
       <button type="button" class="ghostlink" data-go="week">Plan the rest of the week</button></div>
@@ -127,7 +124,13 @@ async function loadHome(quiet) {
       <div class="badges">${badges.map(([n, ok, prog, ic]) => `<div class="badge${ok ? ' got' : ''}"><span class="bic">${ic}</span><b>${esc(n)}</b><span class="meta">${ok ? 'Earned' : esc(prog)}</span></div>`).join('')}</div></div>
     <div class="shortcuts">
       <button type="button" data-go="ideas">Browse ideas</button><button type="button" data-go="stats">Dashboard</button><button type="button" data-go="money">Income</button>
-    </div>`;
+    </div>
+    </div><div class="hcol hc2">
+    ${routineHTML()}
+    <div id="healthCard">${$('healthCard') ? $('healthCard').innerHTML : ''}</div>
+    </div><div class="hcol hc3">
+    <div id="todoCard">${$('todoCard') ? $('todoCard').innerHTML : ''}</div>
+    </div></div>`;
   paintHealth(jobs);
   paintTodos();
   if (typeof paintPostBanner === 'function') paintPostBanner(jobs);
@@ -602,7 +605,7 @@ function routineHTML() {
       <div class="rbody"><b>${esc(t)}</b> <span class="rmin">${m}</span><div class="meta">${esc(d)}</div>${go ? `<button type="button" class="rgo" data-go="${go}">Open</button>` : ''}</div></div>`; };
   const nd = (st.daily || []).length, nt = ROUTINE.daily.length;
   return `<div class="card routine"><div class="row"><h2>Today's routine</h2><span class="meta">${nd} of ${nt} done · about 30 min</span></div>
-    <div class="mbar" style="margin:4px 0 6px"><i style="width:${(nd / nt) * 100}%"></i></div>
+    <div class="mbar" style="margin:4px 0 6px"><i style="width:${(nd / nt) * 100}%"></i></div><p class="hint tapnote">Tap a task to see the steps.</p>
     ${ROUTINE.daily.map(item('daily')).join('')}
     <details class="rweek"${sunday ? ' open' : ''}><summary>Once a week${sunday ? ' (today is a good day)' : ''} · ${(st.weekly || []).length} of ${ROUTINE.weekly.length} done</summary>${ROUTINE.weekly.map(item('weekly')).join('')}</details></div>`;
 }
@@ -725,7 +728,7 @@ async function paintTodos() {
   if (bn) bn.innerHTML = due.map((i) => `<div class="remind"><span class="rbell">🔔</span><div><b>Reminder</b><div>${esc(i.remind)}</div></div><button type="button" class="rgo rshow">Show me how</button></div>`).join('');
   const seen = store.get('remindSeen', []), fresh = due.filter((i) => !seen.includes(i.k));
   if (fresh.length) { store.set('remindSeen', [...seen, ...fresh.map((i) => i.k)]); toast('🔔 ' + fresh[0].remind); }
-  el.innerHTML = `<div class="card routine todos"><div class="row"><h2>My to-dos</h2><span class="hsum ${urgent ? 'warn' : 'ok'}">${urgent ? `${urgent} to do now` : 'Nothing urgent'}</span></div>
+  el.innerHTML = `<div class="card routine todos"><div class="row"><h2>My to-dos</h2><span class="hsum ${urgent ? 'warn' : 'ok'}">${urgent ? `${urgent} to do now` : 'Nothing urgent'}</span></div><p class="hint tapnote">Tap a task to see the steps.</p>
     ${nowOpen.length ? `<h3 class="tdhead">Do now</h3>${nowOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
     ${laterOpen.length ? `<h3 class="tdhead">Later, when it happens</h3>${laterOpen.map((i) => todoRow(i, ticked)).join('')}` : ''}
     <details class="rweek"><summary>Always keep in mind (${L.always.length})</summary><ul class="tdalways">${L.always.map((x) => `<li>${x}</li>`).join('')}</ul></details>
