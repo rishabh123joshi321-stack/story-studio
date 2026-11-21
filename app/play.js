@@ -116,6 +116,7 @@ async function loadHome(quiet) {
       <button type="button" class="ntile" data-go="work"><b>${making}</b><span>being made</span></button>
       <button type="button" class="ntile${problems ? ' bad' : ''}" data-go="failed"><b>${problems}</b><span>need${problems === 1 ? 's' : ''} attention</span></button>
     </div>
+    ${routineHTML()}
     <div id="healthCard">${$('healthCard') ? $('healthCard').innerHTML : ''}</div>
     <div class="card"><div class="row"><h2>This week</h2><span class="meta"><i class="dotL"></i> long <i class="dotS"></i> Short</span></div>
       <div class="week">${week}</div>
@@ -134,6 +135,7 @@ $('homeView').addEventListener('click', (e) => {
   if (g === 'short' || g === 'long') { showTab('create'); $('modeSeg').querySelector('[data-v="one"]').click(); document.querySelector(`#formatSeg button[data-v="${g}"]`).click(); $('topic').focus(); }
   else if (g === 'dice') { showTab('create'); $('modeSeg').querySelector('[data-v="one"]').click(); rollDice(); }
   else if (g === 'week') { showTab('create'); $('modeSeg').querySelector('[data-v="week"]').click(); }
+  else if (g === 'fix') { showTab('settings'); window.scrollTo(0, 0); runCheckup(); }
   else if (g === 'review') showTab('review');
   else if (['post', 'work', 'failed'].includes(g)) { store.set('qFilter', g === 'post' ? 'ready' : g); store.set('qView', 'list'); showTab('queue'); }
   else showTab(g);
@@ -548,4 +550,47 @@ $('fixNudge').addEventListener('click', async () => { try { await nudge(); toast
 $('fixList').addEventListener('click', async (e) => {
   const one = e.target.closest('.fixone'); if (one) { await doFix(Number(one.dataset.k)); return; }
   if (e.target.id === 'fixAll') { e.target.disabled = true; for (let k = 0; k < fixes.length; k += 1) await doFix(k); e.target.textContent = 'All fixed'; confetti(); toast('Repairs sent. The cloud picks them up in a few minutes.'); }
+});
+
+// ---------- HOME: daily routine (about 30 minutes) ----------
+const ROUTINE = {
+  daily: [
+    ['health', 'Glance at the Health card', 'Anything red or orange? Tap Check and fix problems.', 'fix', '1 min'],
+    ['review', 'Review finished videos', 'Watch at 1.5x or 2x, check flagged facts, pick a thumbnail, then Approve, Regenerate or Reject.', 'review', '15 min'],
+    ['post', 'Post approved videos', 'Queue > Needs you: Download video, Copy title, description and tags, post in the YouTube app, tap I posted it. Paste and pin the pinned comment.', 'post', '8 min'],
+    ['plan', "Plan tomorrow's videos", 'Swipe through Ideas or tap Surprise me, then Start making it. Watch the picture meter.', 'ideas', '4 min'],
+    ['reply', 'Reply to a few comments', 'In the YouTube Studio app: heart and answer early comments. It helps new videos get shown.', '', '2 min'],
+  ],
+  weekly: [
+    ['report', 'Read your weekly report card', 'Dashboard: grade, star video, what is working and the best time to post.', 'stats', '3 min'],
+    ['week', 'Plan the whole week', 'New video > Plan the week. Put anniversaries on their exact day.', 'week', '10 min'],
+    ['money', 'Update money and sponsors', 'Income: log any payouts, and send one sponsor email.', 'money', '5 min'],
+  ],
+};
+function routineState() {
+  const today = isoDay(new Date()), mon = isoDay(addDays(new Date(), -((new Date().getDay() + 6) % 7)));
+  const st = store.get('routine', {});
+  if (st.day !== today) { st.day = today; st.daily = []; }
+  if (st.week !== mon) { st.week = mon; st.weekly = []; }
+  return st;
+}
+function routineHTML() {
+  const st = routineState(), sunday = new Date().getDay() === 0;
+  const item = (kind) => ([k, t, d, go, m]) => { const on = (st[kind] || []).includes(k);
+    return `<div class="rtask${on ? ' done' : ''}"><button type="button" class="rtick" data-rk="${kind}:${k}" aria-label="Mark done">${on ? '✓' : ''}</button>
+      <div class="rbody"><b>${esc(t)}</b> <span class="rmin">${m}</span><div class="meta">${esc(d)}</div>${go ? `<button type="button" class="rgo" data-go="${go}">Open</button>` : ''}</div></div>`; };
+  const nd = (st.daily || []).length, nt = ROUTINE.daily.length;
+  return `<div class="card routine"><div class="row"><h2>Today's routine</h2><span class="meta">${nd} of ${nt} done · about 30 min</span></div>
+    <div class="mbar" style="margin:4px 0 6px"><i style="width:${(nd / nt) * 100}%"></i></div>
+    ${ROUTINE.daily.map(item('daily')).join('')}
+    <details class="rweek"${sunday ? ' open' : ''}><summary>Once a week${sunday ? ' (today is a good day)' : ''} · ${(st.weekly || []).length} of ${ROUTINE.weekly.length} done</summary>${ROUTINE.weekly.map(item('weekly')).join('')}</details></div>`;
+}
+$('homeView').addEventListener('click', (e) => {
+  const t = e.target.closest('.rtick'); if (!t) return;
+  const [kind, k] = t.dataset.rk.split(':'); const st = routineState();
+  st[kind] = (st[kind] || []).includes(k) ? st[kind].filter((x) => x !== k) : [...(st[kind] || []), k];
+  store.set('routine', st);
+  const card = t.closest('.routine'), open = card.querySelector('details').open;
+  card.outerHTML = routineHTML(); if (open) document.querySelector('.routine details').open = true;
+  if (kind === 'daily' && st.daily.length === ROUTINE.daily.length) { confetti(); toast('Daily routine done. See you tomorrow!'); }
 });
