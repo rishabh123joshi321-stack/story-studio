@@ -1,7 +1,7 @@
 {
   "id": "20261121-084244-l3m5",
   "created": "2026-11-21T03:12:44.502Z",
-  "status": "rendering",
+  "status": "script_ready",
   "format": "long",
   "length": 10,
   "lengthUnit": "minutes",
@@ -20,8 +20,9 @@
   "quote_voice": true,
   "series": "World History - WWII",
   "part": 1,
-  "updated": "2026-11-21T10:20:32+00:00",
+  "updated": "2026-11-21T10:24:55+00:00",
   "revision": 1,
   "flags": 6,
-  "render_attempts": 1
+  "render_attempts": 1,
+  "error": "Today's free pictures are used up. The video continues automatically after 5:30 AM India time."
 }
