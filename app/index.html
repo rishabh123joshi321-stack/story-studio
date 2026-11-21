@@ -54,6 +54,7 @@
     </div>
     <div id="onePlan">
     <p class="hint">Fill this in and tap <b>Start making it</b>. The cloud makes the video while you do other things.</p>
+    <div class="csplit"><div class="cside">
     <div class="card studio">
       <div class="pvwrap"><div id="pv" class="pv short" role="button" tabindex="0" aria-label="Preview. Tap to try another caption font">
         <div class="pvsun"></div><div class="pvhills"></div><div class="pvcap" id="pvCap"></div><div class="pvbadge" id="pvBadge"></div></div>
@@ -66,12 +67,21 @@
       </div>
     </div>
     <div class="presets"><span class="plabel">Presets</span><div class="chips" id="presetChips"></div></div>
+    </div>
     <form id="jobForm" class="card">
+      <div class="fgrid">
+      <div class="f wide">
+      <label for="topic">Topic <span class="req">required</span></label>
+      <input id="topic" required placeholder="e.g. The night the Library of Alexandria burned">
+      </div>
+      <div class="f">
       <label>Format</label>
       <div class="seg" id="formatSeg">
         <button type="button" data-v="short" class="on">Short (vertical, up to 60s)</button>
         <button type="button" data-v="long">Long video (wide)</button>
       </div>
+      </div>
+      <div class="f">
 
       <div id="kindBox">
       <label>Kind of Short</label>
@@ -80,15 +90,15 @@
         <button type="button" data-v="quiz">Quiz (viewers guess)</button>
       </div>
       </div>
-
       <label for="length">Length</label>
       <select id="length"></select>
+      </div>
 
-      <label for="topic">Topic <span class="req">required</span></label>
-      <input id="topic" required placeholder="e.g. The night the Library of Alexandria burned">
-
+      <div class="f">
       <label for="theme">Theme or angle</label>
       <input id="theme" placeholder="e.g. mystery, forgotten hero, what if, turning point">
+      </div>
+      <div class="f">
 
       <label for="tone">Tone</label>
       <select id="tone">
@@ -99,7 +109,8 @@
         <option>Calm and reflective</option>
         <option>Epic and inspiring</option>
       </select>
-
+      </div>
+      <div class="f">
       <label for="audience">Target audience</label>
       <select id="audience">
         <option>General global audience</option>
@@ -107,25 +118,32 @@
         <option>History fans who know the basics</option>
         <option>Curious adults new to history</option>
       </select>
-
+      </div>
+      <div class="f">
       <label for="voice">Narrator voice</label>
       <select id="voice">
         <option value="en-US-male">Male, American</option>
         <option value="en-GB-male">Male, British</option>
         <option value="en-IN-male">Male, Indian English (experimental)</option>
       </select>
-
+      </div>
+      <div class="f">
       <label for="series">Series <span class="req">optional</span></label>
       <input id="series" list="seriesList" placeholder="e.g. Fallen Empires (videos in a series link to each other)">
       <datalist id="seriesList"></datalist>
       <p class="hint" id="seriesHint" style="margin-top:6px"></p>
+      </div>
+      <div class="f wide">
       <label for="notes">Extra notes</label>
-      <textarea id="notes" rows="3" placeholder="Anything else: facts to include, things to avoid, a question to end on..."></textarea>
+      <textarea id="notes" rows="2" placeholder="Anything else: facts to include, things to avoid, a question to end on..."></textarea>
+      </div>
+      </div>
 
       <button class="primary" type="submit" id="submitBtn">Start making it</button>
       <button type="button" id="savePreset">Save these settings as a preset</button>
       <p id="formMsg" class="msg"></p>
     </form>
+    </div>
     </div>
   </section>
 
@@ -142,6 +160,7 @@
   <section id="tab-ideas" class="tab">
     <div class="row"><h1>Topic ideas</h1><button id="refreshIdeas" class="ghost">Refresh</button></div>
     <p class="hint">Fresh ideas arrive every morning, ranked by how likely viewers are to watch. Tap <b>Use this</b> to plan a video from one.</p>
+    <div class="isplit"><div class="iside">
     <div class="card">
       <label for="ideaFocus">Want ideas about something specific? (optional)</label>
       <input id="ideaFocus" placeholder="e.g. ancient India, inventions, the ocean, World War II">
@@ -149,8 +168,10 @@
       <p id="ideasMsg" class="msg"></p>
     </div>
     <div id="weeklyBox"></div>
+    </div><div class="imain">
     <div class="seg qview" id="ideaView" style="margin-bottom:14px"><button type="button" data-v="swipe">Swipe cards</button><button type="button" data-v="list">List</button></div>
     <div id="ideasList"></div>
+    </div></div>
   </section>
 
   <!-- SCRIPT VIEW -->
@@ -162,8 +183,8 @@
   <section id="tab-review" class="tab">
     <div class="row"><h1>Review</h1><button id="refreshReview" class="ghost">Refresh</button></div>
     <p class="hint">Finished videos wait here for you. Nothing goes to YouTube until you tap <b>Approve</b>.</p>
-    <div id="reviewList"></div>
-    <div id="commentsBox"></div>
+    <div class="rsplit"><div id="reviewList"></div>
+    <div id="commentsBox"></div></div>
   </section>
 
   <!-- REVIEW ONE VIDEO -->
@@ -416,5 +437,6 @@
 <script src="app.js"></script>
 <script src="play.js"></script>
 <script src="grow.js"></script>
+<script src="layout.js"></script>
 </body>
 </html>

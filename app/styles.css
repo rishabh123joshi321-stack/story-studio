@@ -370,3 +370,112 @@ details.tcbox h4 { margin: 12px 0 0; font-size: 15px; }
 .cmt { border-top: 1px solid var(--line); padding: 12px 0 4px; } .ctext { margin: 6px 0 8px; white-space: pre-wrap; }
 .cmt .row button { margin-top: 8px; } .cmt .row button.primary { padding: 12px; }
 .widea { border-top: 1px solid var(--line); padding: 10px 0; } .widea button { margin-top: 6px; padding: 8px 14px; }
+/* ===== Workbench layout (less scrolling) ===== */
+/* Tasks on Home fold up: tap one to see its steps */
+.tapnote { font-size: 13px; margin: 2px 0 4px; }
+.rtask { padding: 9px 0; }
+.rtask .rbody { cursor: pointer; }
+.rtask:not(.open) .rbody > .meta, .rtask:not(.open) .rbody > .rgo { display: none; }
+.rtask:has(.rbody > .meta) .rbody > b::after { content: "▾"; display: inline-block; margin-left: 6px; color: var(--muted); font-size: 12px; transition: transform .15s; }
+.rtask.open .rbody > b::after { transform: rotate(180deg); }
+.rtask.open { background: color-mix(in srgb, var(--accent-2) 6%, transparent); border-radius: 12px; }
+/* Section list (Settings, Income) */
+.pane { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 20px; align-items: start; }
+.pnav { position: sticky; top: 12px; display: flex; flex-direction: column; gap: 2px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 8px; box-shadow: var(--shadow); }
+.pnav button { margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; border: none; background: transparent; padding: 11px 14px; border-radius: 12px; font-size: 15px; color: var(--ink); }
+.pnav button i { font-style: normal; color: var(--muted); font-size: 18px; line-height: 1; }
+.pnav button:hover { background: var(--bg); }
+.pnav button.on { background: var(--navy); color: #fff; box-shadow: 0 4px 12px rgba(22,32,43,.22); } .pnav button.on i { color: var(--accent-2); }
+@media (prefers-color-scheme: dark) { .pnav button.on { background: var(--accent); } .pnav button.on i { color: #fff; } }
+.pbody > .card { display: none; } .pbody > .card.pon { display: block; animation: rise .22s ease-out; }
+@media (max-width: 639px) {
+  .pane { display: block; }
+  .pnav { position: static; flex-direction: row; overflow-x: auto; scrollbar-width: none; margin-bottom: 14px; border-radius: 16px; padding: 6px; }
+  .pnav::-webkit-scrollbar { display: none; }
+  .pnav button { flex: none; padding: 9px 14px; font-size: 14px; } .pnav button i { display: none; }
+}
+/* Home: cards side by side */
+.hgrid { display: grid; gap: 0 16px; align-items: start; }
+.hgrid .hhero { margin-top: 6px; }
+.hgrid .badges { grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); gap: 8px; }
+.hgrid .badge { padding: 8px 4px; } .hgrid .badge .bic { width: 36px; height: 36px; font-size: 15px; } .hgrid .badge b { font-size: 12px; }
+/* New video, Ideas, form grid */
+@media (min-width: 600px) {
+  .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  .fgrid .f.wide { grid-column: 1 / -1; }
+}
+/* ---- Tablet: side rail and wide pages ---- */
+@media (min-width: 760px) {
+  :root { --rail: 92px; }
+  .top { position: fixed; left: 0; top: 0; width: var(--rail); height: 96px; flex-direction: column; justify-content: center; gap: 8px; padding: 10px 6px; z-index: 6; box-shadow: none; }
+  .brand span { display: none; } .brand img { width: 40px; height: 40px; border-radius: 12px; }
+  .pill { font-size: 10.5px; padding: 3px 8px; white-space: nowrap; }
+  .tabs { position: fixed; left: 0; top: 96px; bottom: 0; width: var(--rail); flex-direction: column; gap: 4px; padding: 6px 8px 16px; overflow-y: auto; border: none; backdrop-filter: none;
+    background: linear-gradient(180deg, var(--navy-2) 0%, var(--navy) 100%); z-index: 6; }
+  .tabs button { flex-direction: column; gap: 4px; padding: 10px 2px 8px; font-size: 11.5px; line-height: 1.2; text-align: center; color: rgba(255,255,255,.62); border-radius: 14px; position: relative; }
+  .tabs button svg { width: 23px; height: 23px; }
+  .tabs button:hover { color: #fff; background: rgba(255,255,255,.06); }
+  .tabs button.on { background: rgba(255,255,255,.12); color: #fff; box-shadow: none; }
+  .tabs button.on svg { color: var(--accent-2); }
+  .tabs button.on::before { content: ""; position: absolute; left: -8px; top: 12px; bottom: 12px; width: 4px; border-radius: 0 4px 4px 0; background: var(--accent-2); }
+  @media (prefers-color-scheme: dark) { .tabs button.on { background: rgba(255,255,255,.12); } }
+  main { margin: 0 0 0 var(--rail); max-width: 1480px; padding: 4px 24px 40px; }
+  h1 { font-size: 28px; margin: 14px 0 10px; }
+  .toast { left: calc(50% + var(--rail) / 2); }
+  .hgrid { grid-template-columns: 1fr 1fr; }
+  .hgrid .hc1 { grid-row: span 2; } .hgrid .hc3 { grid-column: 2; }
+  .ntiles { grid-template-columns: repeat(4, 1fr); } .ntile { padding: 10px 12px; } .ntile b { font-size: 26px; }
+}
+@media (min-width: 1100px) {
+  .hgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hgrid .hc1 { grid-row: auto; } .hgrid .hc3 { grid-column: 3; }
+}
+@media (min-width: 900px) {
+  .csplit { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 20px; align-items: start; }
+  .cside { position: sticky; top: 12px; }
+  .cside .studio { grid-template-columns: 1fr; gap: 8px; text-align: center; }
+  .cside .pv.short { max-width: 150px; } .cside .pvside .hint { display: none; } .cside .dice { margin: 4px auto 10px; }
+  .cside .budget { text-align: left; }
+  #jobForm label { margin-top: 12px; }
+  #jobForm button.primary { margin-top: 16px; }
+  #wkDays { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 0 16px; align-items: start; }
+  .isplit { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 20px; align-items: start; }
+  .iside { position: sticky; top: 12px; }
+  .rsplit { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .rsplit:has(> #commentsBox:empty) { grid-template-columns: 1fr; }
+  #queueList { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 16px; align-items: start; }
+  #queueList > .card { margin: 0; } #queueList > .board, #queueList > .empty, #queueList > :not(.card) { grid-column: 1 / -1; }
+  #statsView { columns: 2; column-gap: 16px; }
+  #statsView > * { break-inside: avoid; } #statsView > .dhero, #statsView > .tiles { column-span: all; }
+  #statsView > .dhero { margin-top: 0; }
+}
+@media (min-width: 1000px) {
+  #reviewView { columns: 2; column-gap: 20px; }
+  #reviewView > * { break-inside: avoid; } #reviewView > h1, #reviewView > .hint { column-span: all; }
+}
+.hgrid .badges { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 6px; }
+.hgrid .badge { padding: 6px 2px; gap: 2px; } .hgrid .badge .bic { width: 30px; height: 30px; font-size: 13px; } .hgrid .badge b { font-size: 11px; } .hgrid .badge .meta { font-size: 10.5px; }
+.hgrid .card > .row .meta { font-size: 13px; text-align: right; }
+.hgrid .hrowi { padding: 9px 0; }
+.hgrid .hrowi.ok .hmain > .meta { display: none; }
+@media (min-width: 760px) { .hgrid .shortcuts { display: none; } }
+@media (min-width: 900px) {
+  #tab-create > h1 { display: inline-block; margin-right: 18px; vertical-align: middle; }
+  #tab-create > .modeSeg { display: inline-flex; vertical-align: middle; width: 380px; margin: 4px 0 10px; }
+  #tab-create .seg button { padding: 9px 10px; font-size: 14.5px; }
+  .fgrid .cchip { padding: 7px 12px; font-size: 13.5px; }
+  .fgrid .chips { gap: 6px; }
+  #jobForm { padding-top: 8px; }
+  #submitBtn { display: inline-block; width: calc(62% - 10px); margin-right: 8px; vertical-align: middle; }
+  #savePreset { width: 38%; vertical-align: middle; margin: 16px 0 0; padding: 14px 10px; }
+}
+.rmin { white-space: nowrap; }
+@media (min-width: 900px) {
+  #statsView > .dhero { display: grid; grid-template-columns: auto 1fr; column-gap: 28px; align-items: end; padding: 18px 22px; }
+  #statsView > .dhero .k, #statsView > .dhero h2 { grid-column: 1 / -1; } #statsView > .dhero h2 { margin-bottom: 6px; }
+  #statsView > .dhero .big { font-size: 44px; } #statsView > .dhero .lbl { grid-column: 1; }
+  #statsView > .dhero .next { grid-column: 2; grid-row: 3 / span 2; margin-top: 0; }
+}
+@media (min-width: 760px) and (max-width: 899px) {
+  #statsView { columns: 2; column-gap: 14px; } #statsView > * { break-inside: avoid; } #statsView > .dhero, #statsView > .tiles { column-span: all; }
+}
