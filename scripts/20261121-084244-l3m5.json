@@ -1,0 +1,3250 @@
+{
+  "job_id": "20261121-084244-l3m5",
+  "created": "2026-11-21T04:10:42+00:00",
+  "format": "long",
+  "working_title": "The Dead Man Who Fooled Hitler: Operation Mincemeat",
+  "hook": "An entire army's survival hung on a single, impossible question: could a dead man convince Adolf Hitler to walk straight into a trap?",
+  "hook_style": "stakes",
+  "structure": "Countdown of the key moments that led to the outcome, building tension toward the final one.",
+  "style": "stills",
+  "cast": [],
+  "places": [
+    {
+      "id": "c0_p0",
+      "look": "A wide cinematic establishing shot of a gloomy London command room in late 1942, filled with period-accurate wooden desks and glowing desk lamps. In the middle ground, bevan stands with stern military posture, pointing a wooden stick at a large detailed map of Europe spread across a heavy oak table. Rich volumetric light filters through tall windows, illuminating dust motes in the air, with dark mahogany bookshelves lining the background walls.",
+      "full": true
+    },
+    {
+      "id": "c0_p1",
+      "look": "A dramatic close-up of a weather-beaten military map of the Mediterranean region pinned to a corkboard. In the background, montagu stands with an athletic build and sharp intelligent eyes, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, staring intently at the island of Sicily with a worried expression under warm desk lamp illumination.",
+      "full": true
+    },
+    {
+      "id": "c0_p2",
+      "look": "A medium shot inside a crowded wartime office, where cholmondeley stands tall and slightly gangly, wearing wire-rimmed glasses and a neat mustache, dressed in a crisp Royal Air Force flight lieutenant's blue-grey uniform. He looks down at a stack of classified papers with an anxious, thoughtful expression, surrounded by tall filing cabinets and stacked folders in a moody, dimly lit room.",
+      "full": true
+    },
+    {
+      "id": "c0_p3",
+      "look": "An illustrated antique-style painted map of Great Britain and the North Sea, seen from above, rendered in rich parchment tones with delicate ink shading. Small painted landmarks of London and naval ports are visible, with tiny vintage naval ships sailing across the dark painted waters and absolutely no written labels.",
+      "full": true
+    },
+    {
+      "id": "c0_p4",
+      "look": "A dramatic medium shot of a dimly lit Admiralty office in 1939. A senior naval officer sits at a dark wooden desk under the warm pool of a brass desk lamp, holding an old fountain pen above a thick stack of vintage papers. Piles of ledgers and historical documents fill the foreground, creating a rich sense of depth and secrecy.",
+      "full": true
+    },
+    {
+      "id": "c0_p5",
+      "look": "A close-up of an aged, handwritten wartime document resting on a wooden desk, illuminated by a single overhead light bulb casting soft shadows. The paper shows period-accurate cursive ink handwriting, with an inkwell and metal nib pen resting nearby on the polished wood surface.",
+      "full": true
+    },
+    {
+      "id": "c0_p6",
+      "look": "A medium shot of a handsome young naval intelligence officer with dark slicked hair, wearing a tidy uniform, sitting at a cluttered desk in front of a tall window overlooking a misty London street. He holds a burning pipe, smiling with a clever, imaginative expression as he gazes off into the middle distance.",
+      "full": true
+    },
+    {
+      "id": "c0_p7",
+      "look": "A wide historical battle scene set in a dusty North African desert at dusk. A wrecked, smoke-damaged military scout car sits abandoned in a vast expanse of sand, surrounded by dramatic golden-hour lighting, volumetric dust particles, and rolling dunes in the background.",
+      "full": true
+    },
+    {
+      "id": "c0_p8",
+      "look": "A dramatic wide shot of a grey World War II transport aircraft plunging down toward dark, choppy ocean waves under a stormy, overcast sky. The horizon is filled with heavy grey storm clouds, dramatic cool lighting, and crashing white foam against the turbulent sea.",
+      "full": true
+    },
+    {
+      "id": "c0_p9",
+      "look": "A medium shot of a weathered Spanish coastline at dawn, with rugged cliffs and grey sand. A worn black leather dispatch case with brass locks lies half-submerged in the gentle shoreline wash, catching the pale morning light while distant fishing boats dot the horizon.",
+      "full": true
+    },
+    {
+      "id": "c0_p10",
+      "look": "A tense close-up inside a secret listening post, where a British signals operator wearing heavy headphones leans over glowing vacuum tubes and clicking decoding equipment. Warm amber light glows from the machinery, casting deep shadows across his focused face.",
+      "full": true
+    },
+    {
+      "id": "c0_p11",
+      "look": "A medium portrait shot of cholmondeley standing proudly in his RAF blue-grey uniform inside a wood-paneled London office. He adjusts his wire-rimmed glasses with a determined, scholarly expression, surrounded by tall stacks of intelligence files and period filing cabinets under warm indoor lighting.",
+      "full": true
+    },
+    {
+      "id": "c0_p12",
+      "look": "A wide shot of a British Coastal Command bomber flying low over dark, churning ocean waves under a moody, overcast afternoon sky. The aircraft's twin engines roar, leaving faint exhaust trails in the damp sea air, with dramatic cool lighting illuminating the metal fuselage.",
+      "full": true
+    },
+    {
+      "id": "c0_p13",
+      "look": "A medium group shot around a polished oak conference table in a smoky Whitehall room. Several stern officers in uniform sit in deep discussion, with period ash trays, brass desk lamps, and scattered documents spread across the green blotter under dramatic overhead warm lighting.",
+      "full": true
+    },
+    {
+      "id": "c0_p14",
+      "look": "A dramatic close-up of montagu and cholmondeley standing side by side in a dimly lit hallway of the Admiralty. Montagu wears his crisp Royal Naval Intelligence commander's uniform with gold braid, looking forward with sharp, confident eyes, while cholmondeley stands beside him in his RAF uniform, both illuminated by warm, atmospheric wall sconces.",
+      "full": true
+    },
+    {
+      "id": "c1_p0",
+      "look": "Wide establishing shot of a gloomy, rain-slicked London street in 1942 with period-accurate double-decker buses and gas lamps, transitioning through a large arched window into a wood-paneled MI5 office. Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, stands by the desk looking determined and nervous under warm desk lamp lighting, deep shadows around the room. Cinematic composition with rain streaming down the glass.",
+      "full": true
+    },
+    {
+      "id": "c1_p1",
+      "look": "Medium close-up of Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, earnestly holding open a typed military document labeled with secret diagrams. The lighting is focused and warm, highlighting his intense, studious expression inside a quiet Whitehall office with dark wood paneling and filing cabinets in the background.",
+      "full": true
+    },
+    {
+      "id": "c1_p2",
+      "look": "Medium shot of Colonel johnny bevan, 50s, sturdy build, stern military posture, thinning grey hair, wearing a British Army colonel's service dress with ribbons, sitting behind a heavy mahogany desk, frowning down at a paper handed to him by a dejected Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform. Dramatic overhead desk lighting casting sharp shadows.",
+      "full": true
+    },
+    {
+      "id": "c1_p3",
+      "look": "Medium shot of Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, leaning against a large oak bookshelf filled with leather-bound ledgers, examining a file with an amused and curious smile. Warm volumetric light pouring through a tall office window.",
+      "full": true
+    },
+    {
+      "id": "c1_p4",
+      "look": "Medium two-shot of Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, and Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, leaning over a large wooden table spread with maps and notes. Warm, dramatic desk lamp lighting in a quiet underground operations room.",
+      "full": true
+    },
+    {
+      "id": "c1_p5",
+      "look": "Medium shot of Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, intently discussing notes with an elderly medical expert in a sterile, white-tiled London hospital laboratory filled with glass specimen jars and surgical instruments. Cool clinical lighting contrasting with warm skin tones.",
+      "full": true
+    },
+    {
+      "id": "c1_p6",
+      "look": "Close-up of medical charts and anatomical drawings resting on a metal examination table, with Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, pointing a gloved finger at a specific lung diagram under bright surgical spotlight illumination.",
+      "full": true
+    },
+    {
+      "id": "c1_p7",
+      "look": "Medium shot of an aged medical ledger open on a mahogany stand, illuminated by a single brass desk lamp in a shadowy archive room, surrounded by leather-bound autopsy reports and medical instruments. Cinematic depth of field with soft warm lighting.",
+      "full": true
+    },
+    {
+      "id": "c1_p8",
+      "look": "Medium shot of Bentley Purchase, 40s, balding with sharp spectacles, wearing a tweed suit, leaning across a cluttered wooden coroner's desk in a dimly lit office, speaking earnestly to Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons. Warm, smoky atmosphere.",
+      "full": true
+    },
+    {
+      "id": "c1_p9",
+      "look": "Medium shot of Bentley Purchase opening a heavy ledger on his desk, looking up gravely at Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, who stands attentively nearby. Moody office lighting with strong shadows.",
+      "full": true
+    },
+    {
+      "id": "c1_p10",
+      "look": "Medium close-up of Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, picking up an old black telephone receiver in his office with a tense, focused expression. Warm lamplight reflecting off polished wood.",
+      "full": true
+    },
+    {
+      "id": "c1_p11",
+      "look": "Interior morgue setting: wide shot of a refrigerated metal vault drawer pulled slightly open, casting a cold, misty blue light across the room where Ewen montagu and Charles cholmondeley stand in their uniforms, looking down somberly.",
+      "full": true
+    },
+    {
+      "id": "c1_p12",
+      "look": "Medium close-up of Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, writing notes in a small black ledger by the dim light of a hallway lamp outside a hospital mortuary. Moody, atmospheric lighting.",
+      "full": true
+    },
+    {
+      "id": "c1_p13",
+      "look": "Dramatic close-up of a vintage thermometer gauge mounted on a cold tile wall, the needle pointing precisely to four degrees Celsius, with frosted condensation around the metal rim. Chilly blue and white cinematic lighting.",
+      "full": true
+    },
+    {
+      "id": "c1_p14",
+      "look": "Medium shot of Ewen montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, and Charles cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, staring intently at a blank leather dispatch case on a large oak table under a glowing green banker's lamp. Moody, suspenseful lighting.",
+      "full": true
+    },
+    {
+      "id": "c2_p0",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing montagu and cholmondeley inside a dimly lit London mortuary, both looking down with serious expressions toward a stainless steel table, volumetric light streaming through a high frosted window, period-accurate medical cabinets and tile walls in the background, cinematic composition with strong foreground depth, dramatic warm and cool lighting, painterly textures",
+      "full": true
+    },
+    {
+      "id": "c2_p1",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing glyndwr lying peacefully on a mortuary table in dim light, his pale face and dark unkempt hair visible, wearing worn and dirty civilian clothes from 1943, soft cool light falling from above, moody atmosphere, painterly textures, expressive and respectful portrayal",
+      "full": true
+    },
+    {
+      "id": "c2_p2",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing montagu and cholmondeley consulting an elderly medical expert over a heavy leather-bound ledger in a wood-paneled office, warm desk lamp lighting casting deep shadows, books and medical instruments on shelves in the background, cinematic composition",
+      "full": true
+    },
+    {
+      "id": "c2_p3",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing a heavy metal refrigeration door slightly ajar in a cold London basement room, cold mist escaping into the air, montagu watching anxiously as a refrigeration technician checks a thermometer on the wall, dramatic lighting with blue tones, highly detailed stone floor and pipes",
+      "full": true
+    },
+    {
+      "id": "c2_p4",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing montagu standing alone in front of a tall arched window looking out over a rainy London street at dusk, warm interior glow contrasting with cool blue rain outside, pensive expression, painterly textures",
+      "full": true
+    },
+    {
+      "id": "c2_p5",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing cholmondeley and hester sitting at a cluttered wooden desk covered in scattered papers, ink bottles, and fountain pens, working intently under the warm glow of a green-shaded desk lamp, serious and focused expressions, period-accurate office setting with deep background shelves",
+      "full": true
+    },
+    {
+      "id": "c2_p6",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing cholmondeley carefully holding a briefcase on a polished oak table, adjusting its brass locks while montagu stands nearby pointing to a leather wrist strap, warm overhead lighting highlighting the rich texture of the leather",
+      "full": true
+    },
+    {
+      "id": "c2_p7",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing jean and hester sorting through theater ticket stubs, department store receipts, and handwritten notes at a wooden table, bright desk light illuminating their concentrated faces, smart wartime clerical attire, cozy office background with filing cabinets",
+      "full": true
+    },
+    {
+      "id": "c2_p8",
+      "look": "A richly detailed hand-painted illustration in the style of a high-end animated feature film showing jean holding up a small sepia photograph of herself smiling gently, looking down at it with a thoughtful expression, warm side lighting highlighting her smart dark-blue MI5 clerical uniform jacket, soft background blur of a London office",
+      "full": true
+    },
+    {
+      "id": "c2_p9",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing hester sitting at a wooden desk with a fountain pen in hand, writing carefully on cream-colored stationery, warm lamplight casting a gentle glow on her kind face and grey-streaked hair, ink well and blotting paper nearby",
+      "full": true
+    },
+    {
+      "id": "c2_p10",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing montagu and jean standing side by side in a dimly lit upscale London jewelry shop, an antique glass counter displaying vintage rings between them, warm atmospheric lighting, period-accurate shop interior with polished mahogany wood",
+      "full": true
+    },
+    {
+      "id": "c2_p11",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing cholmondeley using tweezers to place small worn paper receipts into an open leather wallet on a workbench, bright spotlight on the items, magnifying glass resting nearby, highly detailed textures",
+      "full": true
+    },
+    {
+      "id": "c2_p12",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing cholmondeley inspecting a large, heavy metal cylindrical canister in a dimly lit workshop, metal rivets and latches gleaming under industrial work lights, cold metallic atmosphere",
+      "full": true
+    },
+    {
+      "id": "c2_p13",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing bevan sitting at a large mahogany desk examining a thick leather-bound intelligence file, stern posture and thoughtful expression, warm desk lamp lighting, British flags and maps hanging on the wood-paneled walls in the background",
+      "full": true
+    },
+    {
+      "id": "c2_p14",
+      "look": "A richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film showing hms seraph cutting through dark, choppy ocean waves under a moonlit stormy night sky, water spray catching the moonlight against the dark grey metal hull, dramatic volumetric atmosphere",
+      "full": true
+    },
+    {
+      "id": "c3_p0",
+      "look": "A wide cinematic shot of a cluttered 1943 British intelligence office in London, period-accurate desks piled with papers and files under soft lamplight. Ewen Montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, is leaning over a large wooden table examining documents with a thoughtful expression. In the middle ground, Charles Cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, is carefully sorting through old receipts and theater programs. Rich volumetric light filters through a tall window showing a dark, foggy London evening outside.",
+      "full": true
+    },
+    {
+      "id": "c3_p1",
+      "look": "A medium cinematic shot inside the busy MI5 office. Hester Leggatt, 40s, kind eyes, grey-streaked hair pinned back in a bun, wearing a practical brown wool dress with a white collar, stands by a wooden filing cabinet, holding a bundle of correspondence with a calm, discerning expression. In the background, desks and filing shelves stretch into the shadows with warm brass desk lamps casting a gentle glow. The room is quiet and focused.",
+      "full": true
+    },
+    {
+      "id": "c3_p2",
+      "look": "A close-up cinematic shot of Jean Leslie, 20s, bright and resourceful, neatly styled brown hair, wearing a smart dark-blue MI5 clerical uniform jacket and skirt, sitting at a polished wooden desk holding a small black-and-white photograph. She looks down at the image with a gentle, slightly mischievous smile, her face illuminated softly by a desk lamp. The background shows blurred vintage office shelving and binders.",
+      "full": true
+    },
+    {
+      "id": "c3_p3",
+      "look": "A dramatic close-up of a fountain pen gliding across cream-colored stationery on a mahogany desk. Hester Leggatt's hand, wearing a wool sleeve, carefully writes cursive ink words. In the soft background, Jean Leslie watches closely, her expression attentive and warm. Warm lamplight creates deep golden tones across the desk surface, highlighting ink bottles and blotting paper.",
+      "full": true
+    },
+    {
+      "id": "c3_p4",
+      "look": "A medium shot of Hester Leggatt, 40s, kind eyes, grey-streaked hair pinned back in a bun, wearing a practical brown wool dress with a white collar, sitting at a wooden table reading over a handwritten letter with a tender, melancholic expression. Beside her stands Jean Leslie, 20s, bright and resourceful, neatly styled brown hair, wearing a smart dark-blue MI5 clerical uniform jacket and skirt, looking over Hester's shoulder with deep admiration. The lighting is soft and warm.",
+      "full": true
+    },
+    {
+      "id": "c3_p5",
+      "look": "A close-up shot of a handwritten letter resting on a wooden blotter, showing elegant wartime cursive writing. In the soft focus background, Ewen Montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, looks down at the paper with an approving nod. Warm ambient lighting fills the room.",
+      "full": true
+    },
+    {
+      "id": "c3_p6",
+      "look": "A wide establishing shot of a bustling London street in 1943, period-accurate vintage double-decker buses and pedestrians in heavy coats walking past brick shopfronts with blackout curtains. Ewen Montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, walks alongside Jean Leslie, 20s, bright and resourceful, neatly styled brown hair, wearing a smart dark-blue MI5 clerical uniform jacket and skirt, under a grey afternoon sky with a light drizzle.",
+      "full": true
+    },
+    {
+      "id": "c3_p7",
+      "look": "A medium shot inside a dimly lit, wood-paneled London restaurant. Ewen Montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, sits across a small round table from Jean Leslie, 20s, bright and resourceful, neatly styled brown hair, wearing a smart dark-blue MI5 clerical uniform jacket and skirt. They are examining a restaurant bill and theater tickets spread across the white tablecloth. Warm candlelight flickers on their faces.",
+      "full": true
+    },
+    {
+      "id": "c3_p8",
+      "look": "A medium close-up of Charles Cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, bending intently over a Royal Marines uniform laid out on a large metal table in a sterile basement room. He uses tweezers to slide a small paper receipt into the breast pocket. Cold fluorescent light overhead casts stark shadows, creating an atmosphere of meticulous scientific precision.",
+      "full": true
+    },
+    {
+      "id": "c3_p9",
+      "look": "A medium shot in the intelligence office. Charles Cholmondeley, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, stands by a doorway holding a stack of files, looking across the room with a tense, melancholic expression. In the middle ground, Ewen Montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, and Jean Leslie, 20s, bright and resourceful, neatly styled brown hair, wearing a smart dark-blue MI5 clerical uniform jacket and skirt, are smiling together over a document. Dramatic side lighting highlights Charles's troubled face.",
+      "full": true
+    },
+    {
+      "id": "c3_p10",
+      "look": "A medium shot of Colonel Johnny Bevan, 50s, sturdy build, stern military posture, thinning grey hair, wearing a British Army colonel's service dress with ribbons, sitting behind a heavy mahogany desk covered in neatly stacked files. He holds Major Martin's leather wallet in his hands, examining an identity card with a critical, evaluating stare. Warm desk lamp illumination casts sharp highlights on his uniform buttons and stern features.",
+      "full": true
+    },
+    {
+      "id": "c3_p11",
+      "look": "A dramatic close-up shot of the briefcase resting on a dark wooden surface. The worn black leather dispatch case with brass locks and a leather carrying handle is partially open, revealing official-looking documents with red 'Top Secret' stamps. Volumetric light cuts across the frame from a side window, highlighting dust motes dancing in the air.",
+      "full": true
+    },
+    {
+      "id": "c3_p12",
+      "look": "An illustrated antique-style painted map of the Mediterranean region seen from above, rendered in muted parchment tones with painted blue oceans. Small painted landmarks represent Gibraltar, Spain, Sardinia, Greece, and Sicily, connected by faint dotted red ink lines indicating military movements and deceptive routes. No modern text or labels appear on the map. Warm ambient lighting gives it an authentic wartime briefing room feel.",
+      "full": true
+    },
+    {
+      "id": "c3_p13",
+      "look": "A cinematic medium shot of the corpse dressed in a complete Royal Marines officer uniform, lying peacefully on a stainless steel mortuary table under cool clinical lighting. The uniform is neat and pressed, with the leather briefcase resting beside the body. Ewen Montagu, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, stands at the foot of the table, looking down with a solemn, respectful expression.",
+      "full": true
+    },
+    {
+      "id": "c3_p14",
+      "look": "A wide cinematic shot of HMS Seraph, a World War II British Royal Navy S-class submarine, dark grey metal hull, conning tower with periscope, cutting through dark ocean waves under a dramatic, starless night sky with heavy clouds rolling in. White foam crashes against the bow as the vessel slices silently through the black water.",
+      "full": true
+    },
+    {
+      "id": "c4_p0",
+      "look": "A wide establishing shot of montagu and cholmondeley standing on a rainy naval dock at night, watching dockworkers lift a heavy metal cylinder. Montagu wears a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, his 40s athletic build and sharp intelligent eyes illuminated by a harsh overhead yellow lamp. Cholmondeley wears a crisp Royal Air Force flight lieutenant's blue-grey uniform, his 30s tall and slightly gangly frame bent slightly with wire-rimmed glasses and a neat mustache. In the background, dark industrial cranes loom against a gloomy sky with volumetric mist swirling around wet cobblestones. Cinematic composition with strong foreground depth, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p1",
+      "look": "A medium shot of sailors on a dark submarine deck wrestling a long watertight canister toward an open hatch under moonlight. In the middle ground, the sleek dark hull of hms seraph, a World War II British Royal Navy S-class submarine, dark grey metal hull, conning tower with periscope, rests against the black water of the Scottish loch. The atmosphere is heavy with sea spray and dramatic cool blue lighting reflecting off wet metal surfaces. Cinematic composition with rich painterly textures, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p2",
+      "look": "A dramatic close-up of a submarine captain in his 30s with salt-crusted hair and a grim, determined expression, standing inside the cramped, dimly lit conning tower of hms seraph. He wears a dark wool turtleneck sweater under a leather naval coat. Red instrument glow illuminates his weathered face, while brass dials and glowing compass needles gleam in the foreground. Cinematic composition with shallow depth of field, volumetric atmosphere, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p3",
+      "look": "A wide interior shot of the cramped torpedo bay inside hms seraph. The dark grey metallic canister is strapped tightly to a rack beneath rows of torpedoes. Crew members in blue dungarees move past in the narrow middle ground, their faces tense and focused. The lighting is harsh and golden from bulkhead lamps, casting deep shadows across the riveted steel walls. Cinematic composition with strong background depth, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p4",
+      "look": "A medium shot of two exhausted sailors leaning against a green steel bulkhead inside hms seraph, wiping sweat from their brows by the dim glow of an overhead bulb. Pipes and valves line the background wall, covered in condensation. The lighting is moody and claustrophobic, with strong warm highlights on the men's tired faces and cool shadows in the corners. Cinematic composition, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p5",
+      "look": "An illustrated antique-style painted map of the Iberian Peninsula and the Mediterranean seen from above, rendered in rich parchment tones with sepia ink lines and faded watercolours. Small painted landmarks show Madrid and Gibraltar, with a tiny painted hms seraph marking the Gulf of Cádiz near Huelva. Compass roses and swirling wind patterns adorn the corners. Warm golden lighting from above, cinematic composition with no written labels, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p6",
+      "look": "A wide establishing shot of hms seraph cutting through dark ocean waves at night under a starless sky. The conning tower is silhouetted against shimmering black water reflecting a faint sliver of moonlight. The atmosphere is tense and silent, with volumetric mist rolling across the surface of the sea. Cinematic composition with strong foreground water ripples and deep background horizon, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p7",
+      "look": "A medium shot of sailors straining to heave a dark grey metallic canister onto the wet upper deck of hms seraph. The men wear waterproof rubber coats glistening with sea spray. In the background, the dark silhouette of the conning tower rises against a deep indigo night sky. Dramatic moonlight catches the edges of the metal tube and the intense expressions on the crew's faces. Cinematic composition, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p8",
+      "look": "A dramatic close-up of a sailor's hands in leather gloves unscrewing large brass bolts on the end of the watertight canister lid. Water drips from the threads under the beam of a shielded red flashlight. The dark grey metal surface of the cylinder is slick with ocean brine. Cinematic composition with shallow depth of field and warm red lighting cutting through the dark, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p9",
+      "look": "A medium shot on the deck of hms seraph where sailors carefully slide the lifeless body out of the metal cylinder. The body wears a woolen Royal Marines officer's uniform with brass buttons gleaming faintly in the dark. The pale face of glyndwr michael is serene and waxen under the moonlight. The surrounding sailors look on with somber, respectful expressions. Cinematic composition with dramatic cool and warm lighting, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p10",
+      "look": "A dramatic close-up of briefcase, a worn black leather dispatch case with brass locks and a leather carrying handle, strapped securely to the chest of the corpse in its Royal Marines uniform. The leather is wet with seawater, and the brass clasps catch a sharp gleam of moonlight. In the blurry background, the dark wooden planks of the submarine deck glisten. Cinematic composition, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p11",
+      "look": "A medium shot of Lieutenant Jewell standing bareheaded on the deck of hms seraph with his eyes closed in quiet reflection, holding a small prayer book. Around him, several sailors stand at rigid attention in the gloom. The ocean swells gently against the hull, and moonlight casts long shadows across the metal deck. Cinematic composition with solemn emotional depth, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p12",
+      "look": "A wide shot of sailors gently lowering the uniformed body into the dark water beside hms seraph. An inflated yellow rubber life jacket is strapped around the torso. The water ripples outward in concentric circles under pale moonlight, reflecting the dark hull of the submarine. Cinematic composition with atmospheric mist and volumetric lighting, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p13",
+      "look": "A medium close-up of Lieutenant Jewell looking out across the dark water from the deck of hms seraph, his face illuminated by the first faint golden glow of dawn on the horizon. His expression is a mix of tension and profound relief. In the middle ground, the lone figure in uniform bobs gently among the small ocean waves. Cinematic composition, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c4_p14",
+      "look": "A wide shot of hms seraph sliding beneath the dark ocean surface, leaving a churning trail of white foam and bubbles in the gray light of dawn. In the foreground, the lone figure of the dead man drifts calmly on the rolling waves toward the distant coast of Spain. Cinematic composition with dramatic morning lighting and atmospheric mist, hand-painted animation style.",
+      "full": true
+    },
+    {
+      "id": "c5_p0",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a Spanish fisherman in a small wooden boat on calm coastal waters at sunrise, looking in astonishment at a dark shape bobbing near the shore, period-accurate fishing nets and rustic wooden dock in the background, warm golden and orange morning lighting, volumetric mist rolling over the water, painterly textures, cinematic composition with strong depth.",
+      "full": true
+    },
+    {
+      "id": "c5_p1",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing Spanish coastal officials and fishermen standing on a sandy beach around a covered stretcher under the bright morning sun, whitewashed Spanish stucco buildings visible in the distance, period-accurate clothing and coastal landscape, bright natural daylight with sharp shadows, cinematic composition.",
+      "full": true
+    },
+    {
+      "id": "c5_p2",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, featuring francis haselden standing on a sun-drenched cobblestone street in Huelva, wearing a rumpled civilian linen suit suitable for sunny Spain, with a relaxed posture and sun-weathered skin, looking intently toward a municipal building, warm afternoon sunlight, period-accurate Spanish architecture with terracotta tile roofs, painterly textures.",
+      "full": true
+    },
+    {
+      "id": "c5_p3",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a shadowy figure in a fedora and trench coat peering from behind a wooden tavern window in Huelva at midday, looking out toward a sunlit square where people walk by, dramatic chiaroscuro lighting, dark interior contrasting with bright exterior, period-accurate street details.",
+      "full": true
+    },
+    {
+      "id": "c5_p4",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, featuring montagu in his 40s with an athletic build, sharp intelligent eyes, dark hair neatly combed, wearing a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, standing next to cholmondeley in his 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache, wearing a crisp Royal Air Force flight lieutenant's blue-grey uniform, both looking tense inside a wood-paneled London office with maps on the wall, warm desk lamp lighting.",
+      "full": true
+    },
+    {
+      "id": "c5_p5",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing the interior of a modest, dimly lit municipal mortuary in Huelva, a Spanish doctor in a white lab coat standing over a metal examination table with period-accurate medical instruments, cool clinical lighting with a single overhead lamp casting dramatic shadows, stone walls and arched doorways in the background.",
+      "full": true
+    },
+    {
+      "id": "c5_p6",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, featuring francis haselden in his sun-weathered linen suit speaking earnestly with a Spanish military officer inside a high-ceilinged government office in Huelva, dark polished wooden desk between them with official documents, warm afternoon sunlight streaming through tall shuttered windows, cinematic depth of field.",
+      "full": true
+    },
+    {
+      "id": "c5_p7",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a Spanish doctor writing a report at a wooden desk with ink and quill, open medical ledgers spread out before him, soft daylight filtering through a barred window, period-accurate inkwell and spectacles resting on the desk, painterly textures.",
+      "full": true
+    },
+    {
+      "id": "c5_p8",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, featuring the briefcase resting on a wooden table in a Spanish police station, the worn black leather dispatch case with brass locks and a leather carrying handle catching the afternoon light, official papers and a military cap lying beside it, dramatic side lighting.",
+      "full": true
+    },
+    {
+      "id": "c5_p9",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing two German intelligence officers in dark civilian suits conferring urgently in a dimly lit Spanish hotel corridor, wooden paneling and vintage wallpaper in the background, low-key moody lighting with warm wall sconces, cinematic composition.",
+      "full": true
+    },
+    {
+      "id": "c5_p10",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a Spanish military officer handing a leather folder across a mahogany desk to a waiting German agent in a sharp suit, a high-ceilinged office in Huelva with tall windows overlooking a sunny plaza, warm afternoon lighting, period-accurate interior.",
+      "full": true
+    },
+    {
+      "id": "c5_p11",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing hands in white gloves carefully lifting official-looking documents with red wax seals from the interior of the open briefcase on a green felt-covered table, overhead desk lamp casting a focused pool of light on the papers, dark surrounding room.",
+      "full": true
+    },
+    {
+      "id": "c5_p12",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a German intelligence officer using a vintage magnifying glass to examine handwritten British military correspondence on official letterhead, another agent standing nearby watching intently, dramatic tabletop lighting, period-accurate desk accessories.",
+      "full": true
+    },
+    {
+      "id": "c5_p13",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, featuring francis haselden standing near a street corner in Huelva at dusk, looking thoughtfully toward a grand government building across the square, warm sunset sky turning purple and orange, soft volumetric evening light, painterly textures.",
+      "full": true
+    },
+    {
+      "id": "c5_p14",
+      "look": "A rich, detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, featuring hitler in his 50s with slicked dark hair, small mustache, wearing a grey military tunic with iron cross medal, sitting at a massive carved wooden desk in Berlin reviewing intelligence reports, dramatic overhead lighting casting deep shadows across a map-strewn room, ominous and tense mood.",
+      "full": true
+    },
+    {
+      "id": "c6_p0",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a dimly lit subterranean German communications bunker in Berlin filled with complex period-accurate radio equipment, vacuum tubes glowing softly, and telegraph machines clicking away, cinematic composition with strong foreground depth, dramatic cool lighting with warm amber glows from desk lamps, volumetric atmosphere with drifting dust motes, wide establishing shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p1",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing adolf hitler sitting at a heavy mahogany desk covered in maps and reports in a grand Berlin office, slicked dark hair, small mustache, wearing a grey military tunic with iron cross medal, looking at documents with an intense and agitated expression, cinematic composition, dramatic warm lighting from a single desk lamp casting long shadows, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p2",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing adolf hitler standing before a giant wall-mounted military map of Europe covered in colored pins and markers, wearing his grey military tunic with iron cross medal, pointing a finger fiercely at Greece with a tense and determined expression, cinematic composition, moody volumetric lighting, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p3",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a stern German general at a command table in a war room surrounded by subordinate officers looking worriedly at him, period-accurate uniforms and maps spread across the wooden table, dramatic overhead lighting, tense mood, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p4",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing montagu in his crisp British Royal Naval Intelligence commander's uniform and cholmondeley in his Royal Air Force blue-grey uniform standing together in a crowded wartime office in London, looking over a translated paper with expressions of stunned amazement, warm desk lighting, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p5",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing bevan in his British Army colonel's service dress reviewing stacks of decoded signals in his office, looking up with a satisfied and impressed smile, warm interior lighting, cinematic composition, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p6",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing jean in her smart dark-blue MI5 clerical uniform jacket and hester in her practical brown wool dress with a white collar standing together in a busy communications room, smiling warmly at each other amidst ringing telephones, soft window light, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p7",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from an antique-style painted map of Europe seen from above, showing painted coastal landmarks and miniature ships sailing toward Greece and Sardinia, with warm sepia and ochre tones, cinematic lighting, wide establishing shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p8",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a column of German military trucks and marching soldiers moving along a dusty Mediterranean coastal road under a bright sunny sky, period-accurate uniforms and canvas-covered vehicles, volumetric dust in the air, wide establishing shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p9",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing German artillery crews hoisting heavy anti-aircraft guns into position along a rugged Mediterranean clifftop overlooking blue waters, period-accurate steel helmets and uniforms, dramatic sunlight, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p10",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a quiet, lonely Sicilian coastal village with empty stone roads and sparse, unprepared Italian coastal defenses under a bright afternoon sun, tranquil atmosphere before the storm, wide establishing shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p11",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing montagu in his crisp British Royal Naval Intelligence commander's uniform sitting at his desk holding a decrypted signal with a wide, relieved smile, warm desk lamp illumination, medium close-up.",
+      "full": true
+    },
+    {
+      "id": "c6_p12",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing cholmondeley in his Royal Air Force blue-grey uniform standing by a tall window holding a glass of amber liquid, looking out over the London rooftops at dusk, warm interior glow, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p13",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a massive convoy of Allied naval destroyers and troop transport ships cutting through dark ocean waves under a starless night sky, dramatic cool moonlight reflecting off the water, wide establishing shot.",
+      "full": true
+    },
+    {
+      "id": "c6_p14",
+      "look": "Richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, showing a dramatic low-angle close-up of a rusted metal landing craft ramp dropping against a shoreline at dawn, smoke drifting across the water, intense cinematic lighting, medium shot.",
+      "full": true
+    },
+    {
+      "id": "c7_p0",
+      "look": "Cinematic wide establishing shot of Adolf Hitler standing over a large wooden war map in a dimly lit Berlin command bunker at night. Adolf Hitler wears a grey military tunic with iron cross medal, slicked dark hair, small mustache, staring intently at the map with a furrowed brow and worried expression. Period-accurate maps and glowing desk lamps fill the room. Dramatic cool and warm lighting with volumetric atmosphere.",
+      "full": true
+    },
+    {
+      "id": "c7_p1",
+      "look": "Cinematic medium shot of massive grey Allied landing craft cutting through sparkling blue Mediterranean waves toward the rugged coastline of Sicily under a bright morning sun. Soldiers in period-accurate helmets and wool uniforms crowd the deck, holding rifles. In the middle ground, huge warships loom against the horizon. Painterly textures, bright natural daylight.",
+      "full": true
+    },
+    {
+      "id": "c7_p2",
+      "look": "Cinematic wide shot of Allied troops establishing a secure beachhead on a wide sandy beach in Sicily, surrounded by rolling hills under a warm afternoon sun. Soldiers march inland past stacked supplies and small landing craft. Golden volumetric light streams through coastal haze, highlighting expressive faces filled with relief and determination.",
+      "full": true
+    },
+    {
+      "id": "c7_p3",
+      "look": "Cinematic medium shot of Ewen Montagu standing in a wood-paneled MI5 office in London during daylight. Ewen Montagu wears a crisp British Royal Naval Intelligence commander's uniform with gold braid and brass buttons, 40s, athletic build, sharp intelligent eyes, dark hair neatly combed, holding a stack of papers and smiling warmly. Sunlight pours through a tall leaded window, illuminating dust motes in the air.",
+      "full": true
+    },
+    {
+      "id": "c7_p4",
+      "look": "Cinematic medium shot inside a bustling Whitehall office. Charles Cholmondeley stands beside Colonel Johnny Bevan. Charles Cholmondeley wears a crisp Royal Air Force flight lieutenant's blue-grey uniform, 30s, tall and slightly gangly, wire-rimmed glasses, neat mustache. Colonel Johnny Bevan wears a British Army colonel's service dress with ribbons, 50s, sturdy build, stern military posture, thinning grey hair. Both share a rare, triumphant smile. Warm indoor lighting, rich period-accurate furniture.",
+      "full": true
+    },
+    {
+      "id": "c7_p5",
+      "look": "Cinematic medium shot of Jean Leslie and Hester Leggatt working together at a wooden desk covered in typed documents and black-and-white photographs in a wood-paneled London office. Jean Leslie wears a smart dark-blue MI5 clerical uniform jacket and skirt, 20s, bright and resourceful, neatly styled brown hair, looking thoughtfully at a photograph. Hester Leggatt wears a practical brown wool dress with a white collar, 40s, kind eyes, grey-streaked hair pinned back in a bun, writing carefully with a fountain pen. Soft afternoon light.",
+      "full": true
+    },
+    {
+      "id": "c7_p6",
+      "look": "Cinematic medium shot of an intelligence officer staring at a wall covered in interconnected black-and-white photographs, telegrams, and string maps in an underground bunker. The officer's face is illuminated by a single overhead bulb, casting deep, dramatic shadows. Painterly textures, smoky atmosphere, rich period-accurate details.",
+      "full": true
+    },
+    {
+      "id": "c7_p7",
+      "look": "Cinematic dramatic close-up of a worn black leather dispatch case with brass locks and a leather carrying handle resting on a polished wooden table in a dimly lit archive room. Ewen Montagu's gloved hand gently rests on the leather strap. Deep shadows, warm amber desk lamp light highlighting the aged texture of the leather.",
+      "full": true
+    },
+    {
+      "id": "c7_p8",
+      "look": "Cinematic medium shot of Glyndwr Michael sitting alone on a dimly lit wooden bench inside a stark, shabby London room in 1943. Glyndwr Michael wears worn and dirty civilian clothes from 1943, 30s, frail build, pale skin, dark unkempt hair, looking downward with a sorrowful, exhausted expression. Low-key dramatic lighting casting long shadows against a peeling wallpaper background.",
+      "full": true
+    },
+    {
+      "id": "c7_p9",
+      "look": "Cinematic medium shot of an illustrated antique-style painted map of Wales and Southern England, seen from above, rendered in sepia and muted watercolours. Small painted landmarks and winding rivers show the regions of his life. No modern text or labels. Warm sepia lighting, aged parchment texture.",
+      "full": true
+    },
+    {
+      "id": "c7_p10",
+      "look": "Cinematic wide shot of a peaceful cemetery in Huelva under a bright Spanish sun. A simple white marble headstone stands among neatly manicured grass and Mediterranean cypress trees. A small bouquet of fresh flowers rests at the base. Warm golden hour sunlight, soft volumetric shadows, serene and respectful mood.",
+      "full": true
+    },
+    {
+      "id": "c7_p11",
+      "look": "Cinematic medium shot of an archival researcher in a quiet, sunlit London record office, carefully turning the yellowed pages of a heavy leather-bound ledger. Piles of dusty files and old black-and-white photographs surround them. Warm overhead pendant lighting casting a gentle glow on the historical documents.",
+      "full": true
+    },
+    {
+      "id": "c7_p12",
+      "look": "Cinematic close-up of a stonemason's hands carefully chiseling letters into the weathered white marble headstone in Huelva. Fine marble dust drifts in the warm afternoon air. The stone shows part of an inscription being carved with deep reverence. Dramatic side lighting highlighting the texture of the stone.",
+      "full": true
+    },
+    {
+      "id": "c7_p13",
+      "look": "Cinematic dramatic close-up of the completed white marble headstone in Huelva, bathed in warm sunset light. The carved lettering is crisp and clear, showing both names united. Delicate wildflowers grow beside the base. Soft, respectful atmosphere, rich painterly detail.",
+      "full": true
+    },
+    {
+      "id": "c7_p14",
+      "look": "Cinematic medium shot of an elderly local historian standing respectfully before the gravestone in Huelva at dusk, removing his hat in quiet tribute. The fading sun casts a gorgeous amber glow across the cemetery, reflecting soft light on the marble stone. Peaceful, emotional atmosphere.",
+      "full": true
+    },
+    {
+      "id": "c7_p15",
+      "look": "Cinematic wide establishing shot of the white cliffs of Dover under a dramatic, beautiful golden sunset over the English Channel. Period-accurate gulls glide gracefully through the warm air above rolling green coastal hills. Rich volumetric lighting and painterly sky with deep orange and purple hues.",
+      "full": true
+    }
+  ],
+  "use_guide": false,
+  "chapters": [
+    {
+      "title": "The Trout Memo and the Trap",
+      "scene": 1
+    },
+    {
+      "title": "Trojan Horse in London",
+      "scene": 16
+    },
+    {
+      "title": "Finding Major William Martin",
+      "scene": 31
+    },
+    {
+      "title": "Assembling a Fake Life",
+      "scene": 46
+    },
+    {
+      "title": "Voyage of the Seraph",
+      "scene": 61
+    },
+    {
+      "title": "The Spanish Interlude",
+      "scene": 76
+    },
+    {
+      "title": "Hitler's Fatal Mistake",
+      "scene": 91
+    },
+    {
+      "title": "Victory and Identity Revealed",
+      "scene": 106
+    }
+  ],
+  "scenes": [
+    {
+      "narration": "An entire army's survival hung on a single, impossible question: could a dead man convince Adolf Hitler to walk straight into a trap? In late 1942, Allied forces in North Africa stood victorious, but a massive strategic dilemma loomed over what to do next. Prime Minister Winston Churchill wanted to strike at Europe's soft underbelly, but the path ahead was painfully obvious to everyone watching.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c0_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, Late 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "The Trout Memo and the Trap"
+        },
+        {
+          "kind": "story",
+          "place": "c0_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, Late 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Everyone knew that Sicily was the logical stepping stone to invade continental Europe. As Churchill famously grumbled, “Everyone but a bloody fool would know that it's Sicily.” But the Germans knew it too, and they were heavily fortifying the island.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p1",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "If the Allies tried an obvious amphibious assault, thousands of young soldiers would be mown down on heavily defended beaches. British intelligence desperately needed a way to blind the enemy command and redirect their gaze somewhere else entirely.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p2",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Fortunately, the seeds of a bizarre solution had already been planted years earlier, right at the outbreak of war in September 1939. Rear Admiral John Godfrey circulated a top-secret paper within the Naval Intelligence Division that compared wartime deception to the subtle art of fly fishing.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p3",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "September 1939",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Known officially as the Trout memo, this eccentric document contained dozens of wildly imaginative schemes to lure Axis ships and submarines into deadly minefields. But buried deep near the bottom of the list was a proposal unlike anything military planners had ever considered.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p4",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Entry number twenty-eight bore the slightly unsettling subtitle: \"A Suggestion (not a very nice one).\" It boldly proposed planting misleading, top-secret documents on a fresh human corpse and dropping it near enemy shores for them to find.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Although Rear Admiral Godfrey's name was on the cover, historians still debate the exact authorship, noting that it bore all the brilliant, eccentric hallmarks of his personal assistant, an imaginative young officer named Ian Fleming.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p6",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The core concept was actually an old wartime trick known as the Haversack Ruse. Armies had long used dead soldiers to carry forged maps and fake orders, fooling enemy commanders into walking straight into prepared ambushes.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p7",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "dust",
+          "time_label": "August 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Just months before, in September 1942, an actual stroke of strange luck occurred when an airplane flying from Britain to Gibraltar crashed off the southern coast of Spain.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p8",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "rain",
+          "time_label": "September 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "Among the dead was a courier carrying top-secret dispatches, including a letter from American General Mark Clark to British commanders in Gibraltar. When the body washed ashore near Tarifa, Spanish authorities recovered it and quietly handed copies straight to German military intelligence.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p9",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "British intelligence officers monitored the enemy's reaction through intercepted radio decrypts. They realized with absolute astonishment that the Germans had swallowed the false intelligence hook, line, and sinker.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Encouraged by this success, Royal Air Force Flight Lieutenant Charles Cholmondeley dusted off the old Trout memo concept. Seconded to MI5, Britain's domestic security service, he proposed a daring variation codenamed Operation Trojan Horse.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p11",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Cholmondeley's plan was simple yet chilling: obtain a fresh human corpse from a London hospital, fill its lungs with water, slip secret invasion documents into its pocket, and drop it from a coastal aircraft into the sea near Spain.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p12",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "wind"
+    },
+    {
+      "narration": "When the Twenty Committee initially reviewed the proposal in November 1942, they shrugged it off as unworkable. But committee chairman John Masterman saw a faint spark of potential and assigned his sharpest naval intelligence officer to take a second look.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "November 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "That officer was Commander Ewen Montagu, a brilliant peacetime barrister with a theatrical flair and an unmatched eye for detail. Together, Montagu and Cholmondeley would forge an unlikely partnership that was about to change the course of world history.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p14",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "London in late 1942 was a city shrouded in wartime blackout curtains, where every desk in the British intelligence offices hummed with secret plans. Amidst the paperwork, Royal Air Force flight lieutenant Charles Cholmondeley was nursing an extraordinary idea that he was determined to pitch to his superiors.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c1_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, November 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "Trojan Horse in London"
+        },
+        {
+          "kind": "story",
+          "place": "c1_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "rain",
+          "time_label": "London, November 1942",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "rain"
+    },
+    {
+      "narration": "Cholmondeley had drafted a detailed proposal codenamed Trojan Horse, inspired by the ancient Greek deception. His scheme was bold and startlingly morbid: planting secret invasion documents on a corpse and dropping it into the sea where enemy spies would surely find it.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "He presented his written proposal to the Twenty Committee, the secretive inter-departmental team tasked with running double agents. But the committee chairman took one look at the unusual paperwork and promptly dismissed it as utterly unworkable.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Fortunately, committee chairman John Masterman saw a faint spark of potential and assigned his sharpest naval intelligence officer to take a second look. That officer was Commander Ewen Montagu, a brilliant peacetime barrister with a theatrical flair and an unmatched eye for detail.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p3",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Together, Montagu and Cholmondeley would forge an unlikely partnership that was about to change the course of world history. One was a theatrical barrister accustomed to arguing high-stakes cases; the other was an eccentric naturalist and aviation officer with a meticulous mind.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p4",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Before they could fool the German high command, the two officers had to solve a grim practical puzzle: exactly how do you find a fresh body in wartime London? Montagu consulted the legendary Home Office pathologist Sir Bernard Spilsbury to understand the forensic realities of drowning.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p5",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Spilsbury offered reassuring advice that surprised the planners. He explained that people who died in water-related aviation accidents often succumbed to shock rather than actual drowning, meaning their lungs would not necessarily be filled with water.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p6",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The pathologist noted that Spanish examiners—being devout Roman Catholics—were naturally averse to performing invasive post-mortems unless the cause of death was profoundly suspicious. If an autopsy was conducted by someone who already assumed the cause was drowning, minor discrepancies would likely go completely unnoticed.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Armed with this crucial insight, Montagu approached Bentley Purchase, the eccentric and highly efficient coroner for the Northern District of London. Purchase warned them that while bodies were tragically plentiful, every single one had to be strictly accounted for by the legal authorities.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p8",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "“I should think bodies are the only commodities not in short supply at the moment,” Purchase remarked wryly, promising to keep an eye out for a suitable candidate. But there was a catch: the deceased had to be someone with no grieving relatives who might step forward to claim the remains.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p9",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "On 28 January 1943, Purchase called Montagu with urgent news. He had located a body that fit their exact requirements—a frail young man who had tragically died from accidentally ingesting rat poison containing phosphorus.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "28 Jan 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The coroner assured them that the minuscule trace of poison in the system would never be detected in a body supposedly floating in the sea for days. When Montagu fretted that the undernourished corpse looked nothing like a fit combat officer, Purchase offered a practical counter-argument.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p11",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "fog",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "“He does not have to look like an officer,” Purchase noted dryly, “only a staff officer”—someone accustomed to desk work rather than frontline combat. Purchase agreed to store the body safely in a mortuary refrigerator at a strictly controlled four degrees Celsius.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p12",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "There was just one terrifying limitation: the biological clock was ticking. Purchase warned the intelligence officers that the body had to be utilized within three months, before natural decomposition destroyed its usefulness beyond repair.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Montagu fiercely guarded the anonymity of the deceased, later writing that although the man was a ne'er-do-well in life, the only worthwhile thing he ever did was accomplished after his death. With a corpse secured, the impossible task of manufacturing a completely fictitious human being was about to begin.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p14",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "In the cold shadows of a London mortuary in January 1943, Ewen Montagu and Charles Cholmondeley awaited the most unusual recruit of the Second World War. They needed a corpse, but not just any body would do; it had to be someone whose sudden death at sea would raise no awkward questions.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c2_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, January 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "Finding Major William Martin"
+        },
+        {
+          "kind": "story",
+          "place": "c2_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "dust",
+          "time_label": "London, January 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "With the quiet help of London coroner Bentley Purchase, they finally found their man. His name was Glyndwr Michael, a frail Welsh tramp who had tragically died from eating rat poison laced with phosphorus.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Pathologist Sir Bernard Spilsbury reassured the intelligence officers that the tiny amount of rat poison in the system would pass unnoticed during an autopsy. Spaniards, he explained, were reluctant to perform post-mortems and would easily mistake the condition of the lungs for death by drowning.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "There was just one catch: the body had to be kept fresh. Bentley Purchase arranged for Glyndwr to rest in a mortuary refrigerator at a strictly controlled four degrees Celsius, buying the team a three-month window before natural decay set in.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p3",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "fog",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Montagu fiercely guarded the anonymity of the deceased. He later wrote that although the man was a ne'er-do-well in life, the only worthwhile thing he ever did was accomplished after his death.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p4",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "rain",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "With a corpse secured, the impossible task of manufacturing a completely fictitious human being was about to begin. Every detail of his life had to be forged so convincingly that even the sharpest Nazi intelligence officers would swallow the bait whole.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p5",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They decided he would be Captain Acting Major William Martin of the Royal Marines. But why a Royal Marines officer? Because staff officers regularly carried top-secret documents in locked dispatch cases attached to their wrists by a leather strap.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p6",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To build a believable life, Major Martin needed a personal history, hobbies, and debts. Hester Leggatt and Jean Leslie set to work crafting a rich web of ordinary humanity to paper over the cold reality of death.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p7",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Jean even supplied a photograph of herself to serve as Martin's devoted fiancée, whom they named Pam. A tender snapshot tucked into a leather wallet would make the fictional major instantly sympathetic to whoever found him.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p8",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Hester poured her own emotional depth into writing a poignant love letter from Pam to Major Martin. The letter spoke of intimate moments shared in London hotels, anchoring the fake officer in a whirlwind wartime romance.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p9",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To prove the couple had spent time together in the capital, Montagu and Jean retraced Martin's supposed footsteps. They bought theater tickets, dined at fashionable restaurants, and even purchased an engagement ring from a Mayfair jeweler.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, February 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Every receipt and bill was carefully aged in trouser pockets so they looked genuinely worn by weather and use. Major Martin's wallet bulged with mundane bills, club cards, and unpaid debts that screamed authenticity.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p11",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Meanwhile, Charles Cholmondeley engineered a special steel canister designed to keep the corpse cold and buoyant during its secret submarine journey. The macabre cargo had to arrive in the Mediterranean without showing signs of artificial preservation.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p12",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "As the pieces of the elaborate illusion clicked into place, Colonel Johnny Bevan reviewed the final dossier. Major William Martin was now ready to wage war from beyond the grave.",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Late one stormy night, Montagu and Cholmondeley transported the sealed canister north to Scotland, where a silent Royal Navy submarine waited in the black waters. But would the German high command truly fall for a ghost?",
+      "chapter": 2,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c2_p14",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Scotland, April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "To make a dead tramp believable as a dashing Royal Marines officer, Ewen Montagu and his team knew every detail had to be completely authentic. A man's life is made of small, ordinary habits, and German intelligence would check every single thread of Major William Martin's existence.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c3_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "Assembling a Fake Life"
+        },
+        {
+          "kind": "story",
+          "place": "c3_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Enter Hester Leggatt, an experienced MI5 secretary with a sharp eye and a deeply empathetic heart. While the male officers debated grand strategies, Hester knew that a lonely officer without a sweetheart would instantly arouse suspicion from enemy counter-espionage.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To provide the face for Major Martin's fictional fiancée, the team turned to Jean Leslie, a brilliant young clerk who volunteered her own photograph. She posed in a smart uniform, transforming herself into 'Pam', the devoted woman waiting anxiously at home for her soldier.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "But a photograph alone was not enough. To truly convince German intelligence, Major Martin needed intimate letters that felt utterly real, filled with the warmth, affection, and private jokes of a genuine wartime romance.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p3",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Hester poured her own memories and emotional depth into the correspondence, crafting words that would tug at the heart of anyone who read them. Historians note that these letters became the emotional anchor of the entire deception dossier.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p4",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "“Dearest, I do hope that you aren't working too hard,” Hester wrote, shaping a voice for Pam that felt effortlessly genuine. Every turn of phrase was carefully chosen to reflect the quiet anxiety of lovers separated by war.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To back up the romance, Ewen Montagu and Jean Leslie took a weekend trip to London's West End to gather authentic receipts and mementos. They bought theater stubs, department store bills, and even a jeweled engagement ring.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p6",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "rain",
+          "time_label": "London Streets",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "rain"
+    },
+    {
+      "narration": "Every item had a date and a story. A dinner bill from a fashionable restaurant proved that Major Martin had a wonderful evening in town just days before his fateful final journey.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Charles Cholmondeley meticulously placed each receipt, love letter, and identity card into the pockets of the dead man's uniform. Nothing was left to chance; even minor dry-cleaning tags were added to create a seamless paper trail.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p8",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Yet, beneath the quiet concentration, personal tensions rippled through the team. Charles found himself growing increasingly jealous as he watched Ewen and Jean share private smiles during their exhaustive rehearsals of Major Martin's history.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p9",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Meanwhile, Colonel Johnny Bevan surveyed the completed dossier with critical military precision. He knew that the Abwehr, German military intelligence, was notoriously thorough and would scrutinize every single scrap of paper.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The most dangerous element of all was tucked away inside a worn leather briefcase chained to the wrist of the corpse: highly sensitive fake correspondence between British generals discussing Allied strategy.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p11",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "If the Germans captured the briefcase, they would have to believe that the Allies were planning to invade Sardinia and Greece, leaving the true target, Sicily, dangerously undefended.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p12",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "The Mediterranean Theater",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "With the fake life fully assembled, Major William Martin was no longer just a nameless tramp lost to poverty; he was a living, breathing British officer ready to deceive the Third Reich.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Now came the most perilous phase of the mission: transporting the body across hostile skies and stormy seas to the sun-drenched shores of Spain, where German agents waited in the shadows.",
+      "chapter": 3,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c3_p14",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "The Atlantic Ocean",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "With the cold, motionless body of Glyndwr Michael safely sealed inside a specially designed watertight steel canister, the final journey could begin. Ewen Montagu and Charles Cholmondeley faced their greatest hazard yet: moving a corpse out of Britain and past enemy-infested waters.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c4_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "Voyage of the Seraph"
+        },
+        {
+          "kind": "story",
+          "place": "c4_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "rain",
+          "time_label": "April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "rain"
+    },
+    {
+      "narration": "Under the cover of darkness, the secret cargo was loaded aboard the Royal Navy submarine HMS Seraph. To keep the crew from asking awkward questions, the officers told the sailors the long metal tube contained delicate meteorological equipment.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "Lieutenant Commander Bill Jewell commanded the vessel, a seasoned submariner ready for hazardous missions. He had been given strict orders by Naval Intelligence to safeguard the mysterious cargo above all else, though he had no idea a dead man lay inside.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The submarine slipped quietly out of Holy Loch in Scotland, diving beneath the surface to evade German patrols in the Atlantic. Inside the crowded torpedo compartment, the watertight canister rested securely among the heavy machinery.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p3",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Days turned into a grueling underwater test of endurance as the vessel navigated thousands of miles through heavy swells. The sailors breathed stale recycled air while the silent passenger waited patiently in his steel coffin.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p4",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Finally, after an arduous voyage skirting enemy waters, the submarine arrived off the sun-drenched southern coast of Spain. They anchored quietly in the Gulf of Cádiz, just a mile from the beaches of Huelva, where German intelligence agents operated freely.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Late April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Midnight brought the moment of execution. The crew surfaced the submarine in total darkness, cutting the engines to drift silently on the gentle ocean swell.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p6",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "Lieutenant Jewell ordered the top hatch opened, letting the cool night air rush into the cramped vessel. The crew worked with disciplined precision, hauling the heavy steel canister up onto the dripping deck.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p7",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "wind"
+    },
+    {
+      "narration": "With quiet reverence, the crew unbolted the watertight seal of the canister. The cold sea air rushed inside, mingling with the preserved scent of ice and embalming fluid.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p8",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They gently slid the body of Glyndwr Michael out into the open air. Dressed meticulously in his Royal Marines uniform, Major William Martin was finally ready to step into history.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p9",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Fastened securely to the dead officer's coat pocket was the worn leather dispatch case holding the fraudulent letters. These pages contained the explosive secret that could alter the course of the entire war.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Before releasing him to the waves, Lieutenant Jewell cleared the deck and read a brief prayer for the fallen man. Even in deception, the Royal Navy afforded their unwitting soldier dignity.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p11",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "With infinite care, the crew lowered the body over the side of the submarine into the dark, welcoming sea. They attached a small rubber life jacket to help keep him afloat near the surface where Spanish fishermen would easily spot him.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p12",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "As the body drifted away on the gentle morning tide, Lieutenant Jewell watched it disappear into the predawn gloom. \"Sail on, boys,\" he whispered, knowing the fate of thousands of Allied soldiers now rested on the floating corpse.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Dawn, 30 April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The submarine submerged immediately, slipping back into the dark depths to race home with the news. Major William Martin was now alone in the Spanish waters, waiting for the enemy to take the bait.",
+      "chapter": 4,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c4_p14",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "Dawn broke over the rocky coastline of Huelva, washing the Andalusian shore in a pale, golden light. A local fisherman squinted through the early morning haze and spotted something floating gently in the shallow surf.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c5_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Huelva, Spain, April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "The Spanish Interlude"
+        },
+        {
+          "kind": "story",
+          "place": "c5_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "fog",
+          "time_label": "Huelva, Spain, April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The body was respectfully recovered and brought ashore, identified by the local authorities as a British officer who had tragically perished at sea. Word of the discovery raced swiftly through the diplomatic wires to the British vice-consul.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Enter Francis Haselden, Britain's man on the ground in Huelva, whose charm and local connections were about to be tested to their absolute limits. He needed to ensure the body was handled properly while keeping up an outward appearance of calm indifference.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p2",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Although Spain was officially neutral in the conflict, the coastal town of Huelva was a notorious hotbed of German espionage agents and Nazi sympathizers. Every move Haselden made was watched by watchful eyes from the shadows.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p3",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Back in London, Ewen Montagu and Charles Cholmondeley waited on tenterhooks, knowing that the entire fate of Operation Mincemeat now hung by a thread in southern Spain. Every ticking clock in the MI5 war room felt agonizingly loud.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p4",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "London, MI5 Headquarters",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "As required by local protocol, a Spanish military doctor prepared to conduct a formal autopsy on the unfortunate officer. The medical examination would determine whether the elaborate deception could withstand intense scrutiny.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Francis Haselden worked behind the scenes with hurried diplomacy, applying gentle pressure to ensure the autopsy was managed swiftly and without overly intrusive medical testing that might uncover the truth.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p6",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Spanish pathologists, bound by traditional customs and influenced by the subtle reassurances arranged by British contacts, accepted the surface-level findings of accidental drowning following a plane crash.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Crucially, the personal effects recovered from the corpse—including the worn black leather briefcase containing the forged letters—were gathered up by the local authorities for standard administrative inventory.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p8",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "But Nazi intelligence operatives stationed in Spain were already moving fast. German agents maintained extensive networks in Huelva and immediately demanded access to the recovered belongings.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p9",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Nominally neutral, members of the Spanish military and security forces were often sympathetic to the Axis cause, or simply too pressured to resist handing over sensitive intelligence documents for inspection.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "In a secluded room away from official oversight, the briefcase was quietly opened and its top-secret contents were laid out before the eager eyes of Abwehr agents.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p11",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The letters between British generals detailing false invasion plans for Greece and Sardinia were carefully examined, photographed, and cataloged by the German intelligence gatherers.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p12",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Haselden watched from afar as the precious documents were covertly handled, knowing that the trap had been successfully sprung and the bait swallowed whole by the enemy.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p13",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "With the documents copied and returned to the British channels as if untouched, the false intelligence began its long, urgent journey straight to the desk of Adolf Hitler in Berlin.",
+      "chapter": 5,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c5_p14",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Berlin, Reich Chancellery",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Deep inside German military headquarters in Berlin, top-secret signals hummed as Ultra decoders intercepted enemy transmissions. What would these radio dispatches reveal about Operation Mincemeat?",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c6_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Berlin, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "Hitler's Fatal Mistake"
+        },
+        {
+          "kind": "story",
+          "place": "c6_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Berlin, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The translated text rushed to Adolf Hitler, who held absolute control over Nazi strategy. Hitler was paranoid about the Balkans, where vital oil fueled his war machine. Reading Major Martin's documents confirmed his worst fears.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Historians still debate the exact psychological tipping point, but Hitler became convinced the Allies would strike Greece and Sardinia. He viewed Sicily as a smoke screen, taking direct personal command.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Disregarding his field commanders, Hitler ordered major reinforcements northward. The German High Command scrambled to execute these orders, marching into British deception.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p3",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "In London, Ewen Montagu and Charles Cholmondeley watched Ultra decodes stream into MI5. Their elaborate fabrication had completely fooled German intelligence.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p4",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Colonel Johnny Bevan watched with awe as the plan bore fruit. Every forged document was treated as gospel truth.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Jean Leslie and Hester Leggatt knew their secret contributions brought Major Martin to life, weaving a web of romance the Abwehr could not resist.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p6",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "German officers cataloged every receipt and photograph from the briefcase, never questioning their arrival.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Europe, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Across the Mediterranean, German infantry and armored units packed their gear, marching eastward toward Greece.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p8",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "dust",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Sardinia saw an influx of defense units and paratroopers. Every soldier sent there was one fewer defending the actual target.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p9",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Sicily was left woefully understrength and starved of armor. Hitler's obsession blinded him to the dagger pointed at Italy.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p10",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Sicily, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Back in London, Montagu reviewed final signals with a triumphant grin. Operation Mincemeat was actively saving Allied lives.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p11",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Cholmondeley celebrated as the invasion fleet raised anchor.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p12",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Warships converged in the dark night. Soldiers slept below deck, unaware a dead tramp had cleared their path.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "As the first wave of landing craft lowered their ramps onto the hostile sands, the true cost and consequence of Major Martin's fictional journey were about to be revealed in the smoke of battle.",
+      "chapter": 6,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c6_p14",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "smoke",
+          "time_label": "July 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Deceived by the false papers planted on a corpse, Adolf Hitler took the bait hook, line, and sinker. He ordered vital German divisions away from Sicily, rushing them off to Greece and Sardinia instead.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c7_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Berlin, July 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "Victory and Identity Revealed"
+        },
+        {
+          "kind": "story",
+          "place": "c7_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Berlin, July 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "When the Allied armada finally arrived off the sun-baked shores of Sicily, they found the defenses drastically weakened. Operation Husky was underway, and the path ahead was unexpectedly clear.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p1",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "Sicily, July 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The invasion succeeded far more quickly than anyone dared to hope, and with a fraction of the casualties planners had feared. The cleverest trick of the war had paid off in saved lives.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p2",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "battle"
+    },
+    {
+      "narration": "Back in London, Ewen Montagu and his brilliant team could finally breathe a sigh of relief. Their elaborate deception had worked, turning a desperate gamble into a historic triumph.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p3",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, Summer 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Charles Cholmondeley and Colonel Johnny Bevan celebrated the incredible victory alongside their dedicated colleagues, knowing their secret work had changed the course of history.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p4",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Jean Leslie and Hester Leggatt had poured their hearts into crafting a fictional fiancé and a watertight backstory for Major Martin. Without their vital work, the illusion would have collapsed instantly.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Yet, historians still debate the exact weight of every single factor, because wartime intelligence is a labyrinth of mirrors where truth and illusion constantly blur together.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p6",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Yet, for all the global fame of Major William Martin, the man who actually made the mission possible remained a ghost. His true identity was kept secret for decades.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Who was the frail, lonely soul whose tragic end became England's greatest deception? For over fifty years, history recorded him only as a fictitious Royal Marine.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p8",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "His real name was Glyndwr Michael, a troubled Welshman who died in poverty from rat poison. He never wore a uniform in life, yet he served his country in death.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p9",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "Wales",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "For decades, a gravestone in Huelva, Spain, bore the name Major William Martin. Visitors would lay flowers for a hero who never existed, while the real man lay forgotten.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Huelva, Spain",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "But history has a way of righting its wrongs. Meticulous archival research finally uncovered the truth behind the man in the water.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p11",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "London, 1997",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "In 1997, more than half a century after the war ended, authorities added a new inscription to the Spanish headstone to honor the quiet tramp.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p12",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Beneath the original military rank, new words were carved: “Glyndwr Michael. Served as Major William Martin, RM.”",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "A nameless vagrant had been given the funeral of an officer, and finally, his true identity was restored to the history books forever.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p14",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "If you enjoyed uncovering how one extraordinary deception changed the course of history, hit subscribe and ring the bell so you don't miss the next chapter of World War II.",
+      "chapter": 7,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c7_p15",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "birds",
+          "time_label": "Dover, 1945",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "wind"
+    }
+  ],
+  "call_to_action": "If you enjoyed uncovering how one extraordinary deception changed the course of history, hit subscribe and ring the bell so you don't miss the next chapter of World War II.",
+  "why_it_matters": "Understanding Operation Mincemeat reveals how psychological warfare and brilliant human ingenuity saved thousands of lives during World War II.",
+  "uses_realistic_altered_content": false,
+  "word_count": 4074,
+  "estimated_seconds": 1630,
+  "fact_check": {
+    "claims": [
+      {
+        "scene": 1,
+        "claim": "In late 1942, Allied forces in North Africa stood victorious, but a massive strategic dilemma loomed over what to do next.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 1,
+        "claim": "Prime Minister Winston Churchill wanted to strike at Europe's soft underbelly",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 2,
+        "claim": "As Churchill famously grumbled, 'Everyone but a bloody fool would know that it's Sicily.'",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 4,
+        "claim": "Right at the outbreak of war in September 1939, Rear Admiral John Godfrey circulated a top-secret paper within the Naval Intelligence Division that compared wartime deception to the subtle art of fly fishing.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 7,
+        "claim": "Historians still debate the exact authorship of the Trout Memo, noting that it bore all the brilliant, eccentric hallmarks of his personal assistant, an imaginative young officer named Ian Fleming.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 9,
+        "claim": "Just months before, in September 1942, an actual stroke of strange luck occurred when an airplane flying from Britain to Gibraltar crashed off the southern coast of Spain.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 10,
+        "claim": "Among the dead was a courier carrying top-secret dispatches, including a letter from American General Mark Clark to British commanders in Gibraltar. When the body washed ashore near Tarifa, Spanish authorities recovered it and quietly handed copies straight to German military intelligence.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 12,
+        "claim": "Royal Air Force Flight Lieutenant Charles Cholmondeley dusted off the old Trout memo concept. Seconded to MI5, Britain's domestic security service, he proposed a daring variation codenamed Operation Trojan Horse.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 14,
+        "claim": "When the Twenty Committee initially reviewed the proposal in November 1942, they shrugged it off as unworkable. But committee chairman John Masterman saw a faint spark of potential and assigned his sharpest naval intelligence officer to take a second look.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 15,
+        "claim": "That officer was Commander Ewen Montagu, a brilliant peacetime barrister with a theatrical flair and an unmatched eye for detail.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 21,
+        "claim": "Montagu consulted the legendary Home Office pathologist Sir Bernard Spilsbury to understand the forensic realities of drowning.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 22,
+        "claim": "Spilsbury explained that people who died in water-related aviation accidents often succumbed to shock rather than actual drowning, meaning their lungs would not necessarily be filled with water.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 23,
+        "claim": "The pathologist noted that Spanish examiners—being devout Roman Catholics—were naturally averse to performing invasive post-mortems unless the cause of death was profoundly suspicious.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 24,
+        "claim": "Montagu approached Bentley Purchase, the eccentric and highly efficient coroner for the Northern District of London.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 26,
+        "claim": "On 28 January 1943, Purchase called Montagu with urgent news. He had located a body that fit their exact requirements—a frail young man who had tragically died from accidentally ingesting rat poison containing phosphorus.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 32,
+        "claim": "His name was Glyndwr Michael, a frail Welsh tramp who had tragically died from eating rat poison laced with phosphorus.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 37,
+        "claim": "They decided he would be Captain Acting Major William Martin of the Royal Marines.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 38,
+        "claim": "Hester Leggatt and Jean Leslie set to work crafting a rich web of ordinary humanity to paper over the cold reality of death.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat (musical))"
+      },
+      {
+        "scene": 62,
+        "claim": "Under the cover of darkness, the secret cargo was loaded aboard the Royal Navy submarine HMS Seraph.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 63,
+        "claim": "Lieutenant Commander Bill Jewell commanded the vessel",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 91,
+        "claim": "Deep inside German military headquarters in Berlin, top-secret signals hummed as Ultra decoders intercepted enemy transmissions.",
+        "verdict": "wrong",
+        "source": "Operation Mincemeat",
+        "note": "Ultra decodes intercepted enemy (German) transmissions, not German decoders intercepting Allied transmissions."
+      },
+      {
+        "scene": 92,
+        "claim": "The translated text rushed to Adolf Hitler, who held absolute control over Nazi strategy.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat",
+        "note": "Hitler ordered the reinforcements and held supreme command."
+      },
+      {
+        "scene": 93,
+        "claim": "Hitler became convinced the Allies would strike Greece and Sardinia, viewing Sicily as a smoke screen.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat",
+        "note": "Hitler believed Sardinia and Greece were the primary targets and Sicily was a diversion."
+      },
+      {
+        "scene": 95,
+        "claim": "Ewen Montagu and Charles Cholmondeley watched Ultra decodes stream into MI5.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat",
+        "note": "Ultra decrypts showed the Germans fell for the ruse."
+      },
+      {
+        "scene": 108,
+        "claim": "The invasion succeeded far more quickly than anyone dared to hope, and with a fraction of the casualties planners had feared.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat",
+        "note": "Sicily was liberated more quickly than anticipated and losses were lower."
+      },
+      {
+        "scene": 115,
+        "claim": "Glyndwr Michael died in poverty from rat poison and never wore a uniform in life.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat",
+        "note": "He was a tramp who died from eating rat poison containing phosphorus."
+      },
+      {
+        "scene": 118,
+        "claim": "In 1997, authorities added a new inscription to the Spanish headstone to honor Glyndwr Michael.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat",
+        "note": "His real identity was added to the headstone in Huelva in 1997."
+      }
+    ],
+    "summary": "The script demonstrates exceptionally high historical accuracy, closely adhering to the documented facts, books, and accepted histories regarding Operation Mincemeat. The narration generally follows historical accounts of Operation Mincemeat, though it inaccurately implies that the Germans were the ones using Ultra to intercept British messages.",
+    "score": {
+      "hook": 8,
+      "pacing": 8,
+      "clarity": 9,
+      "tip": "Tighten repetitive summaries across sections to maintain a faster narrative momentum.",
+      "better_hook": "Could a corpse convince Adolf Hitler to walk straight into a deadly Allied trap?"
+    }
+  },
+  "sources": [
+    {
+      "title": "Operation Mincemeat",
+      "url": "https://en.wikipedia.org/wiki/Operation_Mincemeat"
+    },
+    {
+      "title": "Operation Mincemeat (musical)",
+      "url": "https://en.wikipedia.org/wiki/Operation_Mincemeat_%28musical%29"
+    },
+    {
+      "title": "Operation Mincemeat (film)",
+      "url": "https://en.wikipedia.org/wiki/Operation_Mincemeat_%28film%29"
+    }
+  ]
+}
