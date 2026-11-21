@@ -1,0 +1,4 @@
+{
+  "connected": false,
+  "message": "The saved Google sign-in does not allow blog posts yet. Open Settings > Connect YouTube, sign in again, tick every box, and update YT_REFRESH_TOKEN."
+}
