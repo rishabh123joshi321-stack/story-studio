@@ -1,0 +1,23 @@
+{
+  "id": "20261121-084244-l3m5",
+  "created": "2026-11-21T03:12:44.502Z",
+  "status": "requested",
+  "format": "long",
+  "length": 30,
+  "lengthUnit": "minutes",
+  "topic": "Operation Mincemeat",
+  "theme": "The dead man that fooled Hitler",
+  "tone": "Dramatic and suspenseful",
+  "audience": "Curious adults new to history",
+  "voice": "en-GB-male",
+  "notes": "British Intelligence created a fictional military office, complete with a fabricated identity and documents, to deceive Nazi Germany about the Allied invasion plans.",
+  "captionFont": "Anton",
+  "subtitle_langs": [
+    "hi",
+    "es"
+  ],
+  "intro": true,
+  "quote_voice": true,
+  "series": "World History - WWII",
+  "part": 1
+}
