@@ -580,7 +580,6 @@ const ROUTINE = {
     ['report', 'Read your weekly report card', 'Dashboard: grade, star video, what is working and the best time to post.', 'stats', '3 min'],
     ['week', 'Plan the whole week', 'New video > Plan the week. Put anniversaries on their exact day.', 'week', '10 min'],
     ['money', 'Update money and sponsors', 'Income: log any payouts, and send one sponsor email.', 'money', '5 min'],
-    ['prints', "Upload this week's art prints", 'Income > Art prints: for each picture tap Download, upload it on Redbubble, paste the title, tags and description, then tap I uploaded it.', 'prints', '20 min'],
   ],
 };
 function routineState() {
@@ -661,7 +660,6 @@ function todoList(d) {
       { k: 'greatfire', t: 'Delete the old Great Fire Short on YouTube', d: 'YouTube Studio app > <b>Content</b> > <b>Shorts</b> > tap the three dots next to the private Great Fire Short > <b>Delete forever</b>.' },
       { k: 'blog', t: 'Connect the blog', d: 'Done when the Blog box in Income says Connected.', go: 'blog', btn: 'Open Blog', auto: !!d.blog.connected },
       { k: 'pinterest', t: 'Set up Pinterest (15 minutes, once)', d: 'Make a free Pinterest business account, make a <i>History Stories</i> board and prove the blog is yours. Then, once the Pinterest box says a pin is ready, paste your pin list link under <b>Settings</b> &gt; <b>Create Pins in bulk</b> &gt; <b>Connect RSS feed</b>. Exact steps are in Income &gt; Pinterest pins &gt; <b>Set up Pinterest</b>. After that, pins post by themselves.', go: 'pins', btn: 'Open Pinterest steps' },
-      { k: 'redbubble', t: 'Make a free Redbubble shop (5 minutes, once)', d: 'Sign up at <b>redbubble.com/signup</b>, pick a shop name, then <b>Account Settings</b> &gt; <b>Payment Details</b> &gt; add PayPal. Then upload your first art print from Income &gt; Art prints.', go: 'prints', btn: 'Open Art prints' },
     ],
     later: [
       { k: 'audit', t: 'When Google\'s audit email arrives', d: 'Tap <b>Google approved it</b> on the Health card, then Settings > tap <b>Automatic upload</b> so it says ON. Until then, post each video yourself from the Queue.', go: 'health', btn: 'Go to Health card', auto: store.get('auditOk', false) && store.get('ytAuto', false) },
@@ -685,8 +683,7 @@ function todoList(d) {
       'Renew the GitHub key before it expires. The Health card turns orange 10 days before.',
       'If the Health card says the YouTube sign-in stopped, or the Blog box is not connected: Settings > Connect YouTube > <b>Sign in with Google</b>, tick every box, then update <b>YT_REFRESH_TOKEN</b> on GitHub.',
       'Answer Google\'s emails about your YouTube API project (for example the yearly check) before their deadline. Forward them to Claude if unsure.',
-      'Never add a card anywhere. If a site asks for one, stop and tell Claude. (Adding where you get paid, like PayPal on Redbubble, is fine.)',
-      'Once a week, upload the new art prints to Redbubble (Income &gt; Art prints). Keep the markup at 20%.',
+      'Never add a card anywhere. If a site asks for one, stop and tell Claude.',
       'Keep the Pinterest tag in your Blogger theme. If you change the blog theme, paste the tag again or the pins stop.',
       'When a video has a paid sponsor, tick <b>Includes paid promotion</b> for it in YouTube Studio.',
     ],
