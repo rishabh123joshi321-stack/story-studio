@@ -335,12 +335,12 @@ def explain(e):
 def find_blog(token, cfg):
     if cfg.get("blog_id"):
         b = api(BLOGGER + f"blogs/{urllib.parse.quote(str(cfg['blog_id']))}", token)
-        return b["id"], b.get("url", ""), b.get("name", "")
+        return b["id"], b.get("url", ""), html.unescape(b.get("name", ""))
     blogs = api(BLOGGER + "users/self/blogs", token).get("items", [])
     if not blogs:
         raise WorkerError("No Blogger blog found on your Google account yet. Create one at blogger.com (see Income > Blog > Set up).")
     b = blogs[0]
-    return b["id"], b.get("url", ""), b.get("name", "")
+    return b["id"], b.get("url", ""), html.unescape(b.get("name", ""))
 
 
 def public_videos(token):
