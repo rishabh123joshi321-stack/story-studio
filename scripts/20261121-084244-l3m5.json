@@ -1,0 +1,2733 @@
+{
+  "job_id": "20261121-084244-l3m5",
+  "created": "2026-11-21T07:01:08+00:00",
+  "format": "long",
+  "working_title": "How a Dead Man Fooled Hitler: Operation Mincemeat",
+  "hook": "In the spring of 1943, tens of thousands of Allied soldiers were sailing straight toward an invasion trap in southern Europe, where a single leaked document could mean total catastrophe—so how did British intelligence stake the entire war on the body of an unknown tramp drifting off the coast of Spain?",
+  "hook_style": "stakes",
+  "structure": "Pose a mystery question in the hook, follow the clues in order, reveal the answer, then show what it changed.",
+  "style": "stills",
+  "cast": [],
+  "places": [
+    {
+      "id": "c0_p0",
+      "look": "Cinematic wide establishing shot of a dim dawn over coastal sea waters where glyndwr michael (Welsh transient in his early 30s fabricated as Captain and Acting Major William Martin. Gaunt cheekbones, pale skin, dressed in a clean Royal Marines officer battledress beneath a thick dark wool trench coat) drifts motionless in gentle waves near a distant Spanish shoreline. Atmospheric blue morning haze, moody volumetric lighting, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p1",
+      "look": "Illustrated antique-style painted map of the Mediterranean Sea seen from above, depicting tiny painted battleships and military supply convoys traversing blue waters between North Africa and Southern Europe. Warm parchment textures, dramatic lighting, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p2",
+      "look": "Illustrated antique-style painted map focused on the island of Sicily, featuring miniature painted coastal fortifications and military arrows pointing inland. Rich painterly textures, dramatic sunlight casting deep shadows across terrain, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p3",
+      "look": "Medium shot inside a dimly lit Underground War Cabinet room. winston churchill (British Prime Minister, late 60s. Stout stature, bald crown with wisps of white hair, bulldog expression, wearing a dark pinstripe three-piece suit with a polka-dot bow tie and holding an unlit cigar) leans over a table filled with military maps, looking intensely concerned under warm overhead lamp light.",
+      "full": true
+    },
+    {
+      "id": "c0_p4",
+      "look": "Dramatic close-up of winston churchill (British Prime Minister, late 60s. Stout stature, bald crown with wisps of white hair, bulldog expression, wearing a dark pinstripe three-piece suit with a polka-dot bow tie and holding an unlit cigar) gesturing firmly with his hand across a map table, harsh warm spotlight highlighting his stern expression.",
+      "full": true
+    },
+    {
+      "id": "c0_p5",
+      "look": "Medium shot inside a cold grey military bunker. adolf hitler (German dictator, mid-50s. Sallow complexion, swept-over dark fringe, toothbrush mustache, dressed in a grey-green Wehrmacht field tunic with iron cross pinned to the breast pocket) stands with arms crossed, staring intently at a wall map of Southeastern Europe.",
+      "full": true
+    },
+    {
+      "id": "c0_p6",
+      "look": "Wide shot of a shadowed hallway inside London's Admiralty building, where military officers walk briskly past wooden doors. Cool dramatic lighting with light streaming through high arched windows, atmospheric dust motes in the air.",
+      "full": true
+    },
+    {
+      "id": "c0_p7",
+      "look": "Close-up shot of a dark mahogany desk in a naval office where a paper document rests alongside brass compasses and a glass inkwell. Warm glow from a green banker's lamp illuminating painterly wooden textures, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p8",
+      "look": "Medium shot in a dark room where a wooden model of an aircraft sits near vintage charts. Shadowy silhouettes of naval officers discussing strategy around a dim table glow, painterly depth.",
+      "full": true
+    },
+    {
+      "id": "c0_p9",
+      "look": "Medium shot of charles cholmondeley (RAF flight lieutenant seconded to MI5, late 20s. Very tall, slight stoop, pale face, thin neat mustache, wearing thick round horn-rimmed glasses and a light blue-grey Royal Air Force service tunic) leaning over a desk in a cluttered MI5 office, thoughtfully examining handwritten notes.",
+      "full": true
+    },
+    {
+      "id": "c0_p10",
+      "look": "Medium shot showing ewen montagu (British naval intelligence officer and barrister in his early 40s. Lean build, dark hair parted to one side, round tortoiseshell spectacles, dressed in a tailored dark blue Royal Navy lieutenant commander uniform with gold sleeve rings) sitting opposite charles cholmondeley in a wood-paneled office, reviewing intelligence files together.",
+      "full": true
+    },
+    {
+      "id": "c0_p11",
+      "look": "Wide establishing shot of a quiet foggy London alleyway at dusk, framed by historic brick buildings and glowing gas streetlamps illuminating soft yellow puddles.",
+      "full": true
+    },
+    {
+      "id": "c0_p12",
+      "look": "Medium shot in a cold, quiet London mortuary. glyndwr michael (Welsh transient in his early 30s fabricated as Captain and Acting Major William Martin. Gaunt cheekbones, pale skin, dressed in a clean Royal Marines officer battledress beneath a thick dark wool trench coat) lies still under a clean white sheet in a tiled room with cool blue moonlight spilling through high windows.",
+      "full": true
+    },
+    {
+      "id": "c0_p13",
+      "look": "Close-up shot in a dimly lit apothecary basement, showing an old glass bottle labeled with a skull hazard outline resting on a dusty wooden shelf. Dramatic warm and cool contrast lighting, soft background shadows, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p14",
+      "look": "Medium shot in a medical library lined with leather-bound books. Sir Bernard Spilsbury speaks seriously with ewen montagu (British naval intelligence officer and barrister in his early 40s. Lean build, dark hair parted to one side, round tortoiseshell spectacles, dressed in a tailored dark blue Royal Navy lieutenant commander uniform with gold sleeve rings), reviewing medical notes.",
+      "full": true
+    },
+    {
+      "id": "c0_p15",
+      "look": "Close-up shot of handwritten medical charts and anatomical sketches of lungs resting on a green felt desk overlay, illuminated by a warm brass desk lamp.",
+      "full": true
+    },
+    {
+      "id": "c0_p16",
+      "look": "Medium shot of stainless steel mortuary refrigerator vaults in a refrigerated room. Frost glinting on metal surfaces under cool blue interior illumination.",
+      "full": true
+    },
+    {
+      "id": "c0_p17",
+      "look": "Wide shot of Room 13 in the Admiralty building, filled with typing desks, stacks of documents, and bulletin boards covered in maps. ewen montagu and charles cholmondeley work meticulously together.",
+      "full": true
+    },
+    {
+      "id": "c0_p18",
+      "look": "Close-up shot of an official Royal Marines identity card resting on a desk, featuring a portrait stamp and official brass emblem, framed by deep dramatic shadows, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p19",
+      "look": "Medium shot inside the cold mortuary room. ewen montagu (British naval intelligence officer and barrister in his early 40s. Lean build, dark hair parted to one side, round tortoiseshell spectacles, dressed in a tailored dark blue Royal Navy lieutenant commander uniform with gold sleeve rings) carefully adjusts the collar of the thick dark wool trench coat on glyndwr michael.",
+      "full": true
+    },
+    {
+      "id": "c0_p20",
+      "look": "Close-up of a dark wooden table covered with vintage British coins, silver keys, a silver cigarette case, and a box of matches, carefully arranged under warm desk lighting.",
+      "full": true
+    },
+    {
+      "id": "c0_p21",
+      "look": "Close-up shot showing two London theater ticket stubs and a folded club billing receipt resting beside an open wallet on a desk surface, painterly textures, rich warm lighting, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p22",
+      "look": "Medium shot of jean leslie (Young MI5 clerk in her early 20s. Expressive bright eyes, wavy dark brown hair shoulder-length, dressed in a smart maroon knit sweater and dark pleated wool skirt) smiling gently in an MI5 office as a camera flash illuminates her face for a photograph.",
+      "full": true
+    },
+    {
+      "id": "c0_p23",
+      "look": "Close-up shot of a black-and-white portrait photograph of jean leslie resting inside a leather wallet pocket, soft warm lighting casting gentle highlights.",
+      "full": true
+    },
+    {
+      "id": "c0_p24",
+      "look": "Medium shot of hester leggatt (Senior MI5 secretary in her 40s. Stern yet gentle expression, hair neatly set in 1940s victory rolls, wearing a tailored olive tweed skirt suit and sensible leather court shoes) seated at a vintage typewriter, thoughtfully typing on pale blue paper under a warm desk lamp.",
+      "full": true
+    },
+    {
+      "id": "c0_p25",
+      "look": "Close-up shot of a handwritten jeweler's bill resting next to a small dark red velvet ring box on a polished mahogany surface, glowing warmly under indoor lighting, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p26",
+      "look": "Medium shot of ewen montagu (British naval intelligence officer and barrister in his early 40s. Lean build, dark hair parted to one side, round tortoiseshell spectacles, dressed in a tailored dark blue Royal Navy lieutenant commander uniform with gold sleeve rings) carefully reviewing top-secret documents stamped with red seals.",
+      "full": true
+    },
+    {
+      "id": "c0_p27",
+      "look": "Close-up of official military letters lying on a table, revealing dark black ink writing and formal red wax seals, illuminated dramatically from the side, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p28",
+      "look": "Illustrated antique-style painted map highlighting Southern Europe, showing bold painted red arrows targeting Greece and Sardinia while a faint dotted arrow points toward Sicily, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p29",
+      "look": "Close-up shot of the leather briefcase (Sturdy dark tan leather British officer courier dispatch briefcase, scuffed edges, brass combination clasp, secured with a steel chain intended to link to a trench coat belt) sitting on a green desk cover.",
+      "full": true
+    },
+    {
+      "id": "c0_p30",
+      "look": "Medium close-up of charles cholmondeley (RAF flight lieutenant seconded to MI5, late 20s. Very tall, slight stoop, pale face, thin neat mustache, wearing thick round horn-rimmed glasses and a light blue-grey Royal Air Force service tunic) testing the steel chain clip onto the dark trench coat belt.",
+      "full": true
+    },
+    {
+      "id": "c0_p31",
+      "look": "Wide shot in a dark military garage workshop. Engineers stand around the canister (Heavy cylindrical steel transport container painted matte olive-drab, packed with dry ice, featuring heavy-duty bolt latches and stencil lettering identifying it as meteorological equipment) resting on heavy wooden blocks.",
+      "full": true
+    },
+    {
+      "id": "c0_p32",
+      "look": "Medium shot of the canister with its steel lid open, revealing cold white dry-ice fog rising dramatically around the dark interior as officers supervise the process.",
+      "full": true
+    },
+    {
+      "id": "c0_p33",
+      "look": "Close-up shot of the matte olive-drab steel side of the canister, showing heavy metal bolt latches and stenciled black lettering, highlighted by a sharp side light, no real words.",
+      "full": true
+    },
+    {
+      "id": "c0_p34",
+      "look": "Wide shot of a vintage black Ford motor van driving along a winding, rain-slicked Scottish highway at dusk, surrounded by misty green hills and sweeping moody skies.",
+      "full": true
+    },
+    {
+      "id": "c0_p35",
+      "look": "Wide shot of a quiet Scottish loch at twilight. hms seraph (British Royal Navy S-class submarine, dark charcoal-grey hull streaked with salt residue, low conning tower with periscope shears, slicing through choppy waves) rests moored alongside a wooden dock under misty dark skies.",
+      "full": true
+    },
+    {
+      "id": "c0_p36",
+      "look": "Medium shot on the wet deck of hms seraph. British sailors carefully lower the heavy canister through a round deck hatch into the submarine's interior using thick ropes.",
+      "full": true
+    },
+    {
+      "id": "c0_p37",
+      "look": "Wide shot of hms seraph submerging into cold choppy Atlantic waters, its dark conning tower creating white ocean foam as the sun sets over the ocean horizon.",
+      "full": true
+    },
+    {
+      "id": "c0_p38",
+      "look": "Interior medium shot of hms seraph submarine control room. Submariners in wool sweaters operate brass control wheels under dim red battle-station lighting.",
+      "full": true
+    },
+    {
+      "id": "c0_p39",
+      "look": "Illustrated antique-style painted map of the Atlantic coast of Spain, showing a red dotted naval path leading straight into the coastal waters near Huelva, no text.",
+      "full": true
+    },
+    {
+      "id": "c0_p40",
+      "look": "Wide shot of the picturesque coastal town of Huelva, featuring whitewashed Mediterranean buildings, terracotta roof tiles, and palm trees under a sunny warm sky.",
+      "full": true
+    },
+    {
+      "id": "c0_p41",
+      "look": "Wide dramatic night shot of hms seraph floating quietly on dark, calm ocean waters under a moonlit night sky with faint stars glinting through clouds.",
+      "full": true
+    },
+    {
+      "id": "c0_p42",
+      "look": "Medium shot on the submarine deck. Sailors in dark oilskins unbolt the latches of the canister, releasing a dramatic cloud of white dry-ice vapor into the night air.",
+      "full": true
+    },
+    {
+      "id": "c0_p43",
+      "look": "Wide shot showing officers gently lowering glyndwr michael (Welsh transient in his early 30s fabricated as Captain and Acting Major William Martin. Gaunt cheekbones, pale skin, dressed in a clean Royal Marines officer battledress beneath a thick dark wool trench coat) wearing a yellow lifebelt into dark rolling sea waves.",
+      "full": true
+    },
+    {
+      "id": "c0_p44",
+      "look": "Dramatic close-up of the leather briefcase (Sturdy dark tan leather British officer courier dispatch briefcase, scuffed edges, brass combination clasp, secured with a steel chain intended to link to a trench coat belt) chained securely to the trench coat as the body floats in dark waters.",
+      "full": true
+    },
+    {
+      "id": "c0_p45",
+      "look": "Wide shot of hms seraph slipping beneath dark ocean swells, leaving only ripples on the water surface as the first pale light of pre-dawn touches the horizon.",
+      "full": true
+    },
+    {
+      "id": "c0_p46",
+      "look": "Wide shot of a small wooden fishing boat in golden morning light. spanish fisherman (Jose Antonio Rey Maria, Andalusian sardine fisherman in his 40s. Sun-browned leathery face, dark stubble, woolen flat cap, loose coarse canvas shirt and rolled-up trousers) leans over the wooden rail, looking with shock at the body floating in shallow coastal water.",
+      "full": true
+    },
+    {
+      "id": "c1_p0",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing spanish fisherman standing in a wooden fishing boat on choppy coastal waters near Huelva, pulling in a net and looking down with a startled expression at a floating dark form in the water under early morning golden light",
+      "full": true
+    },
+    {
+      "id": "c1_p1",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing spanish fisherman and local coastguards pulling the blanket-wrapped form of glyndwr michael onto a sandy Andalusian beach under bright morning sun",
+      "full": true
+    },
+    {
+      "id": "c1_p2",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a British diplomat in a crisp cream linen suit pacing anxiously inside an ornate wood-paneled Spanish consulate office while speaking urgently to local police",
+      "full": true
+    },
+    {
+      "id": "c1_p3",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a stern Spanish military officer in a high-collared olive uniform sitting at a heavy oak desk, examining the scuffed leather briefcase under harsh desk lamp illumination",
+      "full": true
+    },
+    {
+      "id": "c1_p4",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a German intelligence operative in a dark civilian coat covertly photographing letters in a dimly lit back room while a Spanish guard watches the doorway",
+      "full": true
+    },
+    {
+      "id": "c1_p5",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a British naval attaché receiving the returned leather briefcase across a polished mahogany embassy table in Madrid under soft afternoon light",
+      "full": true
+    },
+    {
+      "id": "c1_p6",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing ewen montagu standing anxiously by a tall office window in Whitehall, holding his round tortoiseshell spectacles while looking out into the foggy London street",
+      "full": true
+    },
+    {
+      "id": "c1_p7",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a forensic scientist in a white laboratory coat examining a handwritten letter under a heavy magnifying glass in a bright basement room",
+      "full": true
+    },
+    {
+      "id": "c1_p8",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a laboratory technician in a dark room using a glowing scientific apparatus to steam open an envelope over a heated glass beaker",
+      "full": true
+    },
+    {
+      "id": "c1_p9",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing ewen montagu and charles cholmondeley leaning closely over a laboratory desk, pointing excitedly at faint glue marks visible under a desk lamp",
+      "full": true
+    },
+    {
+      "id": "c1_p10",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing jean leslie and hester leggatt smiling broadly in their shared office while reviewing operational notes under warm pendant lighting",
+      "full": true
+    },
+    {
+      "id": "c1_p11",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing codebreakers in a bustling room filled with clacking Enigma cipher machines and piles of decoded teletype paper under heavy ceiling lights",
+      "full": true
+    },
+    {
+      "id": "c1_p12",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing an illustrated antique-style painted map of the Mediterranean sea and surrounding countries, viewed from above, featuring small painted landmarks of Greece, Sardinia, and Sicily with tiny ship icons sailing toward the eastern waters",
+      "full": true
+    },
+    {
+      "id": "c1_p13",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing adolf hitler standing over a large relief map of Europe inside a dark concrete bunker, studying miniature troop markers with an intense frown under a heavy green-shaded desk lamp",
+      "full": true
+    },
+    {
+      "id": "c1_p14",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing adolf hitler pointing angrily at a map section depicting Greece while German generals in grey uniforms listen in tense silence",
+      "full": true
+    },
+    {
+      "id": "c1_p15",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing Benito Mussolini in a decorated fascist uniform gesturing emphatically in a grand ornate Italian palace room while holding a diplomatic telegram",
+      "full": true
+    },
+    {
+      "id": "c1_p16",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing Wehrmacht officers stamping urgent transfer orders at a long wooden table covered in maps inside a command tent",
+      "full": true
+    },
+    {
+      "id": "c1_p17",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing heavy German Panzer tanks loaded onto flatbed railway cars at a misty European rail yard under dark grey morning clouds",
+      "full": true
+    },
+    {
+      "id": "c1_p18",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing Luftwaffe fighter planes parked on a sun-baked Greek airfield with ground crews hurriedly securing tarps and fueling engines",
+      "full": true
+    },
+    {
+      "id": "c1_p19",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing Erwin Rommel in his trademark desert cap and field coat inspecting coastal fortifications along a rocky Greek cliffside with binoculars",
+      "full": true
+    },
+    {
+      "id": "c1_p20",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a sparse line of aging Italian coastal artillery cannons overlooking a quiet Sicilian beach under a bright blue afternoon sky",
+      "full": true
+    },
+    {
+      "id": "c1_p21",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing winston churchill standing confidently on a British naval deck with an unlit cigar in his mouth, wearing a dark pinstripe suit and pointing toward the horizon with a determined expression",
+      "full": true
+    },
+    {
+      "id": "c1_p22",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a vast armada of gray Allied landing craft and destroyers cutting silently through dark, starlit Mediterranean waters",
+      "full": true
+    },
+    {
+      "id": "c1_p23",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing waves of Allied infantry troops wading ashore from landing craft onto a smoky Sicilian beach as searchlights cut through the dawn haze",
+      "full": true
+    },
+    {
+      "id": "c1_p24",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing smiling Allied soldiers moving past abandoned coastal fortifications and low stone walls on a sunny Sicilian hillside",
+      "full": true
+    },
+    {
+      "id": "c1_p25",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing Sicilian villagers cheering and waving at British troops entering a cobblestone town square under bright midday sunlight",
+      "full": true
+    },
+    {
+      "id": "c1_p26",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing adolf hitler staring blankly at a telegraph report on his desk, his face illuminated by a harsh desk lamp in an otherwise dark room",
+      "full": true
+    },
+    {
+      "id": "c1_p27",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing ewen montagu locking a heavy metal filing cabinet marked top secret inside a quiet Whitehall office while evening shadows stretch across the floor",
+      "full": true
+    },
+    {
+      "id": "c1_p28",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing an elderly man in a tweed jacket reading a newly published history book titled Operation Mincemeat inside a cozy wood-lined study with a warm fireplace",
+      "full": true
+    },
+    {
+      "id": "c1_p29",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a weathered stone military grave in a peaceful Spanish cemetery surrounded by bright green plants and warm Mediterranean sunlight",
+      "full": true
+    },
+    {
+      "id": "c1_p30",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a historian in spectacles carefully turning brittle yellowed pages of a wartime record book with white cotton gloves under a brass desk lamp",
+      "full": true
+    },
+    {
+      "id": "c1_p31",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing an atmospheric portrait-style view of glyndwr michael with gaunt cheekbones and pale skin, wearing a dark wool trench coat under bleak, overcast Welsh skies",
+      "full": true
+    },
+    {
+      "id": "c1_p32",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a quiet London alleyway at dusk with soft gas lamps casting a warm glow on cobblestones, evoking a sense of lonely remembrance",
+      "full": true
+    },
+    {
+      "id": "c1_p33",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing Allied soldiers smiling and reuniting with their families at a crowded British railway station under warm, celebratory pendant lights",
+      "full": true
+    },
+    {
+      "id": "c1_p34",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a close-up of a hand gently placing fresh red poppies on a stone grave marker under gentle afternoon sunlight",
+      "full": true
+    },
+    {
+      "id": "c1_p35",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing ewen montagu and charles cholmondeley standing together outside MI5 headquarters in Whitehall, looking thoughtfully ahead under a dramatic morning sky",
+      "full": true
+    },
+    {
+      "id": "c1_p36",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a montage of vintage intelligence documents and maps resting on a dark wooden desk beside an unlit pipe and round spectacles",
+      "full": true
+    },
+    {
+      "id": "c1_p37",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a sweeping cinematic vista across the European continent from snow-dusted hills to sun-drenched Mediterranean coasts under dynamic cloudscapes",
+      "full": true
+    },
+    {
+      "id": "c1_p38",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a solitary figure walking along a peaceful country path at sunset, illuminated by a warm golden glow",
+      "full": true
+    },
+    {
+      "id": "c1_p39",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing the military headstone in Huelva bathed in a magnificent beam of golden sunlight breaking through afternoon clouds",
+      "full": true
+    },
+    {
+      "id": "c1_p40",
+      "look": "richly detailed hand-painted illustration in the style of a still frame from a high-end animated feature film, cinematic composition with strong foreground, middle ground and background depth, dramatic warm and cool lighting, volumetric light and atmosphere, painterly textures, expressive characters with detailed faces and emotions, strictly period-accurate clothing, buildings and objects with no modern landmarks or anachronisms, no text, no letters, no logos, no watermarks, showing a dramatic montage of vintage artifacts including an Enigma machine, pilot goggles, and a leather dispatch case resting on a mahogany table under warm library lighting",
+      "full": true
+    }
+  ],
+  "use_guide": false,
+  "chapters": [
+    {
+      "title": "The Architecture of a Ghost",
+      "scene": 1
+    },
+    {
+      "title": "The Deception That Split an Army",
+      "scene": 48
+    }
+  ],
+  "scenes": [
+    {
+      "narration": "In the spring of 1943, tens of thousands of Allied soldiers were sailing straight toward an invasion trap in southern Europe, where a single leaked document could mean total catastrophe—so how did British intelligence stake the entire war on the body of an unknown tramp drifting off the coast of Spain?",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c0_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Spring 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "The Architecture of a Ghost"
+        },
+        {
+          "kind": "story",
+          "place": "c0_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "water",
+          "time_label": "Spring 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "By early 1943, Allied commanders were preparing a massive assault to reclaim continental Europe from Axis control.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p1",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Mediterranean Sea",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The obvious target was Sicily, an island guarding the vital shipping lanes across the sunny Mediterranean Sea.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Sicily",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "British Prime Minister winston churchill feared the enemy would easily guess their obvious landing spot.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p3",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "smoke",
+          "time_label": "London, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Churchill famously warned his advisors that “everyone but a bloody fool would know that it's Sicily.”",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p4",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Meanwhile, adolf hitler grew increasingly anxious about protecting vital raw materials in Greece and the Balkans.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Berlin, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To protect the invading troops, British planners needed a scheme to trick Hitler into shifting his forces.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p6",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "dust",
+          "time_label": "London",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They turned to an unusual 1939 naval memorandum comparing wartime deception to the subtle art of fly fishing.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Idea twenty-eight suggested dropping misleading military documents on a corpse that the enemy would eventually find.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p8",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Air Force officer charles cholmondeley revived this risky idea, naming his initial plan Operation Trojan Horse.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p9",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Naval intelligence officer ewen montagu joined Cholmondeley to refine the daring plot into Operation Mincemeat.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p10",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The ambitious plan required a freshly deceased body that carried no suspicious signs of violent foul play.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p11",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "fog",
+          "time_label": "London, Jan 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "In January 1943, coroner Bentley Purchase located the tragic body of a destitute Welshman named glyndwr michael.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p12",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Michael had tragically died in London after ingesting rat poison containing lethal amounts of yellow phosphorus.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "dust",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The intelligence officers consulted renowned British pathologist Sir Bernard Spilsbury regarding the corpse's suitability.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p14",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Spilsbury reassured them that Spanish doctors were unlikely to detect phosphorus in a floating, decomposing corpse.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p15",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The mortuary kept Michael's body preserved at exactly four degrees Celsius to prevent premature decomposition.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p16",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The intelligence team began inventing an elaborate military identity for their silent, sleeping agent.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p17",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They named him Captain and Acting Major William Martin, an officer in the Royal Marines.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p18",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They carefully dressed glyndwr michael in a fresh Royal Marines officer battledress and dark trench coat.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p19",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To make Major Martin convincing, the team manufactured realistic pocket litter to reflect his daily life.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p20",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They added stubs from a London theater show and unpaid bills from an exclusive military club.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p21",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They gave Major Martin a fictional fiancée named Pam to make his personal backstory deeply emotional.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p22",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "sparkles",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "MI5 clerk jean leslie provided a photograph of herself to serve as the beloved fiancée.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p23",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Senior secretary hester leggatt composed heartbreaking, intimate love letters from Pam to her distant officer.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p24",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They added a receipt for an expensive engagement ring bought at a London jewelry store.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p25",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The crucial element was decoy correspondence between senior British generals regarding Allied Mediterranean strategy.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p26",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The secret letters deliberately stated that the Allies intended to invade Greece and Sardinia instead.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p27",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The documents framed Sicily as merely a secondary distraction to fool Axis defenders.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p28",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Southern Europe",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They placed the crucial documents inside a sturdy tan leather briefcase linked securely by chain.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p29",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The chain was designed to clip directly onto the trench coat belt of glyndwr michael.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p30",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "To transport the body safely without alerting Axis spies, they engineered a specialized steel container.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p31",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "smoke",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "They packed the body inside the canister with dry ice to keep it frozen throughout transport.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p32",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "fog",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The exterior of the canister was stenciled with official markings labeling it as weather research gear.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p33",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "In mid-April 1943, a top-secret van carried the heavy container north toward the Scottish coast.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p34",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "rain",
+          "time_label": "April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "rain"
+    },
+    {
+      "narration": "They arrived at the naval port of Holy Loch, where a waiting submarine prepared for departure.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p35",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "fog",
+          "time_label": "Holy Loch, Scotland",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "wind"
+    },
+    {
+      "narration": "Sailors loaded the mysterious canister onto hms seraph, believing it contained delicate scientific instruments.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p36",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "HMS Seraph slipped quietly beneath the surface, embarking on its perilous voyage across the Atlantic Ocean.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p37",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The submarine navigated treacherous waters patrolled by German U-boats and enemy reconnaissance aircraft.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p38",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "Atlantic Ocean",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "After days at sea, HMS Seraph neared the sunny coast of Huelva in southern Spain.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p39",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Huelva, Spain",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Huelva was chosen because a known German intelligence agent operated actively within the coastal town.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p40",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "birds"
+    },
+    {
+      "narration": "Under cover of pitch darkness on April thirty, HMS Seraph surfaced near the shore.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p41",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "water",
+          "time_label": "30 April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The crew brought the canister onto the deck and unbolted its heavy steel lid.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p42",
+          "characters": [],
+          "camera": "tilt_up",
+          "effect": "fog",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "wind"
+    },
+    {
+      "narration": "They slipped glyndwr michael into the cold ocean currents, wearing a life jacket to stay afloat.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p43",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The leather briefcase remained tightly chained to his coat, carrying the fate of the invasion.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p44",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "HMS Seraph submerged and sailed away, leaving the silent courier drifting slowly toward the shore.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p45",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "water",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "At sunrise, spanish fisherman Jose Antonio Rey Maria spotted a floating dark shape in his nets—igniting a deadly race for intelligence.",
+      "chapter": 0,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c0_p46",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "water",
+          "time_label": "Dawn, 30 April 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "At sunrise, spanish fisherman Jose Antonio Rey Maria spotted a floating dark shape in his nets—igniting a deadly race for intelligence.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "title",
+          "place": "c1_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Huelva, Spain, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": "The Deception That Split an Army"
+        },
+        {
+          "kind": "story",
+          "place": "c1_p0",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "water",
+          "time_label": "Huelva, Spain, 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "The body of Glyndwr Michael was towed ashore, and local authorities were immediately notified of the grim maritime discovery.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p1",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "British diplomats in Madrid feigned frantic panic, desperate to ensure Spanish officials seized the courier's leather briefcase.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p2",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Madrid, Spain",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The stratagem worked brilliantly as suspicious Spanish authorities confiscated the dead officer's personal effects for official inspection.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p3",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Secretly, neutral Spanish officials permitted German Abwehr agents to examine and photograph every single classified document.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p4",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Once copied, the original documents were discreetly returned to British authorities through diplomatic channels.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p5",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Back in London, ewen montagu and his team awaited the return of the precious intelligence package with bated breath.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p6",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "London, England",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The briefcase arrived safely, and experts subjected the sensitive correspondence to rigorous forensic examination.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p7",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Scientists used microscopic infrared light and dry-ice extraction techniques to detect telltale signs of tampering.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p8",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The microscopic evidence proved positive: the confidential letters had indeed been carefully opened, read, and resealed.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p9",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Elated, the MI5 team knew the German intelligence network had swallowed the fabricated invasion plans whole.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p10",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The decrypted enemy intercepts streamed into Bletchley Park, confirming that Berlin was treating the documents as authentic.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p11",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "Bletchley Park",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The fake dispatches convinced the German High Command that Allied forces intended to strike Greece and Sardinia.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p12",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Mediterranean Map",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Adolf hitler reviewed the intelligence reports inside his heavily guarded East Prussian military headquarters.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p13",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Wolf's Lair, Prussia",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Fearing a direct threat to vital Balkan oil fields and mineral supplies, the dictator overruled his top generals.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p14",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Even Benito Mussolini argued that Sicily was the obvious invasion target, but his warnings fell on deaf ears.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p15",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Rome, Italy",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Convinced by the drowned courier's letters, Berlin ordered a massive strategic redirection of its military might.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p16",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Elite armored divisions stationed across Europe were hurriedly packed onto trains and dispatched toward the Balkans.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p17",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Naval patrol boats and Luftwaffe air squadrons were similarly pulled away from the central Mediterranean theater.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p18",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Greece",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Field Marshal Erwin Rommel was even given command of forces tasked with defending the vulnerable Greek coastline.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p19",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Meanwhile, Sicily was left dangerously underdefended, stripped of the heavy reinforcements it desperately required.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p20",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Sicily",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "winters churchill and Allied commanders finalized the invasion armada for Operation Husky.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p21",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Aboard HMS King George V",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Thousands of Allied ships slipped across the Mediterranean under the cover of a moonless summer night.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p22",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "water",
+          "time_label": "July 1943",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "sea"
+    },
+    {
+      "narration": "On July tenth, nineteen forty-three, the Allies launched Operation Husky against the shores of Sicily.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p23",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Sicily Landings",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "battle"
+    },
+    {
+      "narration": "Because of the deception, the invading troops encountered far lighter resistance than military planners had feared.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p24",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The island fell much more quickly than anticipated, sparing the lives of countless allied servicemen.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p25",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Hitler realized too late that he had been duped, leaving his forces hopelessly outpositioned across southern Europe.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p26",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The strategic success of Operation Mincemeat remained one of the best-kept secrets of the Second World War.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p27",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "London, 1945",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Years later, the truth behind the ingenious wartime plot was finally unveiled to an astonished public.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p28",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Postwar Era",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "For decades, the fictitious Major William Martin rested under a headstone in Huelva, Spain, shrouded in mystery.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p29",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "Huelva, Spain",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Historians and researchers eventually pierced together archival records to uncover the true identity of the courier.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p30",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "He was not an aristocratic officer, but Glyndwr Michael, a destitute Welsh transient.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p31",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "Wales",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "A man whom society had forgotten had performed one of the most consequential acts of the conflict.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p32",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "His sacrifice helped shorten the war and saved the lives of thousands of Allied soldiers.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p33",
+          "characters": [],
+          "camera": "pan_right",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "A new inscription was finally added to his gravestone, restoring his true name to history.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p34",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "Huelva Cemetery",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Operation Mincemeat remains a stunning testament to the power of human ingenuity and deception in wartime.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p35",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "It proved that a well-crafted lie can sometimes alter the course of nations just as surely as bullets.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p36",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "From a lonely Welsh winter to the sunlit shores of Spain and the command bunkers of Berlin...",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p37",
+          "characters": [],
+          "camera": "pan_left",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The extraordinary plot showed that even the smallest and unlikeliest lives can leave an indelible mark.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p38",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "The man who never was became the man who won the day.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p39",
+          "characters": [],
+          "camera": "push_in",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    },
+    {
+      "narration": "Subscribe to join us as our World History - WWII series continues, uncovering the extraordinary plots and turning points that decided civilization's darkest hour.",
+      "chapter": 1,
+      "shots": [
+        {
+          "kind": "story",
+          "place": "c1_p40",
+          "characters": [],
+          "camera": "pull_out",
+          "effect": "none",
+          "time_label": "",
+          "fact": "",
+          "bubble": "",
+          "note": "",
+          "title": ""
+        }
+      ],
+      "sfx": "none"
+    }
+  ],
+  "call_to_action": "Subscribe to join us as our World History - WWII series continues, uncovering the extraordinary plots and turning points that decided civilization's darkest hour.",
+  "why_it_matters": "It demonstrates how ingenious psychological deception and forensic precision altered the strategic map of World War II, preserving thousands of Allied lives without firing a shot.",
+  "uses_realistic_altered_content": false,
+  "word_count": 1432,
+  "estimated_seconds": 573,
+  "fact_check": {
+    "claims": [
+      {
+        "scene": 1,
+        "claim": "In the spring of 1943, Allied soldiers were sailing toward an invasion trap in southern Europe...",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 1,
+        "claim": "British intelligence staked the entire war on the body of an unknown tramp drifting off the coast of Spain",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 2,
+        "claim": "By early 1943, Allied commanders were preparing a massive assault to reclaim continental Europe from Axis control.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 3,
+        "claim": "The obvious target was Sicily, an island guarding the vital shipping lanes across the sunny Mediterranean Sea.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 4,
+        "claim": "British Prime Minister Winston Churchill feared the enemy would easily guess their obvious landing spot.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 5,
+        "claim": "Churchill famously warned his advisors that 'everyone but a bloody fool would know that it's Sicily.'",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 6,
+        "claim": "Adolf Hitler grew increasingly anxious about protecting vital raw materials in Greece and the Balkans.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 7,
+        "claim": "To protect the invading troops, British planners needed a scheme to trick Hitler into shifting his forces.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 8,
+        "claim": "They turned to an unusual 1939 naval memorandum comparing wartime deception to the subtle art of fly fishing.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 9,
+        "claim": "Idea twenty-eight suggested dropping misleading military documents on a corpse that the enemy would eventually find.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 10,
+        "claim": "Air Force officer Charles Cholmondeley revived this risky idea, naming his initial plan Operation Trojan Horse.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 11,
+        "claim": "Naval intelligence officer Ewen Montagu joined Cholmondeley to refine the daring plot into Operation Mincemeat.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 12,
+        "claim": "The ambitious plan required a freshly deceased body that carried no suspicious signs of violent foul play.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 13,
+        "claim": "In January 1943, coroner Bentley Purchase located the tragic body of a destitute Welshman named Glyndwr Michael.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 14,
+        "claim": "Michael had tragically died in London after ingesting rat poison containing lethal amounts of yellow phosphorus.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 15,
+        "claim": "The intelligence officers consulted renowned British pathologist Sir Bernard Spilsbury regarding the corpse's suitability.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 16,
+        "claim": "Spilsbury reassured them that Spanish doctors were unlikely to detect phosphorus in a floating, decomposing corpse.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 17,
+        "claim": "The mortuary kept Michael's body preserved at exactly four degrees Celsius to prevent premature decomposition.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 18,
+        "claim": "The intelligence team began inventing an elaborate military identity for their silent, sleeping agent.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 19,
+        "claim": "They named him Captain and Acting Major William Martin, an officer in the Royal Marines.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 20,
+        "claim": "They carefully dressed Glyndwr Michael in a fresh Royal Marines officer battledress and dark trench coat.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 21,
+        "claim": "To make Major Martin convincing, the team manufactured realistic pocket litter to reflect his daily life.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 22,
+        "claim": "They added stubs from a London theater show and unpaid bills from an exclusive military club.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 23,
+        "claim": "They gave Major Martin a fictional fiancée named Pam to make his personal backstory deeply emotional.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 24,
+        "claim": "MI5 clerk Jean Leslie provided a photograph of herself to serve as the beloved fiancée.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 25,
+        "claim": "Senior secretary Hester Leggatt composed heartbreaking, intimate love letters from Pam to her distant officer.",
+        "verdict": "uncertain",
+        "source": "Operation Mincemeat (film)",
+        "note": "Hester Leggatt's authoring of the letters is accepted by Macintyre, but other historians attribute them to Paddy Bennett."
+      },
+      {
+        "scene": 26,
+        "claim": "They added a receipt for an expensive engagement ring bought at a London jewelry store.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 27,
+        "claim": "The crucial element was decoy correspondence between senior British generals regarding Allied Mediterranean strategy.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 28,
+        "claim": "The secret letters deliberately stated that the Allies intended to invade Greece and Sardinia instead.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 29,
+        "claim": "The documents framed Sicily as merely a secondary distraction to fool Axis defenders.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 30,
+        "claim": "They placed the crucial documents inside a sturdy tan leather briefcase linked securely by chain.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 31,
+        "claim": "The chain was designed to clip directly onto the trench coat belt of Glyndwr Michael.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 32,
+        "claim": "To transport the body safely without alerting Axis spies, they engineered a specialized steel container.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 33,
+        "claim": "They packed the body inside the canister with dry ice to keep it frozen throughout transport.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 34,
+        "claim": "The exterior of the canister was stenciled with official markings labeling it as weather research gear.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 35,
+        "claim": "In mid-April 1943, a top-secret van carried the heavy container north toward the Scottish coast.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 36,
+        "claim": "They arrived at the naval port of Holy Loch, where a waiting submarine prepared for departure.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 37,
+        "claim": "Sailors loaded the mysterious canister onto HMS Seraph, believing it contained delicate scientific instruments.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 38,
+        "claim": "HMS Seraph slipped quietly beneath the surface, embarking on its perilous voyage across the Atlantic Ocean.",
+        "verdict": "wrong",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)",
+        "note": "The voyage was across the Mediterranean Sea / to the coast of Spain, not the Atlantic Ocean."
+      },
+      {
+        "scene": 39,
+        "claim": "The submarine navigated treacherous waters patrolled by German U-boats and enemy reconnaissance aircraft.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 40,
+        "claim": "After days at sea, HMS Seraph neared the sunny coast of Huelva in southern Spain.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 41,
+        "claim": "Huelva was chosen because a known German intelligence agent operated actively within the coastal town.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 42,
+        "claim": "Under cover of pitch darkness on April thirty, HMS Seraph surfaced near the shore.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 43,
+        "claim": "The crew brought the canister onto the deck and unbolted its heavy steel lid.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 44,
+        "claim": "They slipped Glyndwr Michael into the cold ocean currents, wearing a life jacket to stay afloat.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 45,
+        "claim": "The leather briefcase remained tightly chained to his coat, carrying the fate of the invasion.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 46,
+        "claim": "HMS Seraph submerged and sailed away, leaving the silent courier drifting slowly toward the shore.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 47,
+        "claim": "At sunrise, Spanish fisherman Jose Antonio Rey Maria spotted a floating dark shape in his nets—igniting a deadly race for intelligence.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 48,
+        "claim": "At sunrise, Spanish fisherman Jose Antonio Rey Maria spotted a floating dark shape in his nets—igniting a deadly race for intelligence.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 49,
+        "claim": "The body of Glyndwr Michael was towed ashore, and local authorities were immediately notified of the grim maritime discovery.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 50,
+        "claim": "British diplomats in Madrid feigned frantic panic, desperate to ensure Spanish officials seized the courier's leather briefcase.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 51,
+        "claim": "The stratagem worked brilliantly as suspicious Spanish authorities confiscated the dead officer's personal effects for official inspection.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 52,
+        "claim": "Secretly, neutral Spanish officials permitted German Abwehr agents to examine and photograph every single classified document.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 53,
+        "claim": "Once copied, the original documents were discreetly returned to British authorities through diplomatic channels.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 54,
+        "claim": "Back in London, Ewen Montagu and his team awaited the return of the precious intelligence package with bated breath.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 55,
+        "claim": "The briefcase arrived safely, and experts subjected the sensitive correspondence to rigorous forensic examination.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 56,
+        "claim": "Scientists used microscopic infrared light and dry-ice extraction techniques to detect telltale signs of tampering.",
+        "verdict": "uncertain",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)",
+        "note": "Technicians determined the letters had not been opened using standard forensic methods of the era, but specific mention of dry-ice extraction for this test is not in the text."
+      },
+      {
+        "scene": 57,
+        "claim": "The microscopic evidence proved positive: the confidential letters had indeed been carefully opened, read, and resealed.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 58,
+        "claim": "Elated, the MI5 team knew the German intelligence network had swallowed the fabricated invasion plans whole.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 59,
+        "claim": "The decrypted enemy intercepts streamed into Bletchley Park, confirming that Berlin was treating the documents as authentic.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 60,
+        "claim": "The fake dispatches convinced the German High Command that Allied forces intended to strike Greece and Sardinia.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 61,
+        "claim": "Adolf Hitler reviewed the intelligence reports inside his heavily guarded East Prussian military headquarters.",
+        "verdict": "supported",
+        "source": "general knowledge"
+      },
+      {
+        "scene": 62,
+        "claim": "Fearing a direct threat to vital Balkan oil fields and mineral supplies, the dictator overruled his top generals.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 63,
+        "claim": "Even Benito Mussolini argued that Sicily was the obvious invasion target, but his warnings fell on deaf ears.",
+        "verdict": "uncertain",
+        "source": "general knowledge",
+        "note": "Mussolini's private views on Sicily are not mentioned in the provided text."
+      },
+      {
+        "scene": 64,
+        "claim": "Convinced by the drowned courier's letters, Berlin ordered a massive strategic redirection of its military might.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 65,
+        "claim": "Elite armored divisions stationed across Europe were hurriedly packed onto trains and dispatched toward the Balkans.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 66,
+        "claim": "Naval patrol boats and Luftwaffe air squadrons were similarly pulled away from the central Mediterranean theater.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 67,
+        "claim": "Field Marshal Erwin Rommel was even given command of forces tasked with defending the vulnerable Greek coastline.",
+        "verdict": "uncertain",
+        "source": "general knowledge",
+        "note": "Rommel was in command of Army Group B in northern Italy around this time; specific command of Greek coastal defense related to Mincemeat is not in the source text."
+      },
+      {
+        "scene": 68,
+        "claim": "Meanwhile, Sicily was left dangerously underdefended, stripped of the heavy reinforcements it desperately required.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 69,
+        "claim": "Winters Churchill and Allied commanders finalized the invasion armada for Operation Husky.",
+        "verdict": "wrong",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)",
+        "note": "Typo in the script: 'Winters Churchill' should be 'Winston Churchill'."
+      },
+      {
+        "scene": 70,
+        "claim": "Thousands of Allied ships slipped across the Mediterranean under the cover of a moonless summer night.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 71,
+        "claim": "On July tenth, nineteen forty-three, the Allies launched Operation Husky against the shores of Sicily.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 72,
+        "claim": "Because of the deception, the invading troops encountered far lighter resistance than military planners had feared.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 73,
+        "claim": "The island fell much more quickly than anticipated, sparing the lives of countless allied servicemen.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 74,
+        "claim": "Hitler realized too late that he had been duped, leaving his forces hopelessly outpositioned across southern Europe.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 75,
+        "claim": "The strategic success of Operation Mincemeat remained one of the best-kept secrets of the Second World War.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 76,
+        "claim": "Years later, the truth behind the ingenious wartime plot was finally unveiled to an astonished public.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 77,
+        "claim": "For decades, the fictitious Major William Martin rested under a headstone in Huelva, Spain, shrouded in mystery.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 78,
+        "claim": "Historians and researchers eventually pierced together archival records to uncover the true identity of the courier.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 79,
+        "claim": "He was not an aristocratic officer, but Glyndwr Michael, a destitute Welsh transient.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 80,
+        "claim": "A man whom society had forgotten had performed one of the most consequential acts of the conflict.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 81,
+        "claim": "His sacrifice helped shorten the war and saved the lives of thousands of Allied soldiers.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 82,
+        "claim": "A new inscription was finally added to his gravestone, restoring his true name to history.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 83,
+        "claim": "Operation Mincemeat remains a stunning testament to the power of human ingenuity and deception in wartime.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 84,
+        "claim": "It proved that a well-crafted lie can sometimes alter the course of nations just as surely as bullets.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 85,
+        "claim": "From a lonely Welsh winter to the sunlit shores of Spain and the command bunkers of Berlin...",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 86,
+        "claim": "The extraordinary plot showed that even the smallest and unlikeliest lives can leave an indelible mark.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 87,
+        "claim": "The man who never was became the man who won the day.",
+        "verdict": "supported",
+        "source": "Operation Mincemeat (https://en.wikipedia.org/wiki/Operation_Mincemeat)"
+      },
+      {
+        "scene": 88,
+        "claim": "Subscribe to join us as our World History - WWII series continues...",
+        "verdict": "supported",
+        "source": "general knowledge"
+      }
+    ],
+    "summary": "The narration is highly accurate and engaging, with only a minor geographical error regarding the Atlantic Ocean instead of the Mediterranean Sea, a typo ('Winters Churchill'), and a couple of minor historical uncertainties.",
+    "score": {
+      "hook": 8,
+      "pacing": 8,
+      "clarity": 9,
+      "tip": "Fix the geographical error stating the submarine sailed across the Atlantic instead of the Mediterranean.",
+      "better_hook": "How did a dead homeless man fool Hitler and save thousands of Allied lives?"
+    }
+  },
+  "sources": [
+    {
+      "title": "Operation Mincemeat",
+      "url": "https://en.wikipedia.org/wiki/Operation_Mincemeat"
+    },
+    {
+      "title": "Operation Mincemeat (musical)",
+      "url": "https://en.wikipedia.org/wiki/Operation_Mincemeat_%28musical%29"
+    },
+    {
+      "title": "Operation Mincemeat (film)",
+      "url": "https://en.wikipedia.org/wiki/Operation_Mincemeat_%28film%29"
+    }
+  ]
+}
